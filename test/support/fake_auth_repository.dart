@@ -65,8 +65,19 @@ class FakeAuthRepository implements AuthRepository {
     _controller.add(_current);
   }
 
+  /// Falha a lançar no próximo `reauthenticate`.
+  AppFailure? nextReauthFailure;
+  int reauthCalls = 0;
+
   @override
-  Future<void> deleteAccount() => signOut();
+  Future<void> reauthenticate() async {
+    reauthCalls++;
+    final failure = nextReauthFailure;
+    if (failure != null) {
+      nextReauthFailure = null;
+      throw failure;
+    }
+  }
 
   @override
   Future<String?> getIdToken({bool forceRefresh = false}) async =>

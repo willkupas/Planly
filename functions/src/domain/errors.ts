@@ -16,6 +16,7 @@ const REASON_CODES = {
   OWNER_CANNOT_LEAVE: "failed-precondition",
   TRANSFER_PENDING: "failed-precondition",
   BOOTSTRAP_REQUIRED: "failed-precondition",
+  REQUIRES_RECENT_LOGIN: "failed-precondition",
   FAMILY_NOT_FOUND: "not-found",
   HOUSEHOLD_NOT_FOUND: "not-found",
   INVITE_NOT_FOUND: "not-found",
@@ -29,8 +30,8 @@ const REASON_CODES = {
 export type ErrorReason = keyof typeof REASON_CODES;
 
 /** Erro de regra de negócio/autorização com `reason` estável. */
-export function domainError(reason: ErrorReason): HttpsError {
-  return new HttpsError(REASON_CODES[reason], reason, { reason });
+export function domainError(reason: ErrorReason, extra: Record<string, unknown> = {}): HttpsError {
+  return new HttpsError(REASON_CODES[reason], reason, { ...extra, reason });
 }
 
 /** `invalid-argument`: o `reason` é o nome do campo inválido. */

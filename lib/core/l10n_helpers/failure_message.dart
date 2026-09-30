@@ -37,6 +37,7 @@ String _businessMessage(AppLocalizations l10n, String reason) {
     'ALREADY_MEMBER' => l10n.errorAlreadyMember,
     'TRANSFER_EXPIRED' => l10n.errorExpired,
     'RATE_LIMITED' => l10n.errorRateLimited,
+    'REQUIRES_RECENT_LOGIN' => l10n.errorRequiresRecentLogin,
     _ => l10n.errorUnknown,
   };
 }

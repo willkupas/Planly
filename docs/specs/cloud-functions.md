@@ -29,7 +29,7 @@ Functions é a única camada server-side. Escreve com Admin SDK (ignora Rules), 
 |---|---|---|
 | `unauthenticated` | — | sem `auth` |
 | `permission-denied` | `NOT_OWNER`, `NOT_MEMBER` | papel insuficiente |
-| `failed-precondition` | `FAMILY_FROZEN`, `FEATURE_NOT_IN_PLAN`, `PLAN_LIMIT_MEMBERS`, `PLAN_LIMIT_HOUSEHOLDS`, `OWNER_HAS_MEMBERS`, `LAST_HOUSEHOLD`, `OWNER_CANNOT_LEAVE`, `TRANSFER_PENDING`, `BOOTSTRAP_REQUIRED` | regra de negócio |
+| `failed-precondition` | `FAMILY_FROZEN`, `FEATURE_NOT_IN_PLAN`, `PLAN_LIMIT_MEMBERS`, `PLAN_LIMIT_HOUSEHOLDS`, `OWNER_HAS_MEMBERS`, `LAST_HOUSEHOLD`, `OWNER_CANNOT_LEAVE`, `TRANSFER_PENDING`, `BOOTSTRAP_REQUIRED`, `REQUIRES_RECENT_LOGIN` | regra de negócio |
 | `not-found` | `FAMILY_NOT_FOUND`, `HOUSEHOLD_NOT_FOUND`, `INVITE_NOT_FOUND`, `MEMBER_NOT_FOUND` | |
 | `already-exists` | `ALREADY_MEMBER` | |
 | `deadline-exceeded` | `INVITE_EXPIRED`, `TRANSFER_EXPIRED` | |
@@ -110,7 +110,7 @@ Docs internos `_rateLimits/{uid}_{fn}` (`count`, `windowStart`), **negados a qua
 
 ### 2.10 `deleteAccount`
 **Quem:** logado · **Online-only.**
-**Valida:** owner de alguma família (Free ou paga) **com outros membros ativos** → `OWNER_HAS_MEMBERS` (deve transferir antes). Assinatura ativa não é cancelada pelo backend: o app avisa para cancelar na Play.
+**Valida:** `auth_time` do token ≤ 5 min, senão `REQUIRES_RECENT_LOGIN` (o app reautentica; o servidor não trata). Rate limit 3/h por uid. Owner de alguma família (Free ou paga) **com outros membros ativos** → `OWNER_HAS_MEMBERS` (`details.familyIds` = famílias bloqueantes; nada é apagado). A verificação marca as famílias do owner como `deleting` na mesma transação (bloqueia novos aceites de convite). Assinatura ativa não é cancelada pelo backend: o app avisa para cancelar na Play.
 **Efeito:** para cada família que possui e sem outros membros → exclusão em cascata; sai (como `leaveFamily`) das famílias alheias; apaga `users/{uid}/*` (devices, memberships); anonimiza `displayName/photoUrl` em `members` e `actorName` em activity; apaga o usuário do Firebase Auth por último.
 
 ## 3. Triggers

@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/core/error/app_failure.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
+import 'package:planly/features/auth/data/callable_account_repository.dart';
 import 'package:planly/features/auth/data/firebase_auth_repository.dart';
 import 'package:planly/features/auth/data/google_auth_adapter.dart';
+import 'package:planly/features/auth/domain/account_repository.dart';
 import 'package:planly/features/auth/domain/auth_provider_id.dart';
 import 'package:planly/features/auth/domain/auth_repository.dart';
 import 'package:planly/features/auth/domain/auth_state.dart';
@@ -13,6 +15,10 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
     auth: ref.watch(firebaseAuthProvider),
     adapters: [GoogleAuthAdapter()],
   );
+});
+
+final accountRepositoryProvider = Provider<AccountRepository>((ref) {
+  return CallableAccountRepository(callable: ref.watch(callableInvokerProvider));
 });
 
 /// `AuthLoading` até o primeiro evento do provedor; depois `SignedOut`/`SignedIn`.

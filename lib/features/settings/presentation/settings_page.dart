@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:planly/app/router/routes.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/reminders/presentation/reminders_settings_section.dart';
 import 'package:planly/features/settings/presentation/sign_out_flow.dart';
@@ -43,6 +45,13 @@ class SettingsPage extends ConsumerWidget {
             leading: const Icon(Icons.logout),
             title: Text(l10n.logout),
             onTap: () => signOutWithWarning(context, ref),
+          ),
+          ListTile(
+            key: const Key('delete-account'),
+            leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
+            title: Text(l10n.deleteAccountEntry),
+            subtitle: Text(l10n.deleteAccountEntrySubtitle),
+            onTap: () => context.push(Routes.deleteAccount),
           ),
         ],
       ),

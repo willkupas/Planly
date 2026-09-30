@@ -16,9 +16,12 @@ abstract class AuthRepository {
 
   Future<void> signOut();
 
-  /// Exclui a conta de autenticação. Lança `RequiresRecentLoginFailure` se precisar reautenticar.
-  /// (O fluxo completo com Function `deleteAccount` é de tarefa futura.)
-  Future<void> deleteAccount();
+  /// Refaz o login com o provedor da sessão atual (hoje Google) e confirma a identidade no
+  /// Firebase, renovando o token. Usado quando uma operação sensível (excluir conta) exige
+  /// login recente. Lança `CancelledFailure` se o usuário desistir e `AccountFailure` se
+  /// escolher outra conta. A exclusão em si é da Function `deleteAccount` (que apaga o usuário
+  /// no Auth); o cliente só precisa de `signOut()` depois. Não existe `deleteAccount()` aqui.
+  Future<void> reauthenticate();
 
   Future<String?> getIdToken({bool forceRefresh = false});
 }

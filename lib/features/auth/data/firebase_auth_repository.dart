@@ -69,12 +69,28 @@ class FirebaseAuthRepository implements AuthRepository {
     }
   }
 
+  static const _providerIds = {'google.com': AuthProviderId.google};
+
   @override
-  Future<void> deleteAccount() async {
+  Future<void> reauthenticate() async {
     final user = _auth.currentUser;
-    if (user == null) return;
+    if (user == null) throw const AccountFailure();
+    // Provedor da sessão atual; sem correspondência, o primeiro registrado.
+    AuthProviderAdapter? adapter;
+    for (final info in user.providerData) {
+      final id = _providerIds[info.providerId];
+      if (id != null && _adapters[id] != null) {
+        adapter = _adapters[id];
+        break;
+      }
+    }
+    adapter ??= _adapters.values.isEmpty ? null : _adapters.values.first;
+    if (adapter == null) throw const ConfigurationFailure();
     try {
-      await user.delete();
+      final credential = await adapter.obtainCredential();
+      await user.reauthenticateWithCredential(credential);
+      // O servidor confere o login recente no token: força a renovação.
+      await user.getIdToken(true);
     } catch (e) {
       throw mapAuthError(e);
     }

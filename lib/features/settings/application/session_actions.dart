@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
 import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/family/application/active_context.dart';
+import 'package:planly/features/reminders/application/reminder_providers.dart';
 
 enum SignOutOutcome {
   done,
@@ -31,6 +33,28 @@ class SessionActions {
     // Avisos de escritas recusadas pertencem à sessão que acabou.
     _ref.read(writeFailureCenterProvider.notifier).dismissAll();
     return SignOutOutcome.done;
+  }
+
+  /// Encerramento local depois que a Function `deleteAccount` apagou a conta (T-025). O
+  /// usuário já não existe no Auth: sem aviso de escritas pendentes (não há para onde
+  /// sincronizá-las). Cada passo é melhor-esforço e independente, para que uma falha de
+  /// limpeza nunca deixe a sessão de uma conta apagada aberta: cancela os lembretes locais,
+  /// limpa o contexto ativo, encerra a sessão local e descarta o cache do Firestore.
+  Future<void> endSessionAfterAccountDeleted() async {
+    Future<void> step(Future<void> Function() action) async {
+      try {
+        await action();
+      } catch (_) {
+        debugPrint('Exclusão de conta: falha numa etapa de limpeza local');
+      }
+    }
+
+    final local = _ref.read(localDataServiceProvider);
+    await step(() => _ref.read(reminderReconcilerProvider).cancelAll());
+    await step(() => _ref.read(activeContextProvider.notifier).clear());
+    await step(() => _ref.read(authRepositoryProvider).signOut());
+    await step(() => local.clearLocalData());
+    _ref.read(writeFailureCenterProvider.notifier).dismissAll();
   }
 }
 

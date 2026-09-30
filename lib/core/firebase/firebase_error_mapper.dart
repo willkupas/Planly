@@ -19,6 +19,8 @@ AppFailure mapFirebaseError(Object error) {
 
 AppFailure _mapFunctions(FirebaseFunctionsException e) {
   final reason = _reasonOf(e);
+  // Operação sensível (ex.: deleteAccount) que exige login recente: a UI reautentica e repete.
+  if (reason == 'REQUIRES_RECENT_LOGIN') return const RequiresRecentLoginFailure();
   if (reason != null) return BusinessFailure(reason);
   return switch (e.code) {
     'unavailable' || 'deadline-exceeded' || 'cancelled' => const NetworkFailure(),

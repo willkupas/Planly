@@ -25,6 +25,7 @@ import 'package:planly/features/reminders/application/reminder_providers.dart';
 import 'package:planly/features/tasks/application/task_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'fake_account.dart';
 import 'fake_auth_repository.dart';
 import 'fake_backend.dart';
 import 'fake_invitations.dart';
@@ -47,6 +48,9 @@ class TestApp {
   final SharedPreferences prefs;
   final StreamController<bool> online;
   final invitations = FakeInvitations();
+
+  /// Callable `deleteAccount` (T-025) em memória.
+  final account = FakeAccountRepository();
 
   /// Tarefas em memória (repositório de tarefas fake).
   final tasks = FakeTasks();
@@ -93,6 +97,7 @@ class TestApp {
         retry: (_, _) => null,
         overrides: [
           authRepositoryProvider.overrideWithValue(auth),
+          accountRepositoryProvider.overrideWithValue(account),
           familyRepositoryProvider.overrideWithValue(backend),
           householdRepositoryProvider.overrideWithValue(backend),
           invitationRepositoryProvider.overrideWithValue(invitations),

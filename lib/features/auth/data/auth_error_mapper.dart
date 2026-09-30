@@ -27,6 +27,7 @@ AppFailure mapAuthError(Object error) {
       'invalid-credential' ||
       'account-exists-with-different-credential' ||
       'user-not-found' ||
+      'user-mismatch' ||
       'user-token-expired' =>
         const AccountFailure(),
       'operation-not-allowed' || 'app-not-authorized' => const ConfigurationFailure(),

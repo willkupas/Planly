@@ -271,6 +271,120 @@ class AppLocalizationsPt extends AppLocalizations {
   String get homeTitle => 'Início';
 
   @override
+  String get deleteAccountEntry => 'Excluir conta';
+
+  @override
+  String get deleteAccountEntrySubtitle => 'Apagar sua conta e seus dados';
+
+  @override
+  String get deleteAccountTitle => 'Excluir conta';
+
+  @override
+  String get deleteAccountIntro =>
+      'Excluir sua conta é definitivo e não pode ser desfeito.';
+
+  @override
+  String get deleteAccountWhatDeletedTitle => 'O que será apagado';
+
+  @override
+  String get deleteAccountWhatDeletedAccount =>
+      'Sua conta e seus dados pessoais (perfil, dispositivos e preferências).';
+
+  @override
+  String get deleteAccountWhatDeletedFamilies =>
+      'As famílias que só você integra, com suas casas, tarefas, listas e histórico.';
+
+  @override
+  String deleteAccountWhatDeletedFamiliesNamed(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'As famílias que só você integra ($names), com suas casas, tarefas, listas e histórico.',
+      one:
+          'A família \"$names\", que só você integra, com suas casas, tarefas, listas e histórico.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleteAccountWhatStaysTitle => 'O que permanece';
+
+  @override
+  String get deleteAccountWhatStays =>
+      'O conteúdo de famílias de outras pessoas continua lá, mas sem o seu nome: você sai dessas famílias e suas ações no histórico ficam anônimas.';
+
+  @override
+  String deleteAccountWhatStaysNamed(String names) {
+    return 'Você sai de: $names. O conteúdo dessas famílias continua, sem o seu nome.';
+  }
+
+  @override
+  String get deleteAccountSubscriptionTitle => 'Você tem uma assinatura ativa';
+
+  @override
+  String get deleteAccountSubscriptionMessage =>
+      'Excluir a conta não cancela a assinatura. Cancele a renovação na Google Play antes de continuar, para não ser cobrado de novo.';
+
+  @override
+  String get deleteAccountManageSubscription => 'Gerenciar assinatura';
+
+  @override
+  String get deleteAccountManageSubscriptionHelpTitle =>
+      'Como cancelar na Google Play';
+
+  @override
+  String get deleteAccountManageSubscriptionHelp =>
+      'Abra a Google Play, toque na foto do seu perfil, em Pagamentos e assinaturas, depois em Assinaturas, escolha o Planly e toque em Cancelar assinatura.';
+
+  @override
+  String get deleteAccountBlockedTitle => 'Não é possível excluir agora';
+
+  @override
+  String get deleteAccountBlockedMessage =>
+      'Você é o dono de uma família com outros participantes. Ainda não é possível transferir a família para outra pessoa: transfira ou remova os participantes antes de excluir a conta.';
+
+  @override
+  String deleteAccountBlockedFamilies(String names) {
+    return 'Famílias com participantes: $names.';
+  }
+
+  @override
+  String get deleteAccountGoToMembers => 'Ir para Membros';
+
+  @override
+  String get deleteAccountOffline =>
+      'Você está sem conexão. Para excluir a conta é preciso estar online.';
+
+  @override
+  String get deleteAccountConfirmWord => 'EXCLUIR';
+
+  @override
+  String deleteAccountConfirmLabel(String word) {
+    return 'Digite $word para confirmar';
+  }
+
+  @override
+  String get deleteAccountButton => 'Excluir minha conta';
+
+  @override
+  String get deleteAccountWorking => 'Excluindo sua conta…';
+
+  @override
+  String get deleteAccountReauthTitle => 'Confirme que é você';
+
+  @override
+  String get deleteAccountReauthMessage =>
+      'Por segurança, entre novamente com sua conta Google para concluir a exclusão.';
+
+  @override
+  String get deleteAccountReauthButton => 'Confirmar com Google';
+
+  @override
+  String get deleteAccountLoadError =>
+      'Não foi possível verificar suas famílias. Tente de novo em instantes.';
+
+  @override
   String get remindersSectionTitle => 'Lembretes';
 
   @override

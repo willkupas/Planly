@@ -22,6 +22,7 @@ import 'package:planly/features/invitation/presentation/invite_page.dart';
 import 'package:planly/features/invitation/presentation/join_page.dart';
 import 'package:planly/features/lists/presentation/list_detail_page.dart';
 import 'package:planly/features/lists/presentation/lists_page.dart';
+import 'package:planly/features/settings/presentation/delete_account_page.dart';
 import 'package:planly/features/settings/presentation/settings_page.dart';
 import 'package:planly/features/tasks/presentation/task_detail_page.dart';
 
@@ -56,7 +57,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: Routes.bootstrap, builder: (context, state) => const BootstrapPage()),
       GoRoute(path: Routes.sessionError, builder: (context, state) => const SessionErrorPage()),
       GoRoute(path: Routes.noAccess, builder: (context, state) => const NoAccessPage()),
-      GoRoute(path: Routes.settings, builder: (context, state) => const SettingsPage()),
+      GoRoute(
+        path: Routes.settings,
+        builder: (context, state) => const SettingsPage(),
+        routes: [
+          GoRoute(path: 'delete-account', builder: (context, state) => const DeleteAccountPage()),
+        ],
+      ),
       GoRoute(
         path: Routes.join,
         builder: (context, state) => JoinPage(initialCode: state.uri.queryParameters['code']),

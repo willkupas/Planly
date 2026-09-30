@@ -22,6 +22,9 @@ abstract final class Routes {
   /// Entrar com código (liberado antes do bootstrap; `?code=` opcional).
   static const join = '/join';
   static const settings = '/settings';
+
+  /// Excluir conta (T-025): rota livre de contexto, como as demais Configurações.
+  static const deleteAccount = '/settings/delete-account';
   static const noAccess = '/no-access';
 
   /// Rotas de conteúdo da casa: exigem casa acessível (guard `/no-access`). Listas e

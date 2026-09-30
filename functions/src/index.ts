@@ -4,6 +4,7 @@ import { REGION } from "./config";
 
 export { bootstrapUser } from "./callable/bootstrapUser";
 export { createHousehold, deleteHousehold, restoreHousehold, setHouseholdAccess } from "./callable/households";
+export { deleteAccount } from "./callable/account";
 export { leaveFamily, removeMember } from "./callable/members";
 export { acceptInvitation, createInvitation, revokeInvitation } from "./callable/invitations";
 

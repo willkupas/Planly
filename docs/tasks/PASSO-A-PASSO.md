@@ -59,7 +59,7 @@ Paralelizáveis: T-018 + T-019 · T-020 + T-021 · T-022 + T-023 + T-024.
 Plan: [0003](../plans/0003-conta-assinatura-publicacao.md). Começa quando o plan 0002 terminar.
 | | Task | O que faz | Depende de |
 |---|---|---|---|
-| ⬜ | T-025 Exclusão de conta (LGPD) | `deleteAccount`, cascata, tela de exclusão; testável no emulador | T-013 |
+| ✅ 👤 | T-025 Exclusão de conta (LGPD) | Função `deleteAccount` (12 testes novos no emulador) + tela com confirmação dupla e reautenticação (16 testes). **Falta você:** testar a reautenticação com o Google real (junto do login, T-011) |
 | ⬜ 👤 | T-026 Transferência e ciclo de vida | Transferir ownership, `frozen`, regularização 30 dias. **Exige Blaze** | T-013, T-024 |
 | ⬜ 👤 | T-027 Billing no servidor | `verifyPurchase`, RTDN, reconciliação. **Exige conta Play, produtos, service account** | T-026 |
 | ⬜ 👤 | T-028 Billing no app | Tela de plano, compra, transferência, preços reais do Play | T-027 |

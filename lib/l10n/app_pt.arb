@@ -98,6 +98,47 @@
   "taskReadOnly": "Você pode ver esta tarefa, mas não editá-la.",
   "taskFrozenReadOnly": "Família somente leitura: não é possível alterar tarefas.",
   "homeTitle": "Início",
+  "deleteAccountEntry": "Excluir conta",
+  "deleteAccountEntrySubtitle": "Apagar sua conta e seus dados",
+  "deleteAccountTitle": "Excluir conta",
+  "deleteAccountIntro": "Excluir sua conta é definitivo e não pode ser desfeito.",
+  "deleteAccountWhatDeletedTitle": "O que será apagado",
+  "deleteAccountWhatDeletedAccount": "Sua conta e seus dados pessoais (perfil, dispositivos e preferências).",
+  "deleteAccountWhatDeletedFamilies": "As famílias que só você integra, com suas casas, tarefas, listas e histórico.",
+  "deleteAccountWhatDeletedFamiliesNamed": "{count, plural, =1{A família \"{names}\", que só você integra, com suas casas, tarefas, listas e histórico.} other{As famílias que só você integra ({names}), com suas casas, tarefas, listas e histórico.}}",
+  "@deleteAccountWhatDeletedFamiliesNamed": {
+    "placeholders": { "count": { "type": "int" }, "names": { "type": "String" } }
+  },
+  "deleteAccountWhatStaysTitle": "O que permanece",
+  "deleteAccountWhatStays": "O conteúdo de famílias de outras pessoas continua lá, mas sem o seu nome: você sai dessas famílias e suas ações no histórico ficam anônimas.",
+  "deleteAccountWhatStaysNamed": "Você sai de: {names}. O conteúdo dessas famílias continua, sem o seu nome.",
+  "@deleteAccountWhatStaysNamed": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "deleteAccountSubscriptionTitle": "Você tem uma assinatura ativa",
+  "deleteAccountSubscriptionMessage": "Excluir a conta não cancela a assinatura. Cancele a renovação na Google Play antes de continuar, para não ser cobrado de novo.",
+  "deleteAccountManageSubscription": "Gerenciar assinatura",
+  "deleteAccountManageSubscriptionHelpTitle": "Como cancelar na Google Play",
+  "deleteAccountManageSubscriptionHelp": "Abra a Google Play, toque na foto do seu perfil, em Pagamentos e assinaturas, depois em Assinaturas, escolha o Planly e toque em Cancelar assinatura.",
+  "deleteAccountBlockedTitle": "Não é possível excluir agora",
+  "deleteAccountBlockedMessage": "Você é o dono de uma família com outros participantes. Ainda não é possível transferir a família para outra pessoa: transfira ou remova os participantes antes de excluir a conta.",
+  "deleteAccountBlockedFamilies": "Famílias com participantes: {names}.",
+  "@deleteAccountBlockedFamilies": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "deleteAccountGoToMembers": "Ir para Membros",
+  "deleteAccountOffline": "Você está sem conexão. Para excluir a conta é preciso estar online.",
+  "deleteAccountConfirmWord": "EXCLUIR",
+  "deleteAccountConfirmLabel": "Digite {word} para confirmar",
+  "@deleteAccountConfirmLabel": {
+    "placeholders": { "word": { "type": "String" } }
+  },
+  "deleteAccountButton": "Excluir minha conta",
+  "deleteAccountWorking": "Excluindo sua conta…",
+  "deleteAccountReauthTitle": "Confirme que é você",
+  "deleteAccountReauthMessage": "Por segurança, entre novamente com sua conta Google para concluir a exclusão.",
+  "deleteAccountReauthButton": "Confirmar com Google",
+  "deleteAccountLoadError": "Não foi possível verificar suas famílias. Tente de novo em instantes.",
   "remindersSectionTitle": "Lembretes",
   "remindersSwitchTitle": "Lembretes de tarefas",
   "remindersSwitchSubtitle": "Avisa neste aparelho antes do horário das suas tarefas",

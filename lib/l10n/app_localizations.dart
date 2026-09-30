@@ -502,6 +502,180 @@ abstract class AppLocalizations {
   /// **'Início'**
   String get homeTitle;
 
+  /// No description provided for @deleteAccountEntry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir conta'**
+  String get deleteAccountEntry;
+
+  /// No description provided for @deleteAccountEntrySubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar sua conta e seus dados'**
+  String get deleteAccountEntrySubtitle;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir conta'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir sua conta é definitivo e não pode ser desfeito.'**
+  String get deleteAccountIntro;
+
+  /// No description provided for @deleteAccountWhatDeletedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que será apagado'**
+  String get deleteAccountWhatDeletedTitle;
+
+  /// No description provided for @deleteAccountWhatDeletedAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua conta e seus dados pessoais (perfil, dispositivos e preferências).'**
+  String get deleteAccountWhatDeletedAccount;
+
+  /// No description provided for @deleteAccountWhatDeletedFamilies.
+  ///
+  /// In pt, this message translates to:
+  /// **'As famílias que só você integra, com suas casas, tarefas, listas e histórico.'**
+  String get deleteAccountWhatDeletedFamilies;
+
+  /// No description provided for @deleteAccountWhatDeletedFamiliesNamed.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{A família \"{names}\", que só você integra, com suas casas, tarefas, listas e histórico.} other{As famílias que só você integra ({names}), com suas casas, tarefas, listas e histórico.}}'**
+  String deleteAccountWhatDeletedFamiliesNamed(int count, String names);
+
+  /// No description provided for @deleteAccountWhatStaysTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que permanece'**
+  String get deleteAccountWhatStaysTitle;
+
+  /// No description provided for @deleteAccountWhatStays.
+  ///
+  /// In pt, this message translates to:
+  /// **'O conteúdo de famílias de outras pessoas continua lá, mas sem o seu nome: você sai dessas famílias e suas ações no histórico ficam anônimas.'**
+  String get deleteAccountWhatStays;
+
+  /// No description provided for @deleteAccountWhatStaysNamed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você sai de: {names}. O conteúdo dessas famílias continua, sem o seu nome.'**
+  String deleteAccountWhatStaysNamed(String names);
+
+  /// No description provided for @deleteAccountSubscriptionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você tem uma assinatura ativa'**
+  String get deleteAccountSubscriptionTitle;
+
+  /// No description provided for @deleteAccountSubscriptionMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir a conta não cancela a assinatura. Cancele a renovação na Google Play antes de continuar, para não ser cobrado de novo.'**
+  String get deleteAccountSubscriptionMessage;
+
+  /// No description provided for @deleteAccountManageSubscription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerenciar assinatura'**
+  String get deleteAccountManageSubscription;
+
+  /// No description provided for @deleteAccountManageSubscriptionHelpTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como cancelar na Google Play'**
+  String get deleteAccountManageSubscriptionHelpTitle;
+
+  /// No description provided for @deleteAccountManageSubscriptionHelp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abra a Google Play, toque na foto do seu perfil, em Pagamentos e assinaturas, depois em Assinaturas, escolha o Planly e toque em Cancelar assinatura.'**
+  String get deleteAccountManageSubscriptionHelp;
+
+  /// No description provided for @deleteAccountBlockedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não é possível excluir agora'**
+  String get deleteAccountBlockedTitle;
+
+  /// No description provided for @deleteAccountBlockedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você é o dono de uma família com outros participantes. Ainda não é possível transferir a família para outra pessoa: transfira ou remova os participantes antes de excluir a conta.'**
+  String get deleteAccountBlockedMessage;
+
+  /// No description provided for @deleteAccountBlockedFamilies.
+  ///
+  /// In pt, this message translates to:
+  /// **'Famílias com participantes: {names}.'**
+  String deleteAccountBlockedFamilies(String names);
+
+  /// No description provided for @deleteAccountGoToMembers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ir para Membros'**
+  String get deleteAccountGoToMembers;
+
+  /// No description provided for @deleteAccountOffline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você está sem conexão. Para excluir a conta é preciso estar online.'**
+  String get deleteAccountOffline;
+
+  /// No description provided for @deleteAccountConfirmWord.
+  ///
+  /// In pt, this message translates to:
+  /// **'EXCLUIR'**
+  String get deleteAccountConfirmWord;
+
+  /// No description provided for @deleteAccountConfirmLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite {word} para confirmar'**
+  String deleteAccountConfirmLabel(String word);
+
+  /// No description provided for @deleteAccountButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir minha conta'**
+  String get deleteAccountButton;
+
+  /// No description provided for @deleteAccountWorking.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluindo sua conta…'**
+  String get deleteAccountWorking;
+
+  /// No description provided for @deleteAccountReauthTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirme que é você'**
+  String get deleteAccountReauthTitle;
+
+  /// No description provided for @deleteAccountReauthMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por segurança, entre novamente com sua conta Google para concluir a exclusão.'**
+  String get deleteAccountReauthMessage;
+
+  /// No description provided for @deleteAccountReauthButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar com Google'**
+  String get deleteAccountReauthButton;
+
+  /// No description provided for @deleteAccountLoadError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível verificar suas famílias. Tente de novo em instantes.'**
+  String get deleteAccountLoadError;
+
   /// No description provided for @remindersSectionTitle.
   ///
   /// In pt, this message translates to:
