@@ -1,19 +1,19 @@
 ---
 id: T-015
 title: Convites
-status: in-progress
+status: done
 plan: 0001
 depends_on: [T-013, T-014]
-area: functions
+area: functions+app
 parallel_ok: false
 ---
 
 ## Critérios de aceite
 - [x] Callables `createInvitation` / `revokeInvitation` / `acceptInvitation` (cloud-functions.md §2.5–2.6) com código de 10 chars e expiração de 24h (servidor)
 - [x] Bloqueado no Free (backend: `FEATURE_NOT_IN_PLAN`)
-- [ ] UI mostra upsell no Free — pendente: telas
+- [x] UI mostra upsell no Free (diálogo em Membros; tela de convite também bloqueia por rota direta; a Function nunca é chamada no Free)
 - [x] Ao aceitar, os `grants` do convite definem o acesso às casas (`access`/`accessUids`, HouseholdAccess)
-- [ ] Telas de convidar / aceitar código / lista de convites — pendente: telas
+- [x] Telas de convidar / aceitar código / lista de convites (app; testes de widget com fakes)
 - [~] Limpeza de convites expirados: política TTL em `invitations.purgeAt` (= `expiresAt + 7d`) declarada em `firebase/firestore.indexes.json` (**pendente: aplicar/validar na nuvem**); o job diário que marca `expired` (cleanupJob, §4.3) **não** foi feito (Scheduler exige Blaze; a marcação já acontece de forma preguiçosa no aceite e convites vencidos não contam no limite)
 - [x] Testes com emulator (unit + integração)
 
@@ -33,3 +33,18 @@ parallel_ok: false
 - `grants`: 1..20, sem casa repetida, role `admin|member`; casa de outra família/inexistente/excluída = `HOUSEHOLD_NOT_FOUND`.
 - A notificação ao owner ("convite aceito", §2.6 passo 4) depende do FCM (Sprint 6) e não foi implementada.
 - Formato do `fieldOverrides` TTL segue o padrão do export do Firebase CLI; **não validado** contra a nuvem (precisa de projeto/login). Ativar o TTL também exige `firebase deploy --only firestore:indexes` (e leva até ~24h para começar a apagar). O arquivo foi reformatado (indentação) ao inserir o bloco.
+
+## Entregue (app)
+`lib/features/invitation/{domain,data,application,presentation}` (`InvitationRepository` + impl Firestore/Functions, `InvitationActions`, `InvitePage`, `InvitationsPage`, `JoinPage`), `lib/core/share/share_service.dart` (`share_plus`, injetável), rotas `Routes.familyInvite` / `familyInvitations` / `join`, `MembersPage._invite` agora faz `push(Routes.familyInvite)` no plano pago (Free mantém o upsell). Testes: `test/invitation_flow_test.dart` (25 fluxos: convidar, reasons, offline, Free, frozen, lista/revogar, entrar com código, antes do bootstrap), `test/invitation_repository_test.dart`.
+
+## Decisões do app
+- **Convidar:** casas com checkbox + role por casa (Participante/Admin, padrão Participante); nada vem marcado, exceto quando há uma única casa. Código exibido como `ABCDE-FGHJK` + "válido por 24 horas (até dd/MM HH:mm)", com Compartilhar (share sheet) e Copiar. A mensagem compartilhada inclui código + link; na UI aparece só o código (o link é placeholder). O código vive só em memória na tela; nunca é logado nem persistido.
+- **Lista:** `where createdBy == uid` + `limit(50)`, sem `orderBy` (evita índice composto); filtro por família e ordenação no cliente. Pendente com `expiresAt` vencido aparece como Expirado (o servidor só marca no aceite). Código mascarado (`•••••-•••XY`); completo só no detalhe (bottom sheet) de convite pendente, onde se revoga (confirmação; online-only).
+- **Entrar com código (`/join?code=`):** campo normaliza (maiúsculas, só A-Z/0-9, 10 chars); `?code=` só preenche, nunca envia. Online-only (`ensureOnline`). Sucesso: família (e 1ª casa concedida) vira contexto ativo, snackbar e vai para `/home`. Mensagens: INVITE_NOT_FOUND e INVITE_EXPIRED têm o mesmo texto genérico (também em `failure_message`); PLAN_LIMIT_MEMBERS na tela de entrar usa texto próprio ("esta família atingiu o limite").
+- **Fluxo antes do bootstrap:** `/join` fica liberado pelo guard; o aceite, se a sessão está em `needsBootstrap`, chama `BootstrapController.run()` (que agora, se já houver bootstrap em andamento, espera por ele) e só então `acceptInvitation`; erro de bootstrap aborta o aceite. Pontos de entrada: tela de bootstrap ("Tenho um código de convite") e Hub da família.
+- Sem convites: estados Loading/Empty/Error/Offline (banner) nas telas de lista/convidar; membro não-owner vê "sem permissão" se abrir a rota direto.
+
+## Pendente
+- Integração ponta a ponta com emulador (owner cria → convidado aceita → acesso às casas → revogar) — depende do coordenador; só foi validado com fakes (app) e testes do servidor.
+- Deep link `?code=` real (App Links) e domínio do link — fora do escopo.
+- Notificação ao owner quando o convite é aceito (FCM, Sprint 6) e job de marcação `expired`.

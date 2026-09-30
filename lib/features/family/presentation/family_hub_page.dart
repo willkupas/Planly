@@ -128,6 +128,13 @@ class _Hub extends StatelessWidget {
           trailing: const Icon(Icons.chevron_right),
           onTap: () => context.go(Routes.familyHouseholds),
         ),
+        ListTile(
+          key: const Key('go-join'),
+          leading: const Icon(Icons.vpn_key_outlined),
+          title: Text(l10n.joinHaveCode),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => context.push(Routes.join),
+        ),
       ],
     );
   }

@@ -25,10 +25,7 @@ class MembersPage extends ConsumerWidget {
       await showUpsellDialog(context, UpsellReason.invites);
       return;
     }
-    // PONTO DE EXTENSÃO T-015: navegar para `Routes.familyInvite` (criar convite, 24h).
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).inviteComingSoon)));
+    await context.push(Routes.familyInvite);
   }
 
   Future<void> _remove(BuildContext context, WidgetRef ref, String familyId, FamilyMember m) async {
@@ -74,7 +71,18 @@ class MembersPage extends ConsumerWidget {
     final myUid = ref.watch(currentUidProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.membersTitle)),
+      appBar: AppBar(
+        title: Text(l10n.membersTitle),
+        actions: [
+          if (isOwner)
+            IconButton(
+              key: const Key('invitations-button'),
+              tooltip: l10n.inviteSentList,
+              icon: const Icon(Icons.mail_outline),
+              onPressed: () => context.push(Routes.familyInvitations),
+            ),
+        ],
+      ),
       body: familyId == null
           ? const LoadingSkeleton()
           : Column(

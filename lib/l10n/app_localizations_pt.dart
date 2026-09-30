@@ -13,6 +13,171 @@ class AppLocalizationsPt extends AppLocalizations {
   String get appName => 'Planly';
 
   @override
+  String get taskFab => 'Nova tarefa';
+
+  @override
+  String get taskQuickAddTitle => 'Nova tarefa';
+
+  @override
+  String get taskQuickAddHint => 'O que precisa ser feito?';
+
+  @override
+  String get taskQuickAddSubmit => 'Adicionar tarefa';
+
+  @override
+  String get taskMoreOptions => 'Mais opções';
+
+  @override
+  String get taskLessOptions => 'Menos opções';
+
+  @override
+  String get taskTitleLabel => 'Título';
+
+  @override
+  String get taskDescriptionLabel => 'Descrição (opcional)';
+
+  @override
+  String get taskDateLabel => 'Data e hora';
+
+  @override
+  String get taskNoDate => 'Sem data';
+
+  @override
+  String get taskClearDate => 'Remover data';
+
+  @override
+  String taskScheduleAt(DateTime date, DateTime time) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+    final intl.DateFormat timeDateFormat = intl.DateFormat.Hm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return '$dateString às $timeString';
+  }
+
+  @override
+  String taskDetailDate(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String get taskAssigneeLabel => 'Responsável';
+
+  @override
+  String get taskAssigneeAnyone => 'Qualquer pessoa';
+
+  @override
+  String get taskNotifyLabel => 'Avisar';
+
+  @override
+  String get taskNotifyNeedsDate => 'Defina uma data para receber o aviso.';
+
+  @override
+  String get taskNotifyAtTime => 'Na hora';
+
+  @override
+  String taskNotifyMinutesBefore(int minutes) {
+    return '$minutes min antes';
+  }
+
+  @override
+  String get taskNotifyHourBefore => '1 hora antes';
+
+  @override
+  String get taskNotifyDayBefore => '1 dia antes';
+
+  @override
+  String get taskSectionUnscheduled => 'Sem data';
+
+  @override
+  String get taskSectionDone => 'Concluídas recentes';
+
+  @override
+  String get taskOverdue => 'Atrasada';
+
+  @override
+  String get taskFilterAll => 'Todas';
+
+  @override
+  String get taskFilterMine => 'Minhas';
+
+  @override
+  String get taskEmptyTitle => 'Nenhuma tarefa por aqui';
+
+  @override
+  String get taskEmptyMessage => 'Adicione a primeira tarefa da casa.';
+
+  @override
+  String get taskEmptyMine => 'Nenhuma tarefa sua por enquanto.';
+
+  @override
+  String get taskPendingSync => 'Aguardando sincronização';
+
+  @override
+  String taskMarkDone(String title) {
+    return 'Concluir $title';
+  }
+
+  @override
+  String taskMarkPending(String title) {
+    return 'Reabrir $title';
+  }
+
+  @override
+  String get taskDetailTitle => 'Tarefa';
+
+  @override
+  String get taskNotFoundTitle => 'Tarefa não encontrada';
+
+  @override
+  String get taskNotFoundMessage => 'Ela pode ter sido excluída.';
+
+  @override
+  String get taskSave => 'Salvar alterações';
+
+  @override
+  String get taskSaved => 'Alterações salvas.';
+
+  @override
+  String get taskComplete => 'Concluir tarefa';
+
+  @override
+  String get taskReopen => 'Reabrir tarefa';
+
+  @override
+  String get taskDelete => 'Excluir tarefa';
+
+  @override
+  String get taskDeleteTitle => 'Excluir tarefa?';
+
+  @override
+  String get taskDeleteMessage =>
+      'A tarefa deixa de aparecer para todos da casa.';
+
+  @override
+  String get taskDeleted => 'Tarefa excluída.';
+
+  @override
+  String taskCreatedBy(String name) {
+    return 'Criada por $name';
+  }
+
+  @override
+  String taskCompletedBy(String name) {
+    return 'Concluída por $name';
+  }
+
+  @override
+  String get taskReadOnly => 'Você pode ver esta tarefa, mas não editá-la.';
+
+  @override
+  String get taskFrozenReadOnly =>
+      'Família somente leitura: não é possível alterar tarefas.';
+
+  @override
   String get homeTitle => 'Início';
 
   @override
@@ -69,6 +234,107 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorUnknown => 'Algo deu errado. Tente de novo.';
+
+  @override
+  String get navLists => 'Listas';
+
+  @override
+  String get listsTitle => 'Listas';
+
+  @override
+  String get listsEmptyTitle => 'Nenhuma lista ainda';
+
+  @override
+  String get listsEmptyMessage =>
+      'Crie uma lista de compras, ou qualquer outra, para compartilhar com a casa.';
+
+  @override
+  String get listsCreateAction => 'Nova lista';
+
+  @override
+  String get listsCreateTitle => 'Nova lista';
+
+  @override
+  String get listsNameLabel => 'Nome da lista';
+
+  @override
+  String get listsTypeLabel => 'Tipo';
+
+  @override
+  String get listsTypeShopping => 'Compras';
+
+  @override
+  String get listsTypeGeneral => 'Geral';
+
+  @override
+  String get listsRenameTitle => 'Renomear lista';
+
+  @override
+  String get listsDeleteTitle => 'Excluir lista?';
+
+  @override
+  String listsDeleteMessage(String name) {
+    return 'A lista \"$name\" será excluída para todas as pessoas da casa.';
+  }
+
+  @override
+  String listsPendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pendentes',
+      one: '1 pendente',
+      zero: 'Nada pendente',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get listsMenuRename => 'Renomear';
+
+  @override
+  String get listsMenuDelete => 'Excluir';
+
+  @override
+  String get listsNotFound => 'Esta lista não existe mais.';
+
+  @override
+  String get itemsEmptyTitle => 'Lista vazia';
+
+  @override
+  String get itemsEmptyMessage => 'Adicione o primeiro item no campo abaixo.';
+
+  @override
+  String get itemAddHint => 'Adicionar item';
+
+  @override
+  String get itemAddAction => 'Adicionar';
+
+  @override
+  String get itemEditTitle => 'Editar item';
+
+  @override
+  String get itemNameLabel => 'Nome do item';
+
+  @override
+  String get itemDeleteTooltip => 'Excluir item';
+
+  @override
+  String get itemReorderTooltip => 'Arrastar para reordenar';
+
+  @override
+  String get itemPendingSync => 'Aguardando sincronizar';
+
+  @override
+  String itemsDoneSection(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count concluídos',
+      one: '1 concluído',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get errorFamilyFrozen =>
@@ -176,6 +442,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dashboardLists => 'Listas';
+
+  @override
+  String get dashboardListsOpen => 'Abrir suas listas';
 
   @override
   String get dashboardSectionSoon => 'Em breve';
@@ -328,9 +597,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get inviteButton => 'Convidar pessoa';
 
   @override
-  String get inviteComingSoon => 'Os convites chegam na próxima etapa.';
-
-  @override
   String get householdsTitle => 'Casas';
 
   @override
@@ -425,4 +691,126 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get signOutAnyway => 'Sair mesmo assim';
+
+  @override
+  String get errorInviteInvalid =>
+      'Código inválido ou expirado. Confira e tente de novo, ou peça um novo convite.';
+
+  @override
+  String get errorJoinPlanLimit =>
+      'Esta família atingiu o limite de pessoas. Fale com quem convidou.';
+
+  @override
+  String get inviteTitle => 'Convidar pessoa';
+
+  @override
+  String get inviteIntro =>
+      'Escolha as casas e o papel da pessoa em cada uma. O código vale por 24 horas.';
+
+  @override
+  String get inviteHouseholdsLabel => 'Casas';
+
+  @override
+  String get inviteNoHouseholds => 'Crie uma casa antes de convidar alguém.';
+
+  @override
+  String get inviteGenerate => 'Gerar convite';
+
+  @override
+  String get inviteSelectAtLeastOne => 'Escolha pelo menos uma casa.';
+
+  @override
+  String get inviteCodeLabel => 'Código do convite';
+
+  @override
+  String inviteValidUntil(String when) {
+    return 'Válido por 24 horas (até $when).';
+  }
+
+  @override
+  String get inviteCopy => 'Copiar código';
+
+  @override
+  String get inviteCopied => 'Código copiado.';
+
+  @override
+  String get inviteShare => 'Compartilhar';
+
+  @override
+  String get inviteShareSubject => 'Convite do Planly';
+
+  @override
+  String inviteShareMessage(String code, String link) {
+    return 'Entre na minha família no Planly! Código de convite: $code (vale por 24 horas). $link';
+  }
+
+  @override
+  String get inviteAnother => 'Novo convite';
+
+  @override
+  String get inviteSentList => 'Convites enviados';
+
+  @override
+  String get invitationsEmpty => 'Nenhum convite enviado';
+
+  @override
+  String get invitationsEmptyMessage =>
+      'Os convites que você criar aparecem aqui.';
+
+  @override
+  String get invitationStatusPending => 'Pendente';
+
+  @override
+  String get invitationStatusAccepted => 'Aceito';
+
+  @override
+  String get invitationStatusExpired => 'Expirado';
+
+  @override
+  String get invitationStatusRevoked => 'Revogado';
+
+  @override
+  String invitationPendingSubtitle(String when) {
+    return 'Pendente · vale até $when';
+  }
+
+  @override
+  String get invitationDetailTitle => 'Convite pendente';
+
+  @override
+  String get invitationRevoke => 'Revogar convite';
+
+  @override
+  String get invitationRevokeTitle => 'Revogar convite?';
+
+  @override
+  String get invitationRevokeMessage =>
+      'Quem ainda não usou o código não poderá mais entrar na família com ele.';
+
+  @override
+  String get invitationRevoked => 'Convite revogado.';
+
+  @override
+  String invitationRoleIn(String household, String role) {
+    return '$household: $role';
+  }
+
+  @override
+  String get joinHaveCode => 'Tenho um código de convite';
+
+  @override
+  String get joinTitle => 'Entrar com código';
+
+  @override
+  String get joinIntro =>
+      'Digite o código que você recebeu para entrar numa família.';
+
+  @override
+  String get joinCodeLabel => 'Código do convite';
+
+  @override
+  String get joinButton => 'Entrar na família';
+
+  @override
+  String get joinSuccess => 'Você entrou na família.';
 }

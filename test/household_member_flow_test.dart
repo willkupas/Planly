@@ -241,14 +241,14 @@ void main() {
       expect(find.byKey(const Key('upsell-dialog')), findsOneWidget);
     });
 
-    testWidgets('owner em plano pago: convidar é o ponto de extensão da T-015', (tester) async {
+    testWidgets('owner em plano pago: convidar abre a tela de convite', (tester) async {
       final app = await ownerApp(plan: PlanId.family, entitlement: familyEntitlement);
       await app.pump(tester);
       await goTo(tester, 'go-members');
       await tester.tap(find.byKey(const Key('invite-button')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('upsell-dialog')), findsNothing);
-      expect(find.text('Os convites chegam na próxima etapa.'), findsOneWidget);
+      expect(find.byKey(const Key('invite-generate')), findsOneWidget);
     });
 
     testWidgets('owner remove membro (confirmação + removeMember)', (tester) async {

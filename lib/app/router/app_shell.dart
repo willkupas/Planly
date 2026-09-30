@@ -25,6 +25,12 @@ class AppShell extends StatelessWidget {
             label: l10n.navHome,
           ),
           NavigationDestination(
+            key: const Key('nav-lists'),
+            icon: const Icon(Icons.checklist_outlined),
+            selectedIcon: const Icon(Icons.checklist),
+            label: l10n.navLists,
+          ),
+          NavigationDestination(
             key: const Key('nav-family'),
             icon: const Icon(Icons.group_outlined),
             selectedIcon: const Icon(Icons.group),

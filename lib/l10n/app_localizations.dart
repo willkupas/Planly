@@ -100,6 +100,288 @@ abstract class AppLocalizations {
   /// **'Planly'**
   String get appName;
 
+  /// No description provided for @taskFab.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova tarefa'**
+  String get taskFab;
+
+  /// No description provided for @taskQuickAddTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova tarefa'**
+  String get taskQuickAddTitle;
+
+  /// No description provided for @taskQuickAddHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que precisa ser feito?'**
+  String get taskQuickAddHint;
+
+  /// No description provided for @taskQuickAddSubmit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar tarefa'**
+  String get taskQuickAddSubmit;
+
+  /// No description provided for @taskMoreOptions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mais opções'**
+  String get taskMoreOptions;
+
+  /// No description provided for @taskLessOptions.
+  ///
+  /// In pt, this message translates to:
+  /// **'Menos opções'**
+  String get taskLessOptions;
+
+  /// No description provided for @taskTitleLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Título'**
+  String get taskTitleLabel;
+
+  /// No description provided for @taskDescriptionLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descrição (opcional)'**
+  String get taskDescriptionLabel;
+
+  /// No description provided for @taskDateLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data e hora'**
+  String get taskDateLabel;
+
+  /// No description provided for @taskNoDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem data'**
+  String get taskNoDate;
+
+  /// No description provided for @taskClearDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover data'**
+  String get taskClearDate;
+
+  /// No description provided for @taskScheduleAt.
+  ///
+  /// In pt, this message translates to:
+  /// **'{date} às {time}'**
+  String taskScheduleAt(DateTime date, DateTime time);
+
+  /// No description provided for @taskDetailDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'{date}'**
+  String taskDetailDate(DateTime date);
+
+  /// No description provided for @taskAssigneeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Responsável'**
+  String get taskAssigneeLabel;
+
+  /// No description provided for @taskAssigneeAnyone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qualquer pessoa'**
+  String get taskAssigneeAnyone;
+
+  /// No description provided for @taskNotifyLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisar'**
+  String get taskNotifyLabel;
+
+  /// No description provided for @taskNotifyNeedsDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Defina uma data para receber o aviso.'**
+  String get taskNotifyNeedsDate;
+
+  /// No description provided for @taskNotifyAtTime.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na hora'**
+  String get taskNotifyAtTime;
+
+  /// No description provided for @taskNotifyMinutesBefore.
+  ///
+  /// In pt, this message translates to:
+  /// **'{minutes} min antes'**
+  String taskNotifyMinutesBefore(int minutes);
+
+  /// No description provided for @taskNotifyHourBefore.
+  ///
+  /// In pt, this message translates to:
+  /// **'1 hora antes'**
+  String get taskNotifyHourBefore;
+
+  /// No description provided for @taskNotifyDayBefore.
+  ///
+  /// In pt, this message translates to:
+  /// **'1 dia antes'**
+  String get taskNotifyDayBefore;
+
+  /// No description provided for @taskSectionUnscheduled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem data'**
+  String get taskSectionUnscheduled;
+
+  /// No description provided for @taskSectionDone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluídas recentes'**
+  String get taskSectionDone;
+
+  /// No description provided for @taskOverdue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atrasada'**
+  String get taskOverdue;
+
+  /// No description provided for @taskFilterAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todas'**
+  String get taskFilterAll;
+
+  /// No description provided for @taskFilterMine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Minhas'**
+  String get taskFilterMine;
+
+  /// No description provided for @taskEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma tarefa por aqui'**
+  String get taskEmptyTitle;
+
+  /// No description provided for @taskEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicione a primeira tarefa da casa.'**
+  String get taskEmptyMessage;
+
+  /// No description provided for @taskEmptyMine.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma tarefa sua por enquanto.'**
+  String get taskEmptyMine;
+
+  /// No description provided for @taskPendingSync.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aguardando sincronização'**
+  String get taskPendingSync;
+
+  /// No description provided for @taskMarkDone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluir {title}'**
+  String taskMarkDone(String title);
+
+  /// No description provided for @taskMarkPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reabrir {title}'**
+  String taskMarkPending(String title);
+
+  /// No description provided for @taskDetailTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefa'**
+  String get taskDetailTitle;
+
+  /// No description provided for @taskNotFoundTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefa não encontrada'**
+  String get taskNotFoundTitle;
+
+  /// No description provided for @taskNotFoundMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ela pode ter sido excluída.'**
+  String get taskNotFoundMessage;
+
+  /// No description provided for @taskSave.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar alterações'**
+  String get taskSave;
+
+  /// No description provided for @taskSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterações salvas.'**
+  String get taskSaved;
+
+  /// No description provided for @taskComplete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluir tarefa'**
+  String get taskComplete;
+
+  /// No description provided for @taskReopen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reabrir tarefa'**
+  String get taskReopen;
+
+  /// No description provided for @taskDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir tarefa'**
+  String get taskDelete;
+
+  /// No description provided for @taskDeleteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir tarefa?'**
+  String get taskDeleteTitle;
+
+  /// No description provided for @taskDeleteMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A tarefa deixa de aparecer para todos da casa.'**
+  String get taskDeleteMessage;
+
+  /// No description provided for @taskDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefa excluída.'**
+  String get taskDeleted;
+
+  /// No description provided for @taskCreatedBy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criada por {name}'**
+  String taskCreatedBy(String name);
+
+  /// No description provided for @taskCompletedBy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluída por {name}'**
+  String taskCompletedBy(String name);
+
+  /// No description provided for @taskReadOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode ver esta tarefa, mas não editá-la.'**
+  String get taskReadOnly;
+
+  /// No description provided for @taskFrozenReadOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Família somente leitura: não é possível alterar tarefas.'**
+  String get taskFrozenReadOnly;
+
   /// No description provided for @homeTitle.
   ///
   /// In pt, this message translates to:
@@ -207,6 +489,168 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Algo deu errado. Tente de novo.'**
   String get errorUnknown;
+
+  /// No description provided for @navLists.
+  ///
+  /// In pt, this message translates to:
+  /// **'Listas'**
+  String get navLists;
+
+  /// No description provided for @listsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Listas'**
+  String get listsTitle;
+
+  /// No description provided for @listsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma lista ainda'**
+  String get listsEmptyTitle;
+
+  /// No description provided for @listsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie uma lista de compras, ou qualquer outra, para compartilhar com a casa.'**
+  String get listsEmptyMessage;
+
+  /// No description provided for @listsCreateAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova lista'**
+  String get listsCreateAction;
+
+  /// No description provided for @listsCreateTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova lista'**
+  String get listsCreateTitle;
+
+  /// No description provided for @listsNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome da lista'**
+  String get listsNameLabel;
+
+  /// No description provided for @listsTypeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo'**
+  String get listsTypeLabel;
+
+  /// No description provided for @listsTypeShopping.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compras'**
+  String get listsTypeShopping;
+
+  /// No description provided for @listsTypeGeneral.
+  ///
+  /// In pt, this message translates to:
+  /// **'Geral'**
+  String get listsTypeGeneral;
+
+  /// No description provided for @listsRenameTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear lista'**
+  String get listsRenameTitle;
+
+  /// No description provided for @listsDeleteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir lista?'**
+  String get listsDeleteTitle;
+
+  /// No description provided for @listsDeleteMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'A lista \"{name}\" será excluída para todas as pessoas da casa.'**
+  String listsDeleteMessage(String name);
+
+  /// No description provided for @listsPendingCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =0{Nada pendente} =1{1 pendente} other{{count} pendentes}}'**
+  String listsPendingCount(int count);
+
+  /// No description provided for @listsMenuRename.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear'**
+  String get listsMenuRename;
+
+  /// No description provided for @listsMenuDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir'**
+  String get listsMenuDelete;
+
+  /// No description provided for @listsNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta lista não existe mais.'**
+  String get listsNotFound;
+
+  /// No description provided for @itemsEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lista vazia'**
+  String get itemsEmptyTitle;
+
+  /// No description provided for @itemsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicione o primeiro item no campo abaixo.'**
+  String get itemsEmptyMessage;
+
+  /// No description provided for @itemAddHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar item'**
+  String get itemAddHint;
+
+  /// No description provided for @itemAddAction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar'**
+  String get itemAddAction;
+
+  /// No description provided for @itemEditTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar item'**
+  String get itemEditTitle;
+
+  /// No description provided for @itemNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome do item'**
+  String get itemNameLabel;
+
+  /// No description provided for @itemDeleteTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir item'**
+  String get itemDeleteTooltip;
+
+  /// No description provided for @itemReorderTooltip.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arrastar para reordenar'**
+  String get itemReorderTooltip;
+
+  /// No description provided for @itemPendingSync.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aguardando sincronizar'**
+  String get itemPendingSync;
+
+  /// No description provided for @itemsDoneSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 concluído} other{{count} concluídos}}'**
+  String itemsDoneSection(int count);
 
   /// No description provided for @errorFamilyFrozen.
   ///
@@ -393,6 +837,12 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Listas'**
   String get dashboardLists;
+
+  /// No description provided for @dashboardListsOpen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir suas listas'**
+  String get dashboardListsOpen;
 
   /// No description provided for @dashboardSectionSoon.
   ///
@@ -634,12 +1084,6 @@ abstract class AppLocalizations {
   /// **'Convidar pessoa'**
   String get inviteButton;
 
-  /// No description provided for @inviteComingSoon.
-  ///
-  /// In pt, this message translates to:
-  /// **'Os convites chegam na próxima etapa.'**
-  String get inviteComingSoon;
-
   /// No description provided for @householdsTitle.
   ///
   /// In pt, this message translates to:
@@ -801,6 +1245,222 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sair mesmo assim'**
   String get signOutAnyway;
+
+  /// No description provided for @errorInviteInvalid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código inválido ou expirado. Confira e tente de novo, ou peça um novo convite.'**
+  String get errorInviteInvalid;
+
+  /// No description provided for @errorJoinPlanLimit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esta família atingiu o limite de pessoas. Fale com quem convidou.'**
+  String get errorJoinPlanLimit;
+
+  /// No description provided for @inviteTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convidar pessoa'**
+  String get inviteTitle;
+
+  /// No description provided for @inviteIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha as casas e o papel da pessoa em cada uma. O código vale por 24 horas.'**
+  String get inviteIntro;
+
+  /// No description provided for @inviteHouseholdsLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Casas'**
+  String get inviteHouseholdsLabel;
+
+  /// No description provided for @inviteNoHouseholds.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crie uma casa antes de convidar alguém.'**
+  String get inviteNoHouseholds;
+
+  /// No description provided for @inviteGenerate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerar convite'**
+  String get inviteGenerate;
+
+  /// No description provided for @inviteSelectAtLeastOne.
+  ///
+  /// In pt, this message translates to:
+  /// **'Escolha pelo menos uma casa.'**
+  String get inviteSelectAtLeastOne;
+
+  /// No description provided for @inviteCodeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código do convite'**
+  String get inviteCodeLabel;
+
+  /// No description provided for @inviteValidUntil.
+  ///
+  /// In pt, this message translates to:
+  /// **'Válido por 24 horas (até {when}).'**
+  String inviteValidUntil(String when);
+
+  /// No description provided for @inviteCopy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Copiar código'**
+  String get inviteCopy;
+
+  /// No description provided for @inviteCopied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código copiado.'**
+  String get inviteCopied;
+
+  /// No description provided for @inviteShare.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compartilhar'**
+  String get inviteShare;
+
+  /// No description provided for @inviteShareSubject.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite do Planly'**
+  String get inviteShareSubject;
+
+  /// No description provided for @inviteShareMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entre na minha família no Planly! Código de convite: {code} (vale por 24 horas). {link}'**
+  String inviteShareMessage(String code, String link);
+
+  /// No description provided for @inviteAnother.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo convite'**
+  String get inviteAnother;
+
+  /// No description provided for @inviteSentList.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convites enviados'**
+  String get inviteSentList;
+
+  /// No description provided for @invitationsEmpty.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum convite enviado'**
+  String get invitationsEmpty;
+
+  /// No description provided for @invitationsEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os convites que você criar aparecem aqui.'**
+  String get invitationsEmptyMessage;
+
+  /// No description provided for @invitationStatusPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pendente'**
+  String get invitationStatusPending;
+
+  /// No description provided for @invitationStatusAccepted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aceito'**
+  String get invitationStatusAccepted;
+
+  /// No description provided for @invitationStatusExpired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Expirado'**
+  String get invitationStatusExpired;
+
+  /// No description provided for @invitationStatusRevoked.
+  ///
+  /// In pt, this message translates to:
+  /// **'Revogado'**
+  String get invitationStatusRevoked;
+
+  /// No description provided for @invitationPendingSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pendente · vale até {when}'**
+  String invitationPendingSubtitle(String when);
+
+  /// No description provided for @invitationDetailTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite pendente'**
+  String get invitationDetailTitle;
+
+  /// No description provided for @invitationRevoke.
+  ///
+  /// In pt, this message translates to:
+  /// **'Revogar convite'**
+  String get invitationRevoke;
+
+  /// No description provided for @invitationRevokeTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Revogar convite?'**
+  String get invitationRevokeTitle;
+
+  /// No description provided for @invitationRevokeMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quem ainda não usou o código não poderá mais entrar na família com ele.'**
+  String get invitationRevokeMessage;
+
+  /// No description provided for @invitationRevoked.
+  ///
+  /// In pt, this message translates to:
+  /// **'Convite revogado.'**
+  String get invitationRevoked;
+
+  /// No description provided for @invitationRoleIn.
+  ///
+  /// In pt, this message translates to:
+  /// **'{household}: {role}'**
+  String invitationRoleIn(String household, String role);
+
+  /// No description provided for @joinHaveCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tenho um código de convite'**
+  String get joinHaveCode;
+
+  /// No description provided for @joinTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar com código'**
+  String get joinTitle;
+
+  /// No description provided for @joinIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Digite o código que você recebeu para entrar numa família.'**
+  String get joinIntro;
+
+  /// No description provided for @joinCodeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código do convite'**
+  String get joinCodeLabel;
+
+  /// No description provided for @joinButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar na família'**
+  String get joinButton;
+
+  /// No description provided for @joinSuccess.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você entrou na família.'**
+  String get joinSuccess;
 }
 
 class _AppLocalizationsDelegate

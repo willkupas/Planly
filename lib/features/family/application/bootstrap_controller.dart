@@ -23,8 +23,16 @@ class BootstrapController extends Notifier<AsyncValue<void>> {
   @override
   AsyncValue<void> build() => const AsyncData(null);
 
-  Future<void> run() async {
-    if (state.isLoading) return;
+  Future<void>? _inflight;
+
+  /// Executa o bootstrap; se já há um em andamento, espera por ele (T-015: aceitar convite
+  /// antes do bootstrap concluir).
+  Future<void> run() {
+    if (state.isLoading) return _inflight ?? Future<void>.value();
+    return _inflight = _run();
+  }
+
+  Future<void> _run() async {
     state = const AsyncLoading();
     try {
       await ensureOnline(ref);

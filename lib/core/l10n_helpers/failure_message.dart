@@ -30,11 +30,12 @@ String _businessMessage(AppLocalizations l10n, String reason) {
     'BOOTSTRAP_REQUIRED' => l10n.errorBootstrapRequired,
     'FAMILY_NOT_FOUND' ||
     'HOUSEHOLD_NOT_FOUND' ||
-    'INVITE_NOT_FOUND' ||
     'MEMBER_NOT_FOUND' =>
       l10n.errorNotFound,
+    // Convite: nunca distingue inexistente / usado / revogado / expirado.
+    'INVITE_NOT_FOUND' || 'INVITE_EXPIRED' => l10n.errorInviteInvalid,
     'ALREADY_MEMBER' => l10n.errorAlreadyMember,
-    'INVITE_EXPIRED' || 'TRANSFER_EXPIRED' => l10n.errorExpired,
+    'TRANSFER_EXPIRED' => l10n.errorExpired,
     'RATE_LIMITED' => l10n.errorRateLimited,
     _ => l10n.errorUnknown,
   };

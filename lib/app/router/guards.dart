@@ -18,8 +18,8 @@ String? sessionGuard(SessionPhase phase, String location) {
     case SessionPhase.error:
       return Routes.sessionError;
     case SessionPhase.needsBootstrap:
-      // Ordem 4: só /bootstrap e /settings* (e /join, T-015) ficam livres.
-      if (location == Routes.bootstrap || _isUnder(location, Routes.settings) || location == '/join') {
+      // Ordem 4: só /bootstrap e /settings* (e /join) ficam livres.
+      if (location == Routes.bootstrap || _isUnder(location, Routes.settings) || location == Routes.join) {
         return location;
       }
       return Routes.bootstrap;

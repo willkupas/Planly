@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:planly/app/router/routes.dart';
 import 'package:planly/core/connectivity/connectivity_provider.dart';
 import 'package:planly/core/error/app_failure.dart';
 import 'package:planly/core/l10n_helpers/failure_message.dart';
@@ -76,6 +78,12 @@ class _BootstrapPageState extends ConsumerState<BootstrapPage> {
         child: Column(
           children: [
             Expanded(child: content),
+            // T-015: /join fica liberado antes do bootstrap; a chamada espera o bootstrap.
+            TextButton(
+              key: const Key('bootstrap-join'),
+              onPressed: () => context.push(Routes.join),
+              child: Text(l10n.joinHaveCode),
+            ),
             TextButton(
               key: const Key('bootstrap-sign-out'),
               onPressed: () => signOutWithWarning(context, ref),
