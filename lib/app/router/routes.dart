@@ -11,6 +11,7 @@ abstract final class Routes {
   static const family = '/family';
   static const lists = '/lists';
   static String listDetail(String listId) => '/lists/$listId';
+  static const activity = '/activity';
   static const familyMembers = '/family/members';
   static const familyHouseholds = '/family/households';
 
@@ -25,5 +26,5 @@ abstract final class Routes {
 
   /// Rotas de conteúdo da casa: exigem casa acessível (guard `/no-access`). Listas e
   /// Atividade entram aqui quando existirem.
-  static const contentRoutes = {home, lists};
+  static const contentRoutes = {home, lists, activity};
 }

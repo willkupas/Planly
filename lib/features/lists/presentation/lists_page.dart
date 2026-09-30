@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:planly/app/router/routes.dart';
 import 'package:planly/core/widgets/async_value_view.dart';
 import 'package:planly/core/widgets/state_widgets.dart';
+import 'package:planly/core/widgets/write_failures_banner.dart';
 import 'package:planly/core/widgets/ui_actions.dart';
 import 'package:planly/features/family/application/family_providers.dart';
 import 'package:planly/features/family/presentation/family_frozen_banner.dart';
@@ -41,6 +42,7 @@ class ListsPage extends ConsumerWidget {
       body: Column(
         children: [
           const OfflineBanner(),
+          const WriteFailuresBanner(),
           const FamilyFrozenBanner(),
           Expanded(
             child: AsyncValueView<ListsSnapshot>(

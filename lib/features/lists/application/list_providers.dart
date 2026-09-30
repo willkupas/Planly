@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/core/error/app_failure.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
+import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/family/application/family_providers.dart';
 import 'package:planly/features/household/application/household_providers.dart';
@@ -11,7 +12,14 @@ import 'package:planly/features/lists/domain/list_models.dart';
 import 'package:planly/features/lists/domain/list_repository.dart';
 
 final listRepositoryProvider = Provider<ListRepository>((ref) {
-  return FirestoreListRepository(firestore: ref.watch(firestoreProvider));
+  return FirestoreListRepository(
+    firestore: ref.watch(firestoreProvider),
+    // Erro de Rules que chega depois do prazo de tolerância: vai para o canal central.
+    onRejected: (kind, title, error) {
+      if (!ref.mounted) return;
+      ref.read(writeFailureCenterProvider.notifier).report(kind, error, title: title);
+    },
+  );
 });
 
 /// Família + casa ativas (validadas). `null` enquanto não resolvem.

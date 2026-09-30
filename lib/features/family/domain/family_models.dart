@@ -83,12 +83,17 @@ class Entitlement {
     required this.maxMembers,
     required this.maxHouseholds,
     required this.invitesEnabled,
-  });
+    bool? fullHistory,
+  }) : fullHistory = fullHistory ?? plan != PlanId.free;
 
   final PlanId plan;
   final int maxMembers;
   final int? maxHouseholds;
   final bool invitesEnabled;
+
+  /// `features.fullHistory`: histórico completo da Atividade (Free: só 7 dias). Sem a flag,
+  /// assume pelo plano (Free = restrito).
+  final bool fullHistory;
 
   bool get isFree => plan == PlanId.free;
 

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/core/error/app_failure.dart';
-import 'package:planly/core/firebase/firebase_error_mapper.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
+import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/family/application/family_providers.dart';
 import 'package:planly/features/family/domain/family_models.dart';
@@ -115,30 +115,9 @@ final assigneeCandidatesProvider = StreamProvider.autoDispose<List<FamilyMember>
   }
 });
 
-/// Falha de uma escrita já enfileirada localmente (ex.: Rules negaram ao sincronizar). O
-/// Firestore desfaz o efeito local; a UI só avisa.
-class TaskWriteFailure {
-  const TaskWriteFailure(this.serial, this.error);
-
-  final int serial;
-  final AppFailure error;
-}
-
-class TaskWriteFailureNotifier extends Notifier<TaskWriteFailure?> {
-  var _serial = 0;
-
-  @override
-  TaskWriteFailure? build() => null;
-
-  void report(AppFailure e) => state = TaskWriteFailure(++_serial, e);
-}
-
-final taskWriteFailureProvider =
-    NotifierProvider<TaskWriteFailureNotifier, TaskWriteFailure?>(TaskWriteFailureNotifier.new);
-
 /// Ações de tarefa (escrita otimista/offline: NÃO usa `ensureOnline`). O `Future` devolvido
 /// completa quando a escrita LOCAL foi enfileirada; a confirmação do servidor é acompanhada em
-/// segundo plano e eventuais erros vão para [taskWriteFailureProvider].
+/// segundo plano pelo [writeFailureCenterProvider] (erro de Rules vira "não sincronizado").
 class TaskActions {
   TaskActions(this._ref);
 
@@ -155,14 +134,10 @@ class TaskActions {
     return (scope, TaskActor(uid: user.uid, name: user.displayName ?? ''));
   }
 
-  /// Acompanha o ack do servidor sem segurar quem chamou (offline só completa ao reconectar).
-  void _track(TaskWrite? w) {
-    w?.ack.catchError((Object e) => _report(e));
-  }
-
-  void _report(Object e) {
-    if (!_ref.mounted) return;
-    _ref.read(taskWriteFailureProvider.notifier).report(mapFirebaseError(e));
+  /// Entrega o ack ao canal central de escritas rejeitadas, sem segurar quem chamou.
+  void _track(TaskWrite? w, WriteKind kind, String title) {
+    if (w == null) return;
+    _ref.read(writeFailureCenterProvider.notifier).track(w.ack, kind: kind, title: title);
   }
 
   /// Cria e devolve o id (gerado localmente).
@@ -170,29 +145,29 @@ class TaskActions {
     if (!draft.isValid) throw const UnknownFailure();
     final (scope, actor) = _context(allowed: (a) => a.canCreate);
     final w = _repo.create(scope, draft, actor);
-    _track(w);
+    _track(w, WriteKind.taskCreate, draft.title.trim());
     return w.id;
   }
 
   Future<void> update(Task before, TaskDraft draft) async {
     if (!draft.isValid) throw const UnknownFailure();
     final (scope, actor) = _context(allowed: (a) => a.canEdit(before));
-    _track(_repo.update(scope, before, draft, actor));
+    _track(_repo.update(scope, before, draft, actor), WriteKind.taskUpdate, draft.title.trim());
   }
 
   Future<void> complete(Task task) async {
     final (scope, actor) = _context(allowed: (a) => a.canComplete(task));
-    _track(_repo.complete(scope, task, actor));
+    _track(_repo.complete(scope, task, actor), WriteKind.taskComplete, task.title);
   }
 
   Future<void> reopen(Task task) async {
     final (scope, actor) = _context(allowed: (a) => a.canComplete(task));
-    _track(_repo.reopen(scope, task, actor));
+    _track(_repo.reopen(scope, task, actor), WriteKind.taskReopen, task.title);
   }
 
   Future<void> delete(Task task) async {
     final (scope, actor) = _context(allowed: (a) => a.canDelete(task));
-    _track(_repo.softDelete(scope, task, actor));
+    _track(_repo.softDelete(scope, task, actor), WriteKind.taskDelete, task.title);
   }
 }
 

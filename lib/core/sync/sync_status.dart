@@ -33,3 +33,15 @@ SyncStatus syncStatusFor(SyncMeta meta, {required bool online}) {
   if (!meta.isFromCache) return SyncStatus.synced;
   return online ? SyncStatus.syncing : SyncStatus.offline;
 }
+
+/// Junta o `SyncMeta` de vários streams que alimentam a mesma tela: pendência em qualquer um
+/// vale para a tela toda; "do cache" idem. `null` quando nenhum stream tem dado ainda (o
+/// indicador some em vez de mentir "Sincronizado").
+SyncMeta? combineSyncMeta(Iterable<SyncMeta?> metas) {
+  final present = metas.whereType<SyncMeta>().toList();
+  if (present.isEmpty) return null;
+  return SyncMeta(
+    hasPendingWrites: present.any((m) => m.hasPendingWrites),
+    isFromCache: present.any((m) => m.isFromCache),
+  );
+}

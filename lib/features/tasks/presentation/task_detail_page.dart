@@ -5,6 +5,7 @@ import 'package:planly/app/router/routes.dart';
 import 'package:planly/core/time/device_timezone.dart';
 import 'package:planly/core/widgets/async_value_view.dart';
 import 'package:planly/core/widgets/state_widgets.dart';
+import 'package:planly/core/widgets/write_failures_banner.dart';
 import 'package:planly/core/widgets/ui_actions.dart';
 import 'package:planly/features/family/application/family_providers.dart';
 import 'package:planly/features/family/domain/family_models.dart';
@@ -45,6 +46,7 @@ class TaskDetailPage extends ConsumerWidget {
       body: Column(
         children: [
           const OfflineBanner(),
+          const WriteFailuresBanner(),
           const FamilyFrozenBanner(),
           Expanded(
             child: AsyncValueView<Task?>(

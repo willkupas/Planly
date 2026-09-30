@@ -57,10 +57,13 @@ class FirestoreHouseholdRepository implements HouseholdRepository {
   @override
   Future<void> rename({required String familyId, required String householdId, required String name}) async {
     try {
+      // Só-online: se a rede cair depois da checagem, o `update` ficaria pendurado até
+      // reconectar. Nunca travar a UI: após o prazo, falha como rede (a escrita segue na fila
+      // do SDK e sincroniza ao reconectar).
       await _col(familyId).doc(householdId).update({
         'name': name.trim(),
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      }).timeout(const Duration(seconds: 10), onTimeout: () => throw const NetworkFailure());
     } catch (e) {
       throw mapFirebaseError(e);
     }

@@ -70,6 +70,9 @@ class FirestoreFamilyRepository implements FamilyRepository {
           maxMembers: (data['maxMembers'] as num?)?.toInt() ?? 1,
           maxHouseholds: (data['maxHouseholds'] as num?)?.toInt(),
           invitesEnabled: features is Map && features['invites'] == true,
+          fullHistory: features is Map && features['fullHistory'] is bool
+              ? features['fullHistory'] as bool
+              : null,
         );
       }),
     );

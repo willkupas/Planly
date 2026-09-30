@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:planly/app/router/routes.dart';
 import 'package:planly/core/l10n_helpers/failure_message.dart';
 import 'package:planly/core/sync/sync_status.dart';
+import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/core/time/clock.dart';
 import 'package:planly/core/widgets/async_value_view.dart';
 import 'package:planly/core/widgets/state_widgets.dart';
+import 'package:planly/core/widgets/write_failures_banner.dart';
 import 'package:planly/features/family/presentation/family_frozen_banner.dart';
 import 'package:planly/features/household/application/household_providers.dart';
 import 'package:planly/features/household/domain/household_models.dart';
@@ -32,11 +34,11 @@ class DashboardPage extends ConsumerWidget {
     final meta = _syncMeta(ref, households.value?.meta);
 
     // Escrita já aplicada localmente que o servidor recusou depois (Rules): avisa, sem travar.
-    ref.listen(taskWriteFailureProvider, (_, next) {
-      if (next == null) return;
+    ref.listen(writeFailureCenterProvider, (prev, next) {
+      if (next.isEmpty || next.length <= (prev?.length ?? 0)) return;
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(failureMessage(l10n, next.error))));
+        ..showSnackBar(SnackBar(content: Text(failureMessage(l10n, next.last.error))));
     });
 
     return Scaffold(
@@ -77,6 +79,7 @@ class DashboardPage extends ConsumerWidget {
       body: Column(
         children: [
           const OfflineBanner(),
+          const WriteFailuresBanner(),
           const FamilyFrozenBanner(),
           Expanded(
             child: AsyncValueView<HouseholdsSnapshot>(
@@ -98,16 +101,11 @@ class DashboardPage extends ConsumerWidget {
 
   /// Sync do que a tela mostra: casas + tarefas (agendadas e sem data).
   SyncMeta? _syncMeta(WidgetRef ref, SyncMeta? households) {
-    final metas = [
+    return combineSyncMeta([
       households,
       ref.watch(scheduledTasksProvider).value?.meta,
       ref.watch(unscheduledTasksProvider).value?.meta,
-    ].whereType<SyncMeta>().toList();
-    if (metas.isEmpty) return null;
-    return SyncMeta(
-      hasPendingWrites: metas.any((m) => m.hasPendingWrites),
-      isFromCache: metas.any((m) => m.isFromCache),
-    );
+    ]);
   }
 }
 

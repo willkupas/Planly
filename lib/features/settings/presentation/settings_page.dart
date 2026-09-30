@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
+import 'package:planly/features/reminders/presentation/reminders_settings_section.dart';
 import 'package:planly/features/settings/presentation/sign_out_flow.dart';
 import 'package:planly/l10n/app_localizations.dart';
 
@@ -34,6 +35,8 @@ class SettingsPage extends ConsumerWidget {
             title: Text(l10n.settingsLanguage),
             subtitle: Text(l10n.settingsLanguagePt),
           ),
+          const Divider(),
+          const RemindersSettingsSection(),
           const Divider(),
           ListTile(
             key: const Key('logout'),

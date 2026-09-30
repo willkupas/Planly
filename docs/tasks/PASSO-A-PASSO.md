@@ -32,7 +32,7 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 | ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
 | ✅ | T-013 Functions de Family/casas/membros | 7 callables + 42 testes (8 unit + 34 integração) passando; App Check exigido na nuvem | T-005, T-008 |
 | ✅ | T-014 Telas de dashboard, casas e membros | App + 7 testes de integração no emulador (Functions e Rules reais) passando. Só não provado: modo avião durante o bootstrap |
-| 🟡 | T-015 Convites | Servidor (57 testes) e telas (134 testes no app) prontos. **Falta provar de ponta a ponta no emulador** (agente de integração em andamento) | T-013, T-014 |
+| 🟡 | T-015 Convites | Servidor (57 testes) e telas (testes de widget) prontos. **Falta provar as telas de convite de ponta a ponta no emulador** |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
 
@@ -47,9 +47,9 @@ Plan: [0002](../plans/0002-conteudo-tarefas-listas.md). Começa quando a T-014 e
 |---|---|---|---|
 | 🟡 | T-018 Tarefas | App pronto (criar em 2 toques, dashboard, detalhe, permissões, activity). **Falta provar no emulador** e fazer deploy do índice novo |
 | 🟡 | T-019 Listas e itens | App pronto (itens colaborativos, reordenar, count agregado). **Falta provar no emulador**; testar o arrastar num aparelho |
-| ⬜ | T-020 Atividade | Histórico paginado; Free = 7 dias; sem ranking | T-018 |
-| ⬜ | T-021 Offline e sincronização | Indicador de sync, escritas rejeitadas, **teste crítico A online / B offline** | T-018, T-019 |
-| ⬜ | T-022 Lembretes locais | Notificações locais, permissão Android 13+, canais | T-018 |
+| ✅ | T-020 Atividade | Aba com histórico por dia, paginado, filtro por pessoa; Free = 7 dias. Testes de widget e repository |
+| 🟡 | T-021 Offline e sincronização | Canal central de escritas rejeitadas, faixa global, roteiro manual. **Falta executar o teste crítico de dois clientes no emulador** |
+| ✅ 👤 | T-022 Lembretes locais | Reconciliação por stream, alarme inexato (sem permissão de alarme exato), permissão pedida em Configurações. **Falta você:** roteiro manual de 8 passos num aparelho |
 | ⬜ 👤 | T-023 Push de eventos (FCM) | Triggers + FCM. **Exige ativar o Blaze no `dev`** | T-018, T-019 |
 | ⬜ 👤 | T-024 Jobs agendados | Congelar/excluir famílias, avisos, limpeza. **Exige Blaze** | T-013, T-015 |
 

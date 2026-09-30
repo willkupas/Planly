@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
+import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/family/application/active_context.dart';
 
@@ -27,6 +28,8 @@ class SessionActions {
     // (todos os listeners), e só então o cache é descartado.
     await _ref.read(authRepositoryProvider).signOut();
     await local.clearLocalData();
+    // Avisos de escritas recusadas pertencem à sessão que acabou.
+    _ref.read(writeFailureCenterProvider.notifier).dismissAll();
     return SignOutOutcome.done;
   }
 }

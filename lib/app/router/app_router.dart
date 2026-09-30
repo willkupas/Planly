@@ -5,6 +5,7 @@ import 'package:planly/app/router/app_shell.dart';
 import 'package:planly/app/router/guards.dart';
 import 'package:planly/app/router/routes.dart';
 import 'package:planly/app/session/session_phase.dart';
+import 'package:planly/features/activity/presentation/activity_page.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/auth/domain/auth_state.dart';
 import 'package:planly/features/auth/presentation/login_page.dart';
@@ -86,6 +87,9 @@ final routerProvider = Provider<GoRouter>((ref) {
                 ),
               ],
             ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(path: Routes.activity, builder: (context, state) => const ActivityPage()),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(

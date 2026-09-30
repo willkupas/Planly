@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:planly/core/firebase/firebase_error_mapper.dart';
 import 'package:planly/core/sync/sync_status.dart';
+import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/activity/data/activity_entry.dart';
 import 'package:planly/features/lists/domain/list_models.dart';
 import 'package:planly/features/lists/domain/list_repository.dart';
@@ -12,22 +13,30 @@ import 'package:planly/features/lists/domain/list_repository.dart';
 const _ackGrace = Duration(seconds: 2);
 
 /// Commit otimista: online, devolve erros reais (ex.: permission-denied) ao chamador; sem
-/// resposta no prazo (offline), segue sem bloquear. Um erro que chegue depois do prazo é
-/// engolido aqui: o listener reverte o dado local e o `SyncMeta` deixa de ter pendências.
-Future<void> commitOptimistic(Future<void> commit) async {
+/// resposta no prazo (offline), segue sem bloquear. Um erro que chegue depois do prazo não
+/// chega mais ao chamador: o listener reverte o dado local (`SyncMeta` sem pendências) e o erro
+/// vai para [onLateError] (canal central de escritas rejeitadas, T-021).
+Future<void> commitOptimistic(Future<void> commit, {void Function(Object error)? onLateError}) async {
   try {
     await commit.timeout(_ackGrace);
   } on TimeoutException {
-    unawaited(commit.catchError((Object _) {}));
+    unawaited(commit.catchError((Object e) => onLateError?.call(e)));
   } catch (e) {
     throw mapFirebaseError(e);
   }
 }
 
+/// Chamado quando o servidor recusa uma escrita que já tinha sido aplicada localmente.
+typedef WriteRejectedCallback = void Function(WriteKind kind, String? title, Object error);
+
 class FirestoreListRepository implements ListRepository {
-  FirestoreListRepository({required FirebaseFirestore firestore}) : _db = firestore;
+  FirestoreListRepository({required FirebaseFirestore firestore, this.onRejected}) : _db = firestore;
 
   final FirebaseFirestore _db;
+  final WriteRejectedCallback? onRejected;
+
+  Future<void> _commit(Future<void> commit, WriteKind kind, String? title) =>
+      commitOptimistic(commit, onLateError: (e) => onRejected?.call(kind, title, e));
 
   DocumentReference<Map<String, dynamic>> _household(String f, String h) =>
       _db.collection('families').doc(f).collection('households').doc(h);
@@ -148,7 +157,7 @@ class FirestoreListRepository implements ListRepository {
           targetTitle: title,
         ),
       );
-    await commitOptimistic(batch.commit());
+    await _commit(batch.commit(), WriteKind.listCreate, title);
     return ref.id;
   }
 
@@ -159,10 +168,14 @@ class FirestoreListRepository implements ListRepository {
     required String listId,
     required String name,
   }) {
-    return commitOptimistic(_lists(familyId, householdId).doc(listId).update({
-      'name': name.trim(),
-      'updatedAt': FieldValue.serverTimestamp(),
-    }));
+    return _commit(
+      _lists(familyId, householdId).doc(listId).update({
+        'name': name.trim(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }),
+      WriteKind.listRename,
+      name.trim(),
+    );
   }
 
   @override
@@ -189,7 +202,7 @@ class FirestoreListRepository implements ListRepository {
           targetTitle: listName,
         ),
       );
-    return commitOptimistic(batch.commit());
+    return _commit(batch.commit(), WriteKind.listDelete, listName);
   }
 
   @override
@@ -227,7 +240,7 @@ class FirestoreListRepository implements ListRepository {
           targetTitle: title,
         ),
       );
-    await commitOptimistic(batch.commit());
+    await _commit(batch.commit(), WriteKind.itemAdd, title);
     return ref.id;
   }
 
@@ -263,7 +276,7 @@ class FirestoreListRepository implements ListRepository {
         ),
       );
     }
-    return commitOptimistic(batch.commit());
+    return _commit(batch.commit(), WriteKind.itemComplete, itemName);
   }
 
   @override
@@ -274,10 +287,14 @@ class FirestoreListRepository implements ListRepository {
     required String itemId,
     required String name,
   }) {
-    return commitOptimistic(_items(familyId, householdId, listId).doc(itemId).update({
-      'name': name.trim(),
-      'updatedAt': FieldValue.serverTimestamp(),
-    }));
+    return _commit(
+      _items(familyId, householdId, listId).doc(itemId).update({
+        'name': name.trim(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }),
+      WriteKind.itemRename,
+      name.trim(),
+    );
   }
 
   @override
@@ -294,7 +311,7 @@ class FirestoreListRepository implements ListRepository {
         'updatedAt': FieldValue.serverTimestamp(),
       });
     });
-    return commitOptimistic(batch.commit());
+    return _commit(batch.commit(), WriteKind.itemReorder, null);
   }
 
   @override
@@ -322,6 +339,6 @@ class FirestoreListRepository implements ListRepository {
           targetTitle: itemName,
         ),
       );
-    return commitOptimistic(batch.commit());
+    return _commit(batch.commit(), WriteKind.itemDelete, itemName);
   }
 }

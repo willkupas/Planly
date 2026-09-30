@@ -31,6 +31,12 @@ class AppShell extends StatelessWidget {
             label: l10n.navLists,
           ),
           NavigationDestination(
+            key: const Key('nav-activity'),
+            icon: const Icon(Icons.history_outlined),
+            selectedIcon: const Icon(Icons.history),
+            label: l10n.navActivity,
+          ),
+          NavigationDestination(
             key: const Key('nav-family'),
             icon: const Icon(Icons.group_outlined),
             selectedIcon: const Icon(Icons.group),

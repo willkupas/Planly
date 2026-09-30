@@ -100,6 +100,120 @@ abstract class AppLocalizations {
   /// **'Planly'**
   String get appName;
 
+  /// No description provided for @writeFailureBannerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{1 alteração não foi sincronizada} other{{count} alterações não foram sincronizadas}}'**
+  String writeFailureBannerTitle(int count);
+
+  /// No description provided for @writeFailureBannerView.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver'**
+  String get writeFailureBannerView;
+
+  /// No description provided for @writeFailureSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterações não sincronizadas'**
+  String get writeFailureSheetTitle;
+
+  /// No description provided for @writeFailureSheetExplain.
+  ///
+  /// In pt, this message translates to:
+  /// **'O servidor recusou estas alterações e elas foram desfeitas neste dispositivo. Refaça se ainda fizer sentido.'**
+  String get writeFailureSheetExplain;
+
+  /// No description provided for @writeFailureDismiss.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar'**
+  String get writeFailureDismiss;
+
+  /// No description provided for @writeFailureDismissAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descartar tudo'**
+  String get writeFailureDismissAll;
+
+  /// No description provided for @writeKindTaskCreate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar tarefa “{title}”'**
+  String writeKindTaskCreate(String title);
+
+  /// No description provided for @writeKindTaskUpdate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar tarefa “{title}”'**
+  String writeKindTaskUpdate(String title);
+
+  /// No description provided for @writeKindTaskComplete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concluir tarefa “{title}”'**
+  String writeKindTaskComplete(String title);
+
+  /// No description provided for @writeKindTaskReopen.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reabrir tarefa “{title}”'**
+  String writeKindTaskReopen(String title);
+
+  /// No description provided for @writeKindTaskDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir tarefa “{title}”'**
+  String writeKindTaskDelete(String title);
+
+  /// No description provided for @writeKindListCreate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar lista “{title}”'**
+  String writeKindListCreate(String title);
+
+  /// No description provided for @writeKindListRename.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear lista para “{title}”'**
+  String writeKindListRename(String title);
+
+  /// No description provided for @writeKindListDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir lista “{title}”'**
+  String writeKindListDelete(String title);
+
+  /// No description provided for @writeKindItemAdd.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar item “{title}”'**
+  String writeKindItemAdd(String title);
+
+  /// No description provided for @writeKindItemComplete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Marcar item “{title}”'**
+  String writeKindItemComplete(String title);
+
+  /// No description provided for @writeKindItemRename.
+  ///
+  /// In pt, this message translates to:
+  /// **'Renomear item para “{title}”'**
+  String writeKindItemRename(String title);
+
+  /// No description provided for @writeKindItemDelete.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir item “{title}”'**
+  String writeKindItemDelete(String title);
+
+  /// No description provided for @writeKindItemReorder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Reordenar itens'**
+  String get writeKindItemReorder;
+
   /// No description provided for @taskFab.
   ///
   /// In pt, this message translates to:
@@ -387,6 +501,138 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Início'**
   String get homeTitle;
+
+  /// No description provided for @remindersSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembretes'**
+  String get remindersSectionTitle;
+
+  /// No description provided for @remindersSwitchTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembretes de tarefas'**
+  String get remindersSwitchTitle;
+
+  /// No description provided for @remindersSwitchSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisa neste aparelho antes do horário das suas tarefas'**
+  String get remindersSwitchSubtitle;
+
+  /// No description provided for @remindersPermissionGranted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações permitidas'**
+  String get remindersPermissionGranted;
+
+  /// No description provided for @remindersPermissionDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Notificações bloqueadas'**
+  String get remindersPermissionDenied;
+
+  /// No description provided for @remindersPermissionDeniedHelp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem a permissão, os lembretes não aparecem. Você pode permitir nos ajustes do sistema.'**
+  String get remindersPermissionDeniedHelp;
+
+  /// No description provided for @remindersPermissionAllow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Permitir notificações'**
+  String get remindersPermissionAllow;
+
+  /// No description provided for @remindersPermissionOpenSettings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Abrir ajustes do sistema'**
+  String get remindersPermissionOpenSettings;
+
+  /// No description provided for @remindersPermissionExplainTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Permitir notificações?'**
+  String get remindersPermissionExplainTitle;
+
+  /// No description provided for @remindersPermissionExplainMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'O Planly usa notificações só para lembrar das suas tarefas no horário combinado. O conteúdo aparece apenas neste aparelho.'**
+  String get remindersPermissionExplainMessage;
+
+  /// No description provided for @remindersPermissionNotNow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agora não'**
+  String get remindersPermissionNotNow;
+
+  /// No description provided for @remindersPermissionContinue.
+  ///
+  /// In pt, this message translates to:
+  /// **'Continuar'**
+  String get remindersPermissionContinue;
+
+  /// No description provided for @remindersPermissionStillDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'As notificações continuam bloqueadas. Abra os ajustes do sistema para permitir.'**
+  String get remindersPermissionStillDenied;
+
+  /// No description provided for @channelRemindersName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lembretes'**
+  String get channelRemindersName;
+
+  /// No description provided for @channelRemindersDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisos das suas tarefas com horário'**
+  String get channelRemindersDescription;
+
+  /// No description provided for @channelActivityName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atividade da casa'**
+  String get channelActivityName;
+
+  /// No description provided for @channelActivityDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novidades das tarefas e listas compartilhadas'**
+  String get channelActivityDescription;
+
+  /// No description provided for @channelAccountName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta e plano'**
+  String get channelAccountName;
+
+  /// No description provided for @channelAccountDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Avisos sobre sua conta, família e plano'**
+  String get channelAccountDescription;
+
+  /// No description provided for @reminderBodyToday.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hoje às {time}'**
+  String reminderBodyToday(String time);
+
+  /// No description provided for @reminderBodyTomorrow.
+  ///
+  /// In pt, this message translates to:
+  /// **'Amanhã às {time}'**
+  String reminderBodyTomorrow(String time);
+
+  /// No description provided for @reminderBodyDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'{date} às {time}'**
+  String reminderBodyDate(String date, String time);
 
   /// No description provided for @homeGreeting.
   ///
@@ -843,6 +1089,204 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Abrir suas listas'**
   String get dashboardListsOpen;
+
+  /// No description provided for @navActivity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atividade'**
+  String get navActivity;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atividade'**
+  String get activityTitle;
+
+  /// No description provided for @activityEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nada por aqui ainda'**
+  String get activityEmptyTitle;
+
+  /// No description provided for @activityEmptyMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quando alguém criar ou concluir tarefas e itens, o histórico aparece aqui.'**
+  String get activityEmptyMessage;
+
+  /// No description provided for @activityEmptyFilteredMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma atividade desta pessoa no período.'**
+  String get activityEmptyFilteredMessage;
+
+  /// No description provided for @activityFilterAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos'**
+  String get activityFilterAll;
+
+  /// No description provided for @activityFilterLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filtrar por pessoa'**
+  String get activityFilterLabel;
+
+  /// No description provided for @activityYou.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você'**
+  String get activityYou;
+
+  /// No description provided for @activitySomeone.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alguém'**
+  String get activitySomeone;
+
+  /// No description provided for @activityPersonFallback.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pessoa'**
+  String get activityPersonFallback;
+
+  /// No description provided for @activityDayToday.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hoje'**
+  String get activityDayToday;
+
+  /// No description provided for @activityDayYesterday.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ontem'**
+  String get activityDayYesterday;
+
+  /// No description provided for @activityDayDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'{date}'**
+  String activityDayDate(DateTime date);
+
+  /// No description provided for @activityTime.
+  ///
+  /// In pt, this message translates to:
+  /// **'{time}'**
+  String activityTime(DateTime time);
+
+  /// No description provided for @activityLoadMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregar mais'**
+  String get activityLoadMore;
+
+  /// No description provided for @activityLoadingMore.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregando…'**
+  String get activityLoadingMore;
+
+  /// No description provided for @activityLoadMoreFailed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível carregar mais. Tente de novo.'**
+  String get activityLoadMoreFailed;
+
+  /// No description provided for @activityFreeNote.
+  ///
+  /// In pt, this message translates to:
+  /// **'No plano Grátis você vê só os últimos 7 dias. Assine um plano para ver todo o histórico.'**
+  String get activityFreeNote;
+
+  /// No description provided for @activityEventTaskCreated.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} criou a tarefa \"{title}\"'**
+  String activityEventTaskCreated(String actor, String title);
+
+  /// No description provided for @activityEventTaskAssigned.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} atribuiu a tarefa \"{title}\"'**
+  String activityEventTaskAssigned(String actor, String title);
+
+  /// No description provided for @activityEventTaskCompleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} concluiu \"{title}\"'**
+  String activityEventTaskCompleted(String actor, String title);
+
+  /// No description provided for @activityEventTaskReopened.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} reabriu \"{title}\"'**
+  String activityEventTaskReopened(String actor, String title);
+
+  /// No description provided for @activityEventTaskUpdated.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} editou a tarefa \"{title}\"'**
+  String activityEventTaskUpdated(String actor, String title);
+
+  /// No description provided for @activityEventTaskDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} excluiu a tarefa \"{title}\"'**
+  String activityEventTaskDeleted(String actor, String title);
+
+  /// No description provided for @activityEventListCreated.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} criou a lista \"{title}\"'**
+  String activityEventListCreated(String actor, String title);
+
+  /// No description provided for @activityEventListDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} excluiu a lista \"{title}\"'**
+  String activityEventListDeleted(String actor, String title);
+
+  /// No description provided for @activityEventItemAdded.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} adicionou \"{title}\" à lista'**
+  String activityEventItemAdded(String actor, String title);
+
+  /// No description provided for @activityEventItemCompleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} concluiu o item \"{title}\"'**
+  String activityEventItemCompleted(String actor, String title);
+
+  /// No description provided for @activityEventItemDeleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} removeu \"{title}\" da lista'**
+  String activityEventItemDeleted(String actor, String title);
+
+  /// No description provided for @activityEventMemberJoined.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} entrou na casa'**
+  String activityEventMemberJoined(String actor);
+
+  /// No description provided for @activityEventMemberLeft.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} saiu da casa'**
+  String activityEventMemberLeft(String actor);
+
+  /// No description provided for @activityEventHouseholdCreated.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} criou a casa \"{title}\"'**
+  String activityEventHouseholdCreated(String actor, String title);
+
+  /// No description provided for @activityEventUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'{actor} fez uma alteração'**
+  String activityEventUnknown(String actor);
 
   /// No description provided for @dashboardSectionSoon.
   ///

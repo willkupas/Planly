@@ -13,6 +13,96 @@ class AppLocalizationsPt extends AppLocalizations {
   String get appName => 'Planly';
 
   @override
+  String writeFailureBannerTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alterações não foram sincronizadas',
+      one: '1 alteração não foi sincronizada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get writeFailureBannerView => 'Ver';
+
+  @override
+  String get writeFailureSheetTitle => 'Alterações não sincronizadas';
+
+  @override
+  String get writeFailureSheetExplain =>
+      'O servidor recusou estas alterações e elas foram desfeitas neste dispositivo. Refaça se ainda fizer sentido.';
+
+  @override
+  String get writeFailureDismiss => 'Descartar';
+
+  @override
+  String get writeFailureDismissAll => 'Descartar tudo';
+
+  @override
+  String writeKindTaskCreate(String title) {
+    return 'Criar tarefa “$title”';
+  }
+
+  @override
+  String writeKindTaskUpdate(String title) {
+    return 'Editar tarefa “$title”';
+  }
+
+  @override
+  String writeKindTaskComplete(String title) {
+    return 'Concluir tarefa “$title”';
+  }
+
+  @override
+  String writeKindTaskReopen(String title) {
+    return 'Reabrir tarefa “$title”';
+  }
+
+  @override
+  String writeKindTaskDelete(String title) {
+    return 'Excluir tarefa “$title”';
+  }
+
+  @override
+  String writeKindListCreate(String title) {
+    return 'Criar lista “$title”';
+  }
+
+  @override
+  String writeKindListRename(String title) {
+    return 'Renomear lista para “$title”';
+  }
+
+  @override
+  String writeKindListDelete(String title) {
+    return 'Excluir lista “$title”';
+  }
+
+  @override
+  String writeKindItemAdd(String title) {
+    return 'Adicionar item “$title”';
+  }
+
+  @override
+  String writeKindItemComplete(String title) {
+    return 'Marcar item “$title”';
+  }
+
+  @override
+  String writeKindItemRename(String title) {
+    return 'Renomear item para “$title”';
+  }
+
+  @override
+  String writeKindItemDelete(String title) {
+    return 'Excluir item “$title”';
+  }
+
+  @override
+  String get writeKindItemReorder => 'Reordenar itens';
+
+  @override
   String get taskFab => 'Nova tarefa';
 
   @override
@@ -179,6 +269,85 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get homeTitle => 'Início';
+
+  @override
+  String get remindersSectionTitle => 'Lembretes';
+
+  @override
+  String get remindersSwitchTitle => 'Lembretes de tarefas';
+
+  @override
+  String get remindersSwitchSubtitle =>
+      'Avisa neste aparelho antes do horário das suas tarefas';
+
+  @override
+  String get remindersPermissionGranted => 'Notificações permitidas';
+
+  @override
+  String get remindersPermissionDenied => 'Notificações bloqueadas';
+
+  @override
+  String get remindersPermissionDeniedHelp =>
+      'Sem a permissão, os lembretes não aparecem. Você pode permitir nos ajustes do sistema.';
+
+  @override
+  String get remindersPermissionAllow => 'Permitir notificações';
+
+  @override
+  String get remindersPermissionOpenSettings => 'Abrir ajustes do sistema';
+
+  @override
+  String get remindersPermissionExplainTitle => 'Permitir notificações?';
+
+  @override
+  String get remindersPermissionExplainMessage =>
+      'O Planly usa notificações só para lembrar das suas tarefas no horário combinado. O conteúdo aparece apenas neste aparelho.';
+
+  @override
+  String get remindersPermissionNotNow => 'Agora não';
+
+  @override
+  String get remindersPermissionContinue => 'Continuar';
+
+  @override
+  String get remindersPermissionStillDenied =>
+      'As notificações continuam bloqueadas. Abra os ajustes do sistema para permitir.';
+
+  @override
+  String get channelRemindersName => 'Lembretes';
+
+  @override
+  String get channelRemindersDescription =>
+      'Avisos das suas tarefas com horário';
+
+  @override
+  String get channelActivityName => 'Atividade da casa';
+
+  @override
+  String get channelActivityDescription =>
+      'Novidades das tarefas e listas compartilhadas';
+
+  @override
+  String get channelAccountName => 'Conta e plano';
+
+  @override
+  String get channelAccountDescription =>
+      'Avisos sobre sua conta, família e plano';
+
+  @override
+  String reminderBodyToday(String time) {
+    return 'Hoje às $time';
+  }
+
+  @override
+  String reminderBodyTomorrow(String time) {
+    return 'Amanhã às $time';
+  }
+
+  @override
+  String reminderBodyDate(String date, String time) {
+    return '$date às $time';
+  }
 
   @override
   String get homeGreeting => 'Bom dia 👋';
@@ -445,6 +614,149 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dashboardListsOpen => 'Abrir suas listas';
+
+  @override
+  String get navActivity => 'Atividade';
+
+  @override
+  String get activityTitle => 'Atividade';
+
+  @override
+  String get activityEmptyTitle => 'Nada por aqui ainda';
+
+  @override
+  String get activityEmptyMessage =>
+      'Quando alguém criar ou concluir tarefas e itens, o histórico aparece aqui.';
+
+  @override
+  String get activityEmptyFilteredMessage =>
+      'Nenhuma atividade desta pessoa no período.';
+
+  @override
+  String get activityFilterAll => 'Todos';
+
+  @override
+  String get activityFilterLabel => 'Filtrar por pessoa';
+
+  @override
+  String get activityYou => 'Você';
+
+  @override
+  String get activitySomeone => 'Alguém';
+
+  @override
+  String get activityPersonFallback => 'Pessoa';
+
+  @override
+  String get activityDayToday => 'Hoje';
+
+  @override
+  String get activityDayYesterday => 'Ontem';
+
+  @override
+  String activityDayDate(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String activityTime(DateTime time) {
+    final intl.DateFormat timeDateFormat = intl.DateFormat.Hm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return '$timeString';
+  }
+
+  @override
+  String get activityLoadMore => 'Carregar mais';
+
+  @override
+  String get activityLoadingMore => 'Carregando…';
+
+  @override
+  String get activityLoadMoreFailed =>
+      'Não foi possível carregar mais. Tente de novo.';
+
+  @override
+  String get activityFreeNote =>
+      'No plano Grátis você vê só os últimos 7 dias. Assine um plano para ver todo o histórico.';
+
+  @override
+  String activityEventTaskCreated(String actor, String title) {
+    return '$actor criou a tarefa \"$title\"';
+  }
+
+  @override
+  String activityEventTaskAssigned(String actor, String title) {
+    return '$actor atribuiu a tarefa \"$title\"';
+  }
+
+  @override
+  String activityEventTaskCompleted(String actor, String title) {
+    return '$actor concluiu \"$title\"';
+  }
+
+  @override
+  String activityEventTaskReopened(String actor, String title) {
+    return '$actor reabriu \"$title\"';
+  }
+
+  @override
+  String activityEventTaskUpdated(String actor, String title) {
+    return '$actor editou a tarefa \"$title\"';
+  }
+
+  @override
+  String activityEventTaskDeleted(String actor, String title) {
+    return '$actor excluiu a tarefa \"$title\"';
+  }
+
+  @override
+  String activityEventListCreated(String actor, String title) {
+    return '$actor criou a lista \"$title\"';
+  }
+
+  @override
+  String activityEventListDeleted(String actor, String title) {
+    return '$actor excluiu a lista \"$title\"';
+  }
+
+  @override
+  String activityEventItemAdded(String actor, String title) {
+    return '$actor adicionou \"$title\" à lista';
+  }
+
+  @override
+  String activityEventItemCompleted(String actor, String title) {
+    return '$actor concluiu o item \"$title\"';
+  }
+
+  @override
+  String activityEventItemDeleted(String actor, String title) {
+    return '$actor removeu \"$title\" da lista';
+  }
+
+  @override
+  String activityEventMemberJoined(String actor) {
+    return '$actor entrou na casa';
+  }
+
+  @override
+  String activityEventMemberLeft(String actor) {
+    return '$actor saiu da casa';
+  }
+
+  @override
+  String activityEventHouseholdCreated(String actor, String title) {
+    return '$actor criou a casa \"$title\"';
+  }
+
+  @override
+  String activityEventUnknown(String actor) {
+    return '$actor fez uma alteração';
+  }
 
   @override
   String get dashboardSectionSoon => 'Em breve';
