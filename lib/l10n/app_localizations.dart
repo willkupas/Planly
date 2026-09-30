@@ -117,6 +117,72 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Suas tarefas compartilhadas vão aparecer aqui.'**
   String get homePlaceholder;
+
+  /// No description provided for @splashLoading.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carregando'**
+  String get splashLoading;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefas da casa, em conjunto.'**
+  String get loginSubtitle;
+
+  /// No description provided for @loginWithGoogle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar com Google'**
+  String get loginWithGoogle;
+
+  /// No description provided for @loginSigningIn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrando…'**
+  String get loginSigningIn;
+
+  /// No description provided for @logout.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair'**
+  String get logout;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conexão. Verifique sua internet e tente de novo.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorPermissionDenied.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você não tem permissão para fazer isso.'**
+  String get errorPermissionDenied;
+
+  /// No description provided for @errorRequiresRecentLogin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por segurança, entre novamente para continuar.'**
+  String get errorRequiresRecentLogin;
+
+  /// No description provided for @errorAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível entrar com esta conta. Tente outra conta Google.'**
+  String get errorAccount;
+
+  /// No description provided for @errorConfiguration.
+  ///
+  /// In pt, this message translates to:
+  /// **'O login não está configurado neste aparelho. Tente mais tarde.'**
+  String get errorConfiguration;
+
+  /// No description provided for @errorUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Algo deu errado. Tente de novo.'**
+  String get errorUnknown;
 }
 
 class _AppLocalizationsDelegate

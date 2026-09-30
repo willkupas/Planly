@@ -21,16 +21,16 @@ Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fund
 | 🟡 | T-009 CI GitHub Actions (parcial) | Workflow **manual** pronto: scan de segredos, analyze, test, Functions, APK opcional. Automático em PR fica na T-017. **Ainda não rodou no GitHub** | T-006 |
 | 🟡 👤 | T-010 App Check, Crashlytics, Analytics | Código pronto e testado no emulador. **Falta você**, só quando houver build de release: registrar Play Integrity e ligar o enforcement (passos na task) | T-007 |
 
-| 🔄 👤 | T-016 Baseline de segurança | Scanner de segredos + hook (feito), `.gitignore` (feito). **Falta você:** 2FA, secret scanning e proteção do `main` no GitHub | T-006 |
+| 🔄 👤 | T-016 Baseline de segurança | Scanner de segredos + hook (feito), `.gitignore` (feito). 2FA Google e secret scanning: feitos. **Falta você:** confirmar 2FA no GitHub. Proteção do `main` → T-017 | T-006 |
 
 Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 corre em paralelo e é requisito de tudo (ver `docs/security.md`).
 
 ## Fase C — Conta, Family e casa
 | | Task | O que faz | Depende de |
 |---|---|---|---|
-| ⬜ | T-011 Login com Google | `AuthRepository` extensível, telas splash/login, sessão | T-007 |
-| ⬜ | T-012 Implementar Security Rules | `firestore.rules` + 50 testes de negação no emulator | T-003, T-008 |
-| ⬜ | T-013 Functions de Family/casas/membros | `bootstrapUser`, `createHousehold`, acesso por casa, `removeMember` | T-005, T-008 |
+| ✅ 👤 | T-011 Login com Google | Código, telas e 18 testes prontos. **Falta você:** testar o login real no emulador (conta Google no emulador) — passos na task | T-007 |
+| ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
+| 🔄 | T-013 Functions de Family/casas/membros | `bootstrapUser`, `createHousehold`, acesso por casa, `removeMember` | T-005, T-008 |
 | ⬜ | T-014 Telas de dashboard, casas e membros | Primeiro acesso → Family Free → dashboard; casas e membros com limites | T-011, T-013 |
 | ⬜ | T-015 Convites | Código de 10 caracteres, 24 h, bloqueado no Free (upsell) | T-013, T-014 |
 

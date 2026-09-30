@@ -4,5 +4,16 @@
   "@appName": { "description": "Nome do aplicativo" },
   "homeTitle": "Início",
   "homeGreeting": "Bom dia 👋",
-  "homePlaceholder": "Suas tarefas compartilhadas vão aparecer aqui."
+  "homePlaceholder": "Suas tarefas compartilhadas vão aparecer aqui.",
+  "splashLoading": "Carregando",
+  "loginSubtitle": "Tarefas da casa, em conjunto.",
+  "loginWithGoogle": "Entrar com Google",
+  "loginSigningIn": "Entrando…",
+  "logout": "Sair",
+  "errorNetwork": "Sem conexão. Verifique sua internet e tente de novo.",
+  "errorPermissionDenied": "Você não tem permissão para fazer isso.",
+  "errorRequiresRecentLogin": "Por segurança, entre novamente para continuar.",
+  "errorAccount": "Não foi possível entrar com esta conta. Tente outra conta Google.",
+  "errorConfiguration": "O login não está configurado neste aparelho. Tente mais tarde.",
+  "errorUnknown": "Algo deu errado. Tente de novo."
 }
