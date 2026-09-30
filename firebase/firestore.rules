@@ -1,9 +1,499 @@
 rules_version = '2';
 
-// PROVISÓRIO (T-008): nega todo acesso de cliente.
-// As regras reais seguem docs/specs/security-rules.md e entram na T-012.
+// =============================================================================
+// Planly - Firestore Security Rules (T-012)
+//
+// Fonte da verdade: docs/specs/security-rules.md (matriz, campos protegidos,
+// helpers) + docs/specs/data-model.md (incluindo §8 Resolucoes, que prevalecem).
+// Testes: firebase/rules-tests/ (50 negacoes N01..N50 + 15 positivos P01..P15).
+//
+// Principios:
+//  - Negar por padrao; nenhuma colecao global de conteudo.
+//  - Autorizacao sempre por request.auth.uid (nunca e-mail).
+//  - Papeis avaliados POR familia/casa (owner de F1 nao vale em F2).
+//  - Updates por lista branca (affectedKeys().hasOnly) e creates por chaves
+//    exatas (keys().hasOnly + hasAll): o cliente nunca injeta campo protegido.
+//  - Toda escrita de conteudo exige families/{f}.status == 'active' (§3).
+//  - Hard delete de conteudo e sempre negado (so Admin SDK/Functions).
+//  - Admin SDK (Cloud Functions) ignora Rules: criacao de familias/casas/
+//    membros/convites/billing/contadores/access nunca passa pelo cliente.
+// =============================================================================
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ---------------------------------------------------------------------
+    // Helpers genericos
+    // ---------------------------------------------------------------------
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    // Timestamp de servidor (serverTimestamp() do SDK) == request.time.
+    function isNow(v) {
+      return v is timestamp && v == request.time;
+    }
+
+    function strBetween(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+
+    // ---------------------------------------------------------------------
+    // Helpers de familia/casa (spec §7). `f` e `h` vem sempre do path, entao as
+    // queries de listagem sao provaveis pelas Rules.
+    // ---------------------------------------------------------------------
+    function familyDoc(f) {
+      return get(/databases/$(database)/documents/families/$(f)).data;
+    }
+
+    function householdDoc(f, h) {
+      return get(/databases/$(database)/documents/families/$(f)/households/$(h)).data;
+    }
+
+    function isFamilyOwner(f) {
+      return signedIn() && familyDoc(f).ownerId == uid();
+    }
+
+    // §3: a regra e == 'active' (nunca != 'frozen'): frozen e deleting bloqueiam.
+    function familyActive(f) {
+      return familyDoc(f).status == 'active';
+    }
+
+    // Membro ativo da familia (members/{uid}.status == 'active'). Owner e sempre membro.
+    function isFamilyMember(f) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/families/$(f)/members/$(uid()))
+        && get(/databases/$(database)/documents/families/$(f)/members/$(uid())).data.status == 'active';
+    }
+
+    // Leitura de conteudo: D/E (uid em accessUids, casa nao excluida) ou F (owner).
+    // Custo: 1 get (casa) para D/E; 2 para o owner fora de accessUids.
+    function canReadContent(f, h) {
+      return signedIn()
+        && ((uid() in householdDoc(f, h).accessUids && householdDoc(f, h).deletedAt == null)
+            || isFamilyOwner(f));
+    }
+
+    // Escrita de conteudo: acesso a casa + casa viva + familia ativa (2 gets).
+    function canWriteContent(f, h) {
+      return signedIn()
+        && householdDoc(f, h).deletedAt == null
+        && (uid() in householdDoc(f, h).accessUids || isFamilyOwner(f))
+        && familyActive(f);
+    }
+
+    // admin da casa (access[uid] == 'admin') ou owner (admin implicito, data-model §8 #2).
+    function isHouseholdAdmin(f, h) {
+      return (uid() in householdDoc(f, h).access && householdDoc(f, h).access[uid()] == 'admin')
+        || isFamilyOwner(f);
+    }
+
+    // assignedTo: null, ou uid presente em accessUids da casa, ou o owner da familia.
+    function assigneeOk(f, h, a) {
+      return a == null
+        || (a is string && (a in householdDoc(f, h).accessUids || a == familyDoc(f).ownerId));
+    }
+
+    // ---------------------------------------------------------------------
+    // Helpers de validacao de campos (spec §4.2)
+    // ---------------------------------------------------------------------
+    function scheduleOk(s) {
+      return s == null
+        || (s is map
+            && s.keys().hasOnly(['type', 'scheduledAt', 'timezone'])
+            && s.keys().hasAll(['type', 'scheduledAt', 'timezone'])
+            && s.type == 'datetime'
+            && s.scheduledAt is timestamp
+            && strBetween(s.timezone, 1, 64));
+    }
+
+    function notificationOk(n) {
+      return n is map
+        && n.keys().hasOnly(['enabled', 'offsetMinutes'])
+        && n.keys().hasAll(['enabled', 'offsetMinutes'])
+        && n.enabled is bool
+        && n.offsetMinutes is int
+        && n.offsetMinutes >= 0 && n.offsetMinutes <= 10080;
+    }
+
+    // Transicao de conclusao coerente (tasks e items):
+    // done => completedBy == uid e completedAt == request.time; pending => ambos null.
+    function taskStatusOk(o, n) {
+      return (n.status == o.status && n.completedAt == o.completedAt && n.completedBy == o.completedBy)
+        || (o.status == 'pending' && n.status == 'done'
+            && n.completedBy == uid() && isNow(n.completedAt))
+        || (o.status == 'done' && n.status == 'pending'
+            && n.completedAt == null && n.completedBy == null);
+    }
+
+    function itemCompletionOk(o, n) {
+      return (n.completed == o.completed && n.completedAt == o.completedAt && n.completedBy == o.completedBy)
+        || (o.completed == false && n.completed == true
+            && n.completedBy == uid() && isNow(n.completedAt))
+        || (o.completed == true && n.completed == false
+            && n.completedAt == null && n.completedBy == null);
+    }
+
+    // =====================================================================
+    // users/{uid}  (spec §2.1)
+    // Criado/apagado so por Function (bootstrapUser, data-model §8 #1).
+    // Cliente: le o proprio e altera so displayName/photoUrl/locale/timezone.
+    // Protegidos: freeFamilyId, email, createdAt, schemaVersion, deletedAt.
+    // =====================================================================
+    match /users/{userId} {
+      allow get: if signedIn() && uid() == userId;
+      allow list: if false;
+
+      allow update: if signedIn() && uid() == userId
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['displayName', 'photoUrl', 'locale', 'timezone', 'updatedAt'])
+        && strBetween(request.resource.data.displayName, 1, 100)
+        && strBetween(request.resource.data.locale, 1, 10)
+        && strBetween(request.resource.data.timezone, 1, 64)
+        && (request.resource.data.photoUrl == null || strBetween(request.resource.data.photoUrl, 0, 2048))
+        && isNow(request.resource.data.updatedAt);
+
+      allow create, delete: if false;
+
+      // Espelho mantido por Function: cliente so le o proprio.
+      match /memberships/{familyId} {
+        allow get, list: if signedIn() && uid() == userId;
+        allow write: if false;
+      }
+
+      // Tokens FCM: cliente gerencia o proprio doc (nao sofre efeito de frozen).
+      match /devices/{deviceId} {
+        function deviceShapeOk(d) {
+          return d.keys().hasOnly(['fcmToken', 'platform', 'appVersion', 'locale',
+                                   'timezone', 'lastSeenAt', 'createdAt'])
+            && d.keys().hasAll(['fcmToken', 'platform', 'lastSeenAt', 'createdAt'])
+            && strBetween(d.fcmToken, 1, 4096)
+            && d.platform in ['android']
+            && (!('appVersion' in d) || strBetween(d.appVersion, 0, 32))
+            && (!('locale' in d) || strBetween(d.locale, 0, 10))
+            && (!('timezone' in d) || strBetween(d.timezone, 0, 64))
+            && isNow(d.lastSeenAt);
+        }
+
+        allow get, list: if signedIn() && uid() == userId;
+
+        allow create: if signedIn() && uid() == userId
+          && deviceId.matches('^[A-Za-z0-9_-]{1,128}$')
+          && deviceShapeOk(request.resource.data)
+          && isNow(request.resource.data.createdAt);
+
+        allow update: if signedIn() && uid() == userId
+          && deviceShapeOk(request.resource.data)
+          && request.resource.data.createdAt == resource.data.createdAt;
+
+        allow delete: if signedIn() && uid() == userId;
+      }
+    }
+
+    // =====================================================================
+    // families/{f}  (spec §2.2)
+    // Leitura: membro ativo (owner incluso). Owner so altera name/updatedAt,
+    // com familia active. Criar/excluir: Function.
+    // =====================================================================
+    match /families/{familyId} {
+      // Sem list: o cliente descobre suas familias via users/{uid}/memberships.
+      allow get: if signedIn()
+        && (resource.data.ownerId == uid() || isFamilyMember(familyId));
+      allow list: if false;
+
+      allow update: if signedIn()
+        && resource.data.ownerId == uid()
+        && resource.data.status == 'active'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'updatedAt'])
+        && strBetween(request.resource.data.name, 1, 100)
+        && isNow(request.resource.data.updatedAt);
+
+      allow create, delete: if false;
+
+      // Membros: lista completa legivel por qualquer membro ativo (data-model §8 #11).
+      match /members/{memberId} {
+        allow get, list: if isFamilyMember(familyId);
+        allow write: if false;
+      }
+
+      match /billing/subscription {
+        allow get: if isFamilyOwner(familyId);
+        allow write: if false;
+      }
+
+      match /billing/entitlement {
+        allow get: if isFamilyMember(familyId);
+        allow write: if false;
+      }
+
+      // -------------------------------------------------------------------
+      // households/{h}  (spec §2.3)
+      // D/E leem por accessUids (0 gets em list; query array-contains uid);
+      // owner le todas. Admin da casa/owner so renomeiam.
+      // Criar/excluir/alterar access/accessUids: Function.
+      // -------------------------------------------------------------------
+      match /households/{householdId} {
+        allow get, list: if signedIn()
+          && (uid() in resource.data.accessUids || isFamilyOwner(familyId));
+
+        allow update: if signedIn()
+          && resource.data.deletedAt == null
+          && ((uid() in resource.data.access && resource.data.access[uid()] == 'admin')
+              || isFamilyOwner(familyId))
+          && familyActive(familyId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'updatedAt'])
+          && strBetween(request.resource.data.name, 1, 100)
+          && isNow(request.resource.data.updatedAt);
+
+        allow create, delete: if false;
+
+        // -----------------------------------------------------------------
+        // tasks/{t}  (spec §2.3, §4, §6.2; data-model §8 #4, #6)
+        // -----------------------------------------------------------------
+        match /tasks/{taskId} {
+          function taskShapeOk(d) {
+            return strBetween(d.title, 1, 200)
+              && (!('description' in d) || strBetween(d.description, 0, 5000))
+              && d.status in ['pending', 'done']
+              && scheduleOk(d.schedule)
+              && d.recurrence == null          // recorrencia e Fase 2
+              && notificationOk(d.notification);
+          }
+
+          // Soft delete: so seta deletedAt (autor ou admin/owner).
+          function taskSoftDelete() {
+            return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+              && resource.data.deletedAt == null
+              && isNow(request.resource.data.deletedAt)
+              && (resource.data.createdBy == uid() || isHouseholdAdmin(familyId, householdId));
+          }
+
+          // Restaurar: so admin da casa/owner.
+          function taskRestore() {
+            return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+              && resource.data.deletedAt != null
+              && request.resource.data.deletedAt == null
+              && isHouseholdAdmin(familyId, householdId);
+          }
+
+          // Edicao completa: autor ou admin/owner, doc vivo.
+          function taskEdit() {
+            return resource.data.deletedAt == null
+              && (resource.data.createdBy == uid() || isHouseholdAdmin(familyId, householdId))
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+                   ['title', 'description', 'assignedTo', 'status', 'schedule', 'recurrence',
+                    'notification', 'completedAt', 'completedBy', 'updatedAt'])
+              && taskShapeOk(request.resource.data)
+              && taskStatusOk(resource.data, request.resource.data)
+              && (request.resource.data.assignedTo == resource.data.assignedTo
+                  || assigneeOk(familyId, householdId, request.resource.data.assignedTo));
+          }
+
+          // Concluir/reabrir: qualquer D/E/F com acesso se assignedTo == uid ou null (†).
+          function taskComplete() {
+            return resource.data.deletedAt == null
+              && (resource.data.assignedTo == null || resource.data.assignedTo == uid())
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+                   ['status', 'completedAt', 'completedBy', 'updatedAt'])
+              && request.resource.data.status in ['pending', 'done']
+              && taskStatusOk(resource.data, request.resource.data);
+          }
+
+          allow get: if canReadContent(familyId, householdId);
+          // limit obrigatorio (custo). Sem limit na query, request.query.limit falha => negado.
+          allow list: if canReadContent(familyId, householdId) && request.query.limit <= 100;
+
+          allow create: if canWriteContent(familyId, householdId)
+            && request.resource.data.keys().hasOnly(
+                 ['title', 'description', 'createdBy', 'assignedTo', 'status', 'schedule',
+                  'recurrence', 'notification', 'completedAt', 'completedBy', 'deletedAt',
+                  'createdAt', 'updatedAt', 'schemaVersion'])
+            && request.resource.data.keys().hasAll(
+                 ['title', 'createdBy', 'assignedTo', 'status', 'schedule', 'recurrence',
+                  'notification', 'completedAt', 'completedBy', 'deletedAt', 'createdAt',
+                  'updatedAt', 'schemaVersion'])
+            && taskShapeOk(request.resource.data)
+            && request.resource.data.createdBy == uid()
+            && request.resource.data.status == 'pending'
+            && request.resource.data.completedAt == null
+            && request.resource.data.completedBy == null
+            && request.resource.data.deletedAt == null
+            && assigneeOk(familyId, householdId, request.resource.data.assignedTo)
+            && isNow(request.resource.data.createdAt)
+            && isNow(request.resource.data.updatedAt)
+            && request.resource.data.schemaVersion == 1;
+
+          allow update: if canWriteContent(familyId, householdId)
+            && isNow(request.resource.data.updatedAt)
+            && request.resource.data.createdBy == resource.data.createdBy
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.schemaVersion == resource.data.schemaVersion
+            && (taskSoftDelete() || taskRestore() || taskEdit() || taskComplete());
+
+          allow delete: if false;   // hard delete so por Function
+
+          // Fase 2: sem regra => negado (catch-all).
+        }
+
+        // -----------------------------------------------------------------
+        // lists/{l} e lists/{l}/items/{i}
+        // -----------------------------------------------------------------
+        match /lists/{listId} {
+          function listSoftDelete() {
+            return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+              && resource.data.deletedAt == null
+              && isNow(request.resource.data.deletedAt)
+              && (resource.data.createdBy == uid() || isHouseholdAdmin(familyId, householdId));
+          }
+
+          function listRestore() {
+            return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+              && resource.data.deletedAt != null
+              && request.resource.data.deletedAt == null
+              && isHouseholdAdmin(familyId, householdId);
+          }
+
+          function listEdit() {
+            return resource.data.deletedAt == null
+              && (resource.data.createdBy == uid() || isHouseholdAdmin(familyId, householdId))
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'type', 'updatedAt'])
+              && strBetween(request.resource.data.name, 1, 200)
+              && request.resource.data.type in ['shopping', 'general'];
+          }
+
+          allow get: if canReadContent(familyId, householdId);
+          allow list: if canReadContent(familyId, householdId) && request.query.limit <= 100;
+
+          allow create: if canWriteContent(familyId, householdId)
+            && request.resource.data.keys().hasOnly(
+                 ['name', 'type', 'createdBy', 'deletedAt', 'createdAt', 'updatedAt', 'schemaVersion'])
+            && request.resource.data.keys().hasAll(
+                 ['name', 'type', 'createdBy', 'deletedAt', 'createdAt', 'updatedAt', 'schemaVersion'])
+            && strBetween(request.resource.data.name, 1, 200)
+            && request.resource.data.type in ['shopping', 'general']
+            && request.resource.data.createdBy == uid()
+            && request.resource.data.deletedAt == null
+            && isNow(request.resource.data.createdAt)
+            && isNow(request.resource.data.updatedAt)
+            && request.resource.data.schemaVersion == 1;
+
+          allow update: if canWriteContent(familyId, householdId)
+            && isNow(request.resource.data.updatedAt)
+            && request.resource.data.createdBy == resource.data.createdBy
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.schemaVersion == resource.data.schemaVersion
+            && (listSoftDelete() || listRestore() || listEdit());
+
+          allow delete: if false;
+
+          // Itens: colaborativos (data-model §8 #4). Qualquer acesso cria/completa/
+          // edita/reordena; soft delete: autor ou admin/owner; restaurar: admin/owner.
+          match /items/{itemId} {
+            function itemSoftDelete() {
+              return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+                && resource.data.deletedAt == null
+                && isNow(request.resource.data.deletedAt)
+                && (resource.data.createdBy == uid() || isHouseholdAdmin(familyId, householdId));
+            }
+
+            function itemRestore() {
+              return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deletedAt', 'updatedAt'])
+                && resource.data.deletedAt != null
+                && request.resource.data.deletedAt == null
+                && isHouseholdAdmin(familyId, householdId);
+            }
+
+            function itemEdit() {
+              return resource.data.deletedAt == null
+                && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+                     ['name', 'completed', 'completedBy', 'completedAt', 'order', 'updatedAt'])
+                && strBetween(request.resource.data.name, 1, 200)
+                && request.resource.data.completed is bool
+                && request.resource.data.order is number
+                && itemCompletionOk(resource.data, request.resource.data);
+            }
+
+            allow get: if canReadContent(familyId, householdId);
+            allow list: if canReadContent(familyId, householdId) && request.query.limit <= 200;
+
+            allow create: if canWriteContent(familyId, householdId)
+              && request.resource.data.keys().hasOnly(
+                   ['name', 'completed', 'completedBy', 'completedAt', 'createdBy', 'order',
+                    'deletedAt', 'createdAt', 'updatedAt', 'schemaVersion'])
+              && request.resource.data.keys().hasAll(
+                   ['name', 'completed', 'completedBy', 'completedAt', 'createdBy', 'order',
+                    'deletedAt', 'createdAt', 'updatedAt', 'schemaVersion'])
+              && strBetween(request.resource.data.name, 1, 200)
+              && request.resource.data.completed == false
+              && request.resource.data.completedBy == null
+              && request.resource.data.completedAt == null
+              && request.resource.data.order is number
+              && request.resource.data.createdBy == uid()
+              && request.resource.data.deletedAt == null
+              && isNow(request.resource.data.createdAt)
+              && isNow(request.resource.data.updatedAt)
+              && request.resource.data.schemaVersion == 1;
+
+            allow update: if canWriteContent(familyId, householdId)
+              && isNow(request.resource.data.updatedAt)
+              && request.resource.data.createdBy == resource.data.createdBy
+              && request.resource.data.createdAt == resource.data.createdAt
+              && request.resource.data.schemaVersion == resource.data.schemaVersion
+              && (itemSoftDelete() || itemRestore() || itemEdit());
+
+            allow delete: if false;
+          }
+        }
+
+        // -----------------------------------------------------------------
+        // activity/{a}: append-only (spec §6.1). Update/delete negados a todos.
+        // member_joined/member_left/household_created so por Function.
+        // -----------------------------------------------------------------
+        match /activity/{activityId} {
+          function activityTypeOk(t, tt) {
+            return (t in ['task_created', 'task_assigned', 'task_completed', 'task_reopened',
+                          'task_updated', 'task_deleted'] && tt == 'task')
+              || (t in ['list_created', 'list_deleted'] && tt == 'list')
+              || (t in ['item_added', 'item_completed', 'item_deleted'] && tt == 'item');
+          }
+
+          allow get: if canReadContent(familyId, householdId);
+          allow list: if canReadContent(familyId, householdId) && request.query.limit <= 50;
+
+          allow create: if canWriteContent(familyId, householdId)
+            && request.resource.data.keys().hasOnly(
+                 ['type', 'actorId', 'actorName', 'targetType', 'targetId', 'targetTitle',
+                  'createdAt', 'schemaVersion'])
+            && request.resource.data.keys().hasAll(
+                 ['type', 'actorId', 'actorName', 'targetType', 'targetId', 'targetTitle',
+                  'createdAt', 'schemaVersion'])
+            && request.resource.data.actorId == uid()
+            && activityTypeOk(request.resource.data.type, request.resource.data.targetType)
+            && strBetween(request.resource.data.actorName, 0, 200)
+            && strBetween(request.resource.data.targetId, 1, 128)
+            && strBetween(request.resource.data.targetTitle, 0, 200)
+            && isNow(request.resource.data.createdAt)
+            && request.resource.data.schemaVersion == 1;
+
+          allow update, delete: if false;
+        }
+      }
+    }
+
+    // =====================================================================
+    // invitations/{code}: escrita so por Function. Cliente (owner) apenas LISTA
+    // os convites que criou, via query where('createdBy','==',uid). Sem get.
+    // =====================================================================
+    match /invitations/{code} {
+      allow list: if signedIn() && resource.data.createdBy == uid();
+      allow get: if false;
+      allow write: if false;
+    }
+
+    // Nega tudo o que nao foi explicitamente liberado acima.
     match /{document=**} {
       allow read, write: if false;
     }
