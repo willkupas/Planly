@@ -55,11 +55,24 @@ Plan: [0002](../plans/0002-conteudo-tarefas-listas.md). Começa quando a T-014 e
 
 Paralelizáveis: T-018 + T-019 · T-020 + T-021 · T-022 + T-023 + T-024.
 
-## Depois do plan 0002
-Billing (Sprint 8) → Qualidade (Sprint 9) → Play Store (Sprint 10), e a T-017 no fim.
+## Plan 0003 — Conta, assinatura, qualidade e publicação
+Plan: [0003](../plans/0003-conta-assinatura-publicacao.md). Começa quando o plan 0002 terminar.
+| | Task | O que faz | Depende de |
+|---|---|---|---|
+| ⬜ | T-025 Exclusão de conta (LGPD) | `deleteAccount`, cascata, tela de exclusão; testável no emulador | T-013 |
+| ⬜ 👤 | T-026 Transferência e ciclo de vida | Transferir ownership, `frozen`, regularização 30 dias. **Exige Blaze** | T-013, T-024 |
+| ⬜ 👤 | T-027 Billing no servidor | `verifyPurchase`, RTDN, reconciliação. **Exige conta Play, produtos, service account** | T-026 |
+| ⬜ 👤 | T-028 Billing no app | Tela de plano, compra, transferência, preços reais do Play | T-027 |
+| ⬜ 👤 | T-029 Qualidade e segurança | Custo, performance, acessibilidade, `/security-review`, **ligar App Check** | T-028 |
+| ⬜ 👤 | T-030 Publicação na Play Store | Assinatura de release, política de privacidade, Data safety, teste interno → produção | T-029 |
+
+## No fim de tudo
+A T-017 (CI automático, proteção do `main`, Dependabot) fecha o projeto antes do lançamento.
 Functions na nuvem e jobs agendados exigem plano **Blaze**: até a T-023 usamos só emuladores.
 
-## Onde você entra
-- **T-007:** criar projetos no console Firebase e aceitar termos (eu guio cada passo).
-- **Blaze:** só quando chegarmos à primeira necessidade de Functions na nuvem (Sprint 5–6).
-- **Conta Google Play (US$ 25):** só na publicação (Sprint 10).
+## Onde você entra (resumo)
+- **Agora, se quiser:** testar o login real com Google no emulador (T-011), o roteiro de lembretes num aparelho (T-022) e confirmar o 2FA do GitHub (T-016).
+- **Blaze:** quando chegarmos à T-023 (push) e T-024 (jobs). Eu explico os passos e o custo antes.
+- **Conta Google Play (US$ 25), produtos e service account:** a partir da T-027 (billing) e na publicação (T-030).
+- **Textos legais** (política de privacidade, termos) e **domínio:** antes da publicação.
+- **Console Firebase:** restringir as chaves de API e configurar budget alerts (T-007); ligar o enforcement do App Check (T-029).
