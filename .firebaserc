@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "planly-dev-d8533",
+    "dev": "planly-dev-d8533",
+    "staging": "planly-staging",
+    "prod": "planly-prod-be861"
+  }
+}

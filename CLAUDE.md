@@ -75,7 +75,8 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - Flutter em `C:\dev\flutter`; Android SDK em `%LOCALAPPDATA%\Android\Sdk` (NDK 28.2 instalado à mão); emulador AVD `planly_pixel` (Android 16 com Google Play).
 - Firebase CLI via wrapper `C:\dev\tools\bin\firebase.cmd` (força Node 22 e o JDK do Android Studio; o Node padrão da máquina é o 26, não suportado pelo firebase-tools).
 - O `sdkmanager` novo não entende `;` nos nomes de pacote: usar `android sdk install "ndk/28.2.13676358"` (caminhos com `/`).
-- Rodar no emulador: `flutter run -d emulator-5554`. Build: `flutter build apk --debug`.
+- Rodar no emulador: `flutter run --flavor dev -t lib/main_dev.dart`. Build: `flutter build apk --debug --flavor dev -t lib/main_dev.dart`.
+- Emuladores Firebase: `firebase emulators:start --only auth,firestore,functions --project planly-dev-d8533` (detalhes em `docs/tasks/T-008-emulator-suite.md`). Functions: `npm --prefix functions run build` (Node 22).
 
 ## Princípios de UX
 

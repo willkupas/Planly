@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// PROVISÓRIO (T-008): nega todo acesso de cliente.
+// As regras reais seguem docs/specs/security-rules.md e entram na T-012.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
