@@ -31,8 +31,8 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 | ✅ 👤 | T-011 Login com Google | Código, telas e 18 testes prontos. **Falta você:** testar o login real no emulador (conta Google no emulador) — passos na task | T-007 |
 | ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
 | ✅ | T-013 Functions de Family/casas/membros | 7 callables + 42 testes (8 unit + 34 integração) passando; App Check exigido na nuvem | T-005, T-008 |
-| 🔄 | T-014 Telas de dashboard, casas e membros | Primeiro acesso → Family Free → dashboard; casas e membros com limites | T-011, T-013 |
-| ⬜ | T-015 Convites | Código de 10 caracteres, 24 h, bloqueado no Free (upsell) | T-013, T-014 |
+| 🟡 | T-014 Telas de dashboard, casas e membros | App pronto (109 testes com fakes); **falta integrar com as Functions reais no emulador** |
+| 🔄 | T-015 Convites | Servidor em andamento (código de 10 caracteres, 24 h, bloqueado no Free); telas depois da T-014 | T-013, T-014 |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
 
@@ -41,9 +41,23 @@ Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
 |---|---|---|
 | ⬜ 👤 | T-017 CI automático + proteção do `main` | CI em PR/push, testes das Rules no CI, gitleaks, Dependabot, actions por SHA, proteção do `main`, secrets de CI. Fazer **depois** das etapas de teste do app |
 
-## Depois do plan 0001 (próximos plans)
-Tarefas (Sprint 3) → Listas (4) → Offline (5) → Notificações (6) → Histórico (7) → Billing (8) → Qualidade (9) → Play Store (10).
-Functions na nuvem e jobs agendados exigem plano **Blaze**: até a Sprint 5 usamos só emuladores.
+## Plan 0002 — Conteúdo do app (tarefas, listas, atividade, offline, notificações)
+Plan: [0002](../plans/0002-conteudo-tarefas-listas.md). Começa quando a T-014 e a T-015 terminarem.
+| | Task | O que faz | Depende de |
+|---|---|---|---|
+| ⬜ | T-018 Tarefas | Criar rápida (≤ 3 toques), listar, editar, concluir, atribuir, data/hora | T-014 |
+| ⬜ | T-019 Listas e itens | Lista de compras colaborativa, reordenar, concluir itens | T-014 |
+| ⬜ | T-020 Atividade | Histórico paginado; Free = 7 dias; sem ranking | T-018 |
+| ⬜ | T-021 Offline e sincronização | Indicador de sync, escritas rejeitadas, **teste crítico A online / B offline** | T-018, T-019 |
+| ⬜ | T-022 Lembretes locais | Notificações locais, permissão Android 13+, canais | T-018 |
+| ⬜ 👤 | T-023 Push de eventos (FCM) | Triggers + FCM. **Exige ativar o Blaze no `dev`** | T-018, T-019 |
+| ⬜ 👤 | T-024 Jobs agendados | Congelar/excluir famílias, avisos, limpeza. **Exige Blaze** | T-013, T-015 |
+
+Paralelizáveis: T-018 + T-019 · T-020 + T-021 · T-022 + T-023 + T-024.
+
+## Depois do plan 0002
+Billing (Sprint 8) → Qualidade (Sprint 9) → Play Store (Sprint 10), e a T-017 no fim.
+Functions na nuvem e jobs agendados exigem plano **Blaze**: até a T-023 usamos só emuladores.
 
 ## Onde você entra
 - **T-007:** criar projetos no console Firebase e aceitar termos (eu guio cada passo).
