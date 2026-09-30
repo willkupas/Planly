@@ -4,16 +4,166 @@
   "@appName": { "description": "Nome do aplicativo" },
   "homeTitle": "Início",
   "homeGreeting": "Bom dia 👋",
-  "homePlaceholder": "Suas tarefas compartilhadas vão aparecer aqui.",
   "splashLoading": "Carregando",
   "loginSubtitle": "Tarefas da casa, em conjunto.",
   "loginWithGoogle": "Entrar com Google",
   "loginSigningIn": "Entrando…",
   "logout": "Sair",
+
+  "actionRetry": "Tentar de novo",
+  "actionCancel": "Cancelar",
+  "actionOk": "Entendi",
+  "actionCreate": "Criar",
+  "actionSave": "Salvar",
+
   "errorNetwork": "Sem conexão. Verifique sua internet e tente de novo.",
   "errorPermissionDenied": "Você não tem permissão para fazer isso.",
   "errorRequiresRecentLogin": "Por segurança, entre novamente para continuar.",
   "errorAccount": "Não foi possível entrar com esta conta. Tente outra conta Google.",
   "errorConfiguration": "O login não está configurado neste aparelho. Tente mais tarde.",
-  "errorUnknown": "Algo deu errado. Tente de novo."
+  "errorUnknown": "Algo deu errado. Tente de novo.",
+  "errorFamilyFrozen": "A família está somente leitura (assinatura expirada). Não é possível fazer alterações.",
+  "errorFeatureNotInPlan": "Este recurso não está incluído no plano atual.",
+  "errorPlanLimitMembers": "O limite de pessoas do plano foi atingido.",
+  "errorPlanLimitHouseholds": "O limite de casas do plano foi atingido.",
+  "errorOwnerHasMembers": "Transfira a família para outra pessoa antes de continuar.",
+  "errorLastHousehold": "A família precisa ter pelo menos uma casa.",
+  "errorOwnerCannotLeave": "O dono da família não pode sair. Transfira a família primeiro.",
+  "errorTransferPending": "Já existe uma transferência pendente.",
+  "errorBootstrapRequired": "Conclua a configuração inicial da conta antes de continuar.",
+  "errorNotFound": "Não encontramos o item. Ele pode ter sido removido.",
+  "errorAlreadyMember": "Você já faz parte desta família.",
+  "errorExpired": "Este pedido expirou.",
+  "errorRateLimited": "Muitas tentativas seguidas. Aguarde um pouco e tente de novo.",
+
+  "offlineBanner": "Sem conexão — alterações ficam salvas neste dispositivo",
+  "syncSavedLocally": "Salvo neste dispositivo",
+  "syncSyncing": "Sincronizando…",
+  "syncSynced": "Sincronizado",
+  "syncOffline": "Offline",
+
+  "navHome": "Início",
+  "navFamily": "Família",
+
+  "bootstrapLoadingTitle": "Preparando sua casa",
+  "bootstrapLoadingMessage": "Estamos criando sua família e sua primeira casa.",
+  "bootstrapOfflineTitle": "Precisa de internet",
+  "bootstrapOfflineMessage": "Para o primeiro acesso é preciso estar conectado. Conecte-se e tente de novo.",
+  "bootstrapErrorTitle": "Não foi possível preparar sua conta",
+
+  "dashboardNoHouseholdTitle": "Nenhuma casa por aqui",
+  "dashboardNoHouseholdMessage": "Você ainda não tem acesso a nenhuma casa desta família.",
+  "dashboardComingSoon": "As tarefas compartilhadas chegam na próxima etapa do app.",
+  "dashboardToday": "Hoje",
+  "dashboardUpcoming": "Próximas",
+  "dashboardLists": "Listas",
+  "dashboardSectionSoon": "Em breve",
+
+  "familyTitle": "Família",
+  "familyNotFound": "Não encontramos esta família.",
+  "familyPlanLabel": "Plano",
+  "planFree": "Grátis",
+  "planFamily": "Família",
+  "planFamilyPlus": "Família+",
+  "familyUsageMembers": "{count} de {max} pessoas",
+  "@familyUsageMembers": {
+    "placeholders": { "count": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "familyUsageMembersNoLimit": "{count} pessoas",
+  "@familyUsageMembersNoLimit": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "familyUsageHouseholds": "{count} de {max} casas",
+  "@familyUsageHouseholds": {
+    "placeholders": { "count": { "type": "int" }, "max": { "type": "int" } }
+  },
+  "familyUsageHouseholdsUnlimited": "{count} casas (sem limite)",
+  "@familyUsageHouseholdsUnlimited": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "familyUsageHouseholdsNoLimit": "{count} casas",
+  "@familyUsageHouseholdsNoLimit": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "familySeePlans": "Ver planos",
+
+  "upsellTitle": "Recurso de plano pago",
+  "upsellInvitesMessage": "No plano grátis a família é só sua. Com um plano pago você poderá convidar outras pessoas para compartilhar as tarefas.",
+  "upsellHouseholdsMessage": "O plano grátis inclui uma casa. Com um plano pago você poderá criar mais casas.",
+
+  "frozenBanner": "{days, plural, =0{Somente leitura — assinatura expirada. Exclusão hoje.} =1{Somente leitura — assinatura expirada. Exclusão em 1 dia.} other{Somente leitura — assinatura expirada. Exclusão em {days} dias.}}",
+  "@frozenBanner": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "frozenBannerNoDate": "Somente leitura — assinatura expirada.",
+  "frozenBannerOwnerHint": "Reassine ou transfira a família para voltar a editar.",
+  "frozenBannerMemberHint": "Avise o dono da família para reativar o plano.",
+
+  "membersTitle": "Membros",
+  "membersEmpty": "Nenhum membro encontrado.",
+  "roleOwner": "Dono da família",
+  "roleMember": "Participante",
+  "memberNoName": "Sem nome",
+  "memberYou": "{name} (você)",
+  "@memberYou": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "memberActions": "Ações do membro",
+  "memberAccess": "Acesso às casas",
+  "memberAccessTitle": "Acesso de {name}",
+  "@memberAccessTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "accessNone": "Nenhum",
+  "accessMember": "Participante",
+  "accessAdmin": "Admin",
+  "memberRemove": "Remover",
+  "memberRemoveTitle": "Remover da família?",
+  "memberRemoveMessage": "{name} perde o acesso a todas as casas.",
+  "@memberRemoveMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "memberRemoved": "Membro removido.",
+  "leaveFamily": "Sair da família",
+  "leaveFamilyTitle": "Sair desta família?",
+  "leaveFamilyMessage": "Você perde o acesso às casas desta família. Para voltar, será preciso um novo convite.",
+  "inviteButton": "Convidar pessoa",
+  "inviteComingSoon": "Os convites chegam na próxima etapa.",
+
+  "householdsTitle": "Casas",
+  "householdsEmpty": "Nenhuma casa disponível",
+  "householdsEmptyMember": "O dono da família ainda não liberou nenhuma casa para você.",
+  "householdNew": "Nova casa",
+  "householdNameLabel": "Nome da casa",
+  "householdCreated": "Casa criada.",
+  "householdRename": "Renomear",
+  "householdActions": "Ações da casa",
+  "householdDelete": "Excluir",
+  "householdDeleteTitle": "Excluir casa?",
+  "householdDeleteMessage": "A casa \"{name}\" será excluída. Você pode pedir a restauração em até 30 dias.",
+  "@householdDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "householdDeleted": "Casa excluída.",
+  "householdAccessCount": "{count, plural, =0{Sem pessoas vinculadas} =1{1 pessoa vinculada} other{{count} pessoas vinculadas}}",
+  "@householdAccessCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "switchFamilies": "Famílias",
+  "switchHouseholds": "Casas",
+  "switchNoHouseholds": "Nenhuma casa acessível nesta família.",
+
+  "noAccessTitle": "Sem acesso a esta casa",
+  "noAccessNoHousehold": "O dono da família ainda não vinculou você a nenhuma casa. Peça a ele para liberar o acesso.",
+  "noAccessDeleting": "Esta família está sendo excluída e não pode mais ser acessada.",
+  "noAccessSwitch": "Trocar de família",
+
+  "settingsTitle": "Configurações",
+  "settingsNoName": "Sem nome",
+  "settingsLanguage": "Idioma",
+  "settingsLanguagePt": "Português (Brasil)",
+  "signOutPendingTitle": "Alterações não sincronizadas",
+  "signOutPendingMessage": "Há alterações salvas só neste aparelho que ainda não foram enviadas. Se sair agora, elas serão perdidas.",
+  "signOutAnyway": "Sair mesmo assim"
 }

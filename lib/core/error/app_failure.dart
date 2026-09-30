@@ -33,6 +33,20 @@ class ConfigurationFailure extends AppFailure {
   const ConfigurationFailure();
 }
 
+/// Regra de negócio recusada por uma Cloud Function. `reason` é o código estável definido em
+/// `docs/specs/cloud-functions.md` §1.1 (ex.: `PLAN_LIMIT_HOUSEHOLDS`, `FAMILY_FROZEN`).
+class BusinessFailure extends AppFailure {
+  const BusinessFailure(this.reason);
+
+  final String reason;
+
+  @override
+  bool operator ==(Object other) => other is BusinessFailure && other.reason == reason;
+
+  @override
+  int get hashCode => reason.hashCode;
+}
+
 class UnknownFailure extends AppFailure {
   const UnknownFailure();
 }

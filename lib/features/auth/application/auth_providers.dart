@@ -55,22 +55,5 @@ class SignInController extends Notifier<AsyncValue<void>> {
 final signInControllerProvider =
     NotifierProvider<SignInController, AsyncValue<void>>(SignInController.new);
 
-class SignOutController extends Notifier<AsyncValue<void>> {
-  @override
-  AsyncValue<void> build() => const AsyncData(null);
-
-  /// Não limpa a persistência do Firestore (aviso de escritas pendentes: T-014).
-  Future<void> signOut() async {
-    if (state.isLoading) return;
-    state = const AsyncLoading();
-    try {
-      await ref.read(authRepositoryProvider).signOut();
-      state = const AsyncData(null);
-    } on AppFailure catch (e, st) {
-      state = AsyncError(e, st);
-    }
-  }
-}
-
-final signOutControllerProvider =
-    NotifierProvider<SignOutController, AsyncValue<void>>(SignOutController.new);
+// O logout (com aviso de escritas pendentes e limpeza do cache) vive em
+// `features/settings/application/session_actions.dart`.

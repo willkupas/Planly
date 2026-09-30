@@ -1,19 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:planly/app/router/app_shell.dart';
 import 'package:planly/app/router/guards.dart';
 import 'package:planly/app/router/routes.dart';
+import 'package:planly/app/session/session_phase.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/auth/domain/auth_state.dart';
 import 'package:planly/features/auth/presentation/login_page.dart';
 import 'package:planly/features/auth/presentation/splash_page.dart';
-import 'package:planly/features/tasks/presentation/home_page.dart';
+import 'package:planly/features/family/presentation/bootstrap_page.dart';
+import 'package:planly/features/family/presentation/family_hub_page.dart';
+import 'package:planly/features/family/presentation/members_page.dart';
+import 'package:planly/features/family/presentation/no_access_page.dart';
+import 'package:planly/features/family/presentation/session_error_page.dart';
+import 'package:planly/features/household/presentation/dashboard_page.dart';
+import 'package:planly/features/household/presentation/households_page.dart';
+import 'package:planly/features/settings/presentation/settings_page.dart';
 
-/// Guards pós-autenticação (bootstrap pendente, /no-access, família frozen).
-/// A T-014 adiciona os seus aqui; ver `guards.dart`.
-final postAuthGuardsProvider = Provider<List<PostAuthGuard>>((ref) => const []);
+/// Guards pós-autenticação (spec §2.2 ordens 4–6): bootstrap pendente, `/no-access` e família
+/// `deleting`. A lógica está em `sessionGuard` (pura); aqui só lemos a fase da sessão.
+final postAuthGuardsProvider = Provider<List<PostAuthGuard>>((ref) {
+  return [(auth, location) => sessionGuard(ref.read(sessionPhaseProvider), location)];
+});
 
-/// Notifica o GoRouter quando a sessão (ou, na T-014, bootstrap/contexto) muda.
+/// Notifica o GoRouter quando a sessão, o bootstrap ou o contexto ativo mudam.
 class RouterRefreshNotifier extends ChangeNotifier {
   void refresh() => notifyListeners();
 }
@@ -21,6 +32,7 @@ class RouterRefreshNotifier extends ChangeNotifier {
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = RouterRefreshNotifier();
   ref.listen<AsyncValue<AuthState>>(authStateProvider, (_, _) => refresh.refresh());
+  ref.listen<SessionPhase>(sessionPhaseProvider, (_, _) => refresh.refresh());
   ref.onDispose(refresh.dispose);
 
   final router = GoRouter(
@@ -34,7 +46,28 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: Routes.splash, builder: (context, state) => const SplashPage()),
       GoRoute(path: Routes.login, builder: (context, state) => const LoginPage()),
-      GoRoute(path: Routes.home, builder: (context, state) => const HomePage()),
+      GoRoute(path: Routes.bootstrap, builder: (context, state) => const BootstrapPage()),
+      GoRoute(path: Routes.sessionError, builder: (context, state) => const SessionErrorPage()),
+      GoRoute(path: Routes.noAccess, builder: (context, state) => const NoAccessPage()),
+      GoRoute(path: Routes.settings, builder: (context, state) => const SettingsPage()),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => AppShell(shell: shell),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(path: Routes.home, builder: (context, state) => const DashboardPage()),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: Routes.family,
+              builder: (context, state) => const FamilyHubPage(),
+              routes: [
+                GoRoute(path: 'members', builder: (context, state) => const MembersPage()),
+                GoRoute(path: 'households', builder: (context, state) => const HouseholdsPage()),
+              ],
+            ),
+          ]),
+        ],
+      ),
     ],
   );
   ref.onDispose(router.dispose);
