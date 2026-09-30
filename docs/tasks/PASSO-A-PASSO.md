@@ -30,8 +30,8 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 |---|---|---|---|
 | ✅ 👤 | T-011 Login com Google | Código, telas e 18 testes prontos. **Falta você:** testar o login real no emulador (conta Google no emulador) — passos na task | T-007 |
 | ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
-| 🔄 | T-013 Functions de Family/casas/membros | `bootstrapUser`, `createHousehold`, acesso por casa, `removeMember` | T-005, T-008 |
-| ⬜ | T-014 Telas de dashboard, casas e membros | Primeiro acesso → Family Free → dashboard; casas e membros com limites | T-011, T-013 |
+| ✅ | T-013 Functions de Family/casas/membros | 7 callables + 42 testes (8 unit + 34 integração) passando; App Check exigido na nuvem | T-005, T-008 |
+| 🔄 | T-014 Telas de dashboard, casas e membros | Primeiro acesso → Family Free → dashboard; casas e membros com limites | T-011, T-013 |
 | ⬜ | T-015 Convites | Código de 10 caracteres, 24 h, bloqueado no Free (upsell) | T-013, T-014 |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.

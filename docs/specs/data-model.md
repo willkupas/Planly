@@ -123,7 +123,7 @@ Lista: `name`, `type` (`shopping|general`), `createdBy`, soft delete, timestamps
 Item (doc separado — nunca array): `name`, `completed`, `completedBy?`, `completedAt?`, `createdBy`, `order` (double, p/ reordenação sem reescrever tudo), soft delete, timestamps. Isso evita conflito quando duas pessoas editam a mesma lista.
 
 ### 3.11 `.../households/{h}/activity/{activityId}`  (append-only)
-`type` ∈ cliente: `task_created|task_assigned|task_completed|task_reopened|task_updated|task_deleted|list_created|list_deleted|item_added|item_completed|item_deleted` · Function (Admin SDK): `member_joined|member_left|household_created`, `actorId`, `actorName` (snapshot), `targetType` (`task|list|item|member`), `targetId`, `targetTitle` (snapshot), `createdAt` (serverTimestamp), `schemaVersion`. Snapshots evitam reads extras e sobrevivem à exclusão/renomeio do alvo. Histórico paginado (`limit` + cursor por `createdAt`).
+`type` ∈ cliente: `task_created|task_assigned|task_completed|task_reopened|task_updated|task_deleted|list_created|list_deleted|item_added|item_completed|item_deleted` · Function (Admin SDK): `member_joined|member_left|household_created`, `actorId`, `actorName` (snapshot), `targetType` (`task|list|item|member|household`), `targetId`, `targetTitle` (snapshot), `createdAt` (serverTimestamp), `schemaVersion`. Snapshots evitam reads extras e sobrevivem à exclusão/renomeio do alvo. Histórico paginado (`limit` + cursor por `createdAt`).
 
 ### 3.12 `invitations/{code}`  🔒
 `code` é o docId: 10 caracteres base32 gerados no servidor (~50 bits) — não enumerável na prática, agravado por App Check + rate limit na Function.

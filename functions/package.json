@@ -9,7 +9,10 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions"
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "test:unit": "tsc -p tsconfig.test.json && node --test \".test-build/test/unit/**/*.test.js\"",
+    "test:integration": "npm run build && tsc -p tsconfig.test.json && node scripts/run-integration.mjs",
+    "test": "npm run test:unit && npm run test:integration"
   },
   "dependencies": {
     "firebase-admin": "^14.5.0",
@@ -19,6 +22,7 @@
     "uuid": "^11.1.1"
   },
   "devDependencies": {
+    "@types/node": "^22.20.4",
     "typescript": "^5.6.0"
   }
 }

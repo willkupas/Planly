@@ -1,18 +1,16 @@
-import { initializeApp } from "firebase-admin/app";
-import { setGlobalOptions } from "firebase-functions/v2";
+import "./config";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { REGION } from "./config";
 
-// Região do Firestore; Functions com trigger de Firestore precisam estar na mesma.
-setGlobalOptions({ region: "southamerica-east1", maxInstances: 10 });
-
-initializeApp();
+export { bootstrapUser } from "./callable/bootstrapUser";
+export { createHousehold, deleteHousehold, restoreHousehold, setHouseholdAccess } from "./callable/households";
+export { leaveFamily, removeMember } from "./callable/members";
 
 /**
  * Verificação de saúde usada para validar o ambiente (emulador e deploy).
- * Exige usuário autenticado; as Functions reais (bootstrapUser etc.) vêm na T-013,
- * conforme docs/specs/cloud-functions.md.
+ * Exige usuário autenticado.
  */
-export const healthCheck = onCall((request) => {
+export const healthCheck = onCall({ region: REGION }, (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Login necessário.");
   }
