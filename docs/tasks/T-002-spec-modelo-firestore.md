@@ -1,7 +1,7 @@
 ---
 id: T-002
 title: Spec do modelo Firestore
-status: todo
+status: done
 plan: 0001
 depends_on: []
 area: docs

@@ -1,7 +1,7 @@
 ---
 id: T-005
 title: Spec das Cloud Functions MVP
-status: todo
+status: done
 plan: 0001
 depends_on: [T-002, T-003]
 area: docs

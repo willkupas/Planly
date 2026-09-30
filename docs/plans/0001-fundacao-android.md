@@ -50,8 +50,12 @@ Tarefas (Sprint 3), Listas (4), Offline (5), Notificações (6), Histórico (7),
 - Cancelar não congela na hora (ativa até fim do período pago + grace da Play). Ao expirar sem transferência: `frozen` (somente leitura) por 90 dias, depois exclusão, com avisos.
 - Transferência = convite ao membro, que assina com a própria conta; backend valida a compra e muda o ownership. Exclusão de conta do owner bloqueada enquanto houver outros membros.
 
-## Decisões em aberto
-Nenhuma bloqueante. Detalhes (estados da Family, jobs de expiração/exclusão, avisos) serão especificados na T-002/T-005.
+## Progresso
+- **Fase A concluída:** T-001 a T-005 (specs em `docs/specs/`). Próximo: Fase B (T-006 em diante).
+- Ambiente local pronto (Flutter, Android Studio + emulador `planly_pixel`, Firebase CLI via wrapper Node 22).
+
+## Decisões em aberto (produto)
+Downgrade automático solo→Free, limite de histórico no Free e timezone ao viajar (ver data-model §8). Nenhuma bloqueante. Detalhes (estados da Family, jobs de expiração/exclusão, avisos) serão especificados na T-002/T-005.
 
 ## Riscos
 - Rules mal modeladas → vazamento entre families: T-003/T-012 exigem testes de negação.

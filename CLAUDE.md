@@ -32,7 +32,7 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
   - **Household** ("casa") = unidade de **compartilhamento de conteúdo** (tasks/lists/activity), pertence a uma Family.
   - Um usuário pode ser **convidado (guest/member)** em Families de outros owners, sem ser owner delas. Só é owner (pagamento) da que criou.
   - Nunca `User → Tasks` direto.
-- **Autorização** = Firebase UID → membership na Family → role (`owner`/`admin`/`member`). Nunca por e-mail. Só o owner gerencia plano, participantes e casas da Family.
+- **Autorização** = Firebase UID → membership na Family → role da família (`owner`/`member`) → acesso e role na casa (`admin`/`member`). Nunca por e-mail. Só o owner gerencia plano, participantes e casas da Family.
 - **Sem coleções globais para o cliente** (ex.: `/tasks`); conteúdo sob `/families/{familyId}/households/{householdId}/...` (estrutura exata a fechar na T-002).
 - **Evitar conflitos:** dados mutáveis em documentos separados (`lists/{id}/items/{id}`), nunca arrays mutáveis num único doc. Conflito = last-write-wins, aceitável.
 - **Task Definition ≠ Task Occurrence** (recorrência gera ocorrências; definição permanece).
@@ -47,7 +47,12 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - **Região:** Firestore/Functions em `southamerica-east1` (imutável após criar o projeto). Multi-região por usuário não é objetivo agora; revisar se houver tração fora do Brasil.
 - **i18n desde o início:** todos os textos via ARB/`flutter_localizations`, pt-BR como padrão; nenhum texto fixo no código. Outros idiomas entram depois sem retrabalho.
 - **Planos (por Family):** Free = só o owner (`maxMembers=1`), 1 casa, **sem convites**. Família = até 4 pessoas, até 3 casas. Família+ = até 8 pessoas, casas ilimitadas. Entitlement tem `maxMembers` e `maxHouseholds` (null = ilimitado). Só o owner (pagante) adiciona participantes e casas. Um usuário Free pode ser convidado em Families de terceiros (o Free limita só a Family dele). Limites aplicados no backend (Rules/Functions), não no cliente.
-- **Acesso por casa:** membro da Family só acessa as casas às quais o owner o vinculou (`HouseholdAccess`, por casa). O owner acessa todas. Rules checam vínculo à casa, não só à Family.
+- **Acesso por casa:** membro da Family só acessa as casas às quais o owner o vinculou. O owner acessa todas. Rules checam vínculo à casa, não só à Family. Implementação: `access` (map uid→role) + `accessUids` (array) **no doc da casa**, escritos só por Function (permite query `array-contains` e 1 `get()` por checagem). Spec completo: [docs/specs/data-model.md](docs/specs/data-model.md).
+- **Roles:** família `owner|member`; casa `admin|member` (admin edita conteúdo de qualquer autor e renomeia a casa; member cria, conclui e edita o próprio). Owner = admin implícito de todas as casas.
+- **Activity** é escrita pelo cliente no mesmo batch da ação (offline ok, sem Blaze), append-only, Rules validam `actorId == auth.uid`.
+- **Operações só-online (Functions):** criar família/casa, convites, membros, transferência. Conteúdo (tasks/lists/items/activity) é client-direct e funciona offline.
+- **`invitations/{code}`** é a única coleção de topo legível pelo cliente (só pelo `createdBy`); aceitar é via Function callable.
+- **Proposta pendente:** ao expirar, se só existe o owner e ≤ 1 casa → downgrade automático para Free (não `frozen`). Confirmar com o usuário.
 - **Cancelamento/saída do owner (fluxo):**
   - Cancelar a renovação **não congela na hora**: a Family segue ativa até o fim do período pago (+ grace/account hold da Play). Avisos ao owner e aos membros antes de expirar (ex.: 7 dias).
   - Ao expirar sem transferência, a Family vira `frozen`: **todo o conteúdo fica somente leitura** (Rules bloqueiam writes por `status`). Após **90 dias** em `frozen` sem transferência, a Family é excluída (com avisos prévios).

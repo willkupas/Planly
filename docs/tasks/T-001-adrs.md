@@ -1,7 +1,7 @@
 ---
 id: T-001
 title: Escrever ADRs 0001–0005
-status: todo
+status: done
 plan: 0001
 depends_on: []
 area: docs
