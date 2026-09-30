@@ -32,7 +32,7 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 | ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
 | ✅ | T-013 Functions de Family/casas/membros | 7 callables + 42 testes (8 unit + 34 integração) passando; App Check exigido na nuvem | T-005, T-008 |
 | ✅ | T-014 Telas de dashboard, casas e membros | App + 7 testes de integração no emulador (Functions e Rules reais) passando. Só não provado: modo avião durante o bootstrap |
-| 🟡 | T-015 Convites | Servidor (57 testes) e telas (testes de widget) prontos. **Falta provar as telas de convite de ponta a ponta no emulador** |
+| ✅ | T-015 Convites | Servidor (57 testes), telas (testes de widget) e fluxo real no emulador (criar, aceitar, revogar, limites) provados. Sem teste de UI real com dois aparelhos |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
 
@@ -45,10 +45,10 @@ Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
 Plan: [0002](../plans/0002-conteudo-tarefas-listas.md). Começa quando a T-014 e a T-015 terminarem.
 | | Task | O que faz | Depende de |
 |---|---|---|---|
-| 🟡 | T-018 Tarefas | App pronto (criar em 2 toques, dashboard, detalhe, permissões, activity). **Falta provar no emulador** e fazer deploy do índice novo |
-| 🟡 | T-019 Listas e itens | App pronto (itens colaborativos, reordenar, count agregado). **Falta provar no emulador**; testar o arrastar num aparelho |
+| ✅ | T-018 Tarefas | App, Rules reais e cenário offline provados. Falta deploy do índice novo de `tasks` (na nuvem) e teste manual de teclado e datas |
+| ✅ | T-019 Listas e itens | App + Rules reais provadas (incl. `count()` com limit). Falta só testar o arrastar num aparelho |
 | ✅ | T-020 Atividade | Aba com histórico por dia, paginado, filtro por pessoa; Free = 7 dias. Testes de widget e repository |
-| 🟡 | T-021 Offline e sincronização | Canal central de escritas rejeitadas, faixa global, roteiro manual. **Falta executar o teste crítico de dois clientes no emulador** |
+| ✅ | T-021 Offline e sincronização | Canal central de escritas rejeitadas + faixa global; **teste crítico A online / B offline passou 4/4 no emulador** (dois clientes). Roteiro manual com 2 aparelhos como complemento |
 | ✅ 👤 | T-022 Lembretes locais | Reconciliação por stream, alarme inexato (sem permissão de alarme exato), permissão pedida em Configurações. **Falta você:** roteiro manual de 8 passos num aparelho |
 | ⬜ 👤 | T-023 Push de eventos (FCM) | Triggers + FCM. **Exige ativar o Blaze no `dev`** | T-018, T-019 |
 | ⬜ 👤 | T-024 Jobs agendados | Congelar/excluir famílias, avisos, limpeza. **Exige Blaze** | T-013, T-015 |

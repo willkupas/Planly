@@ -45,6 +45,6 @@ parallel_ok: false
 - Sem convites: estados Loading/Empty/Error/Offline (banner) nas telas de lista/convidar; membro não-owner vê "sem permissão" se abrir a rota direto.
 
 ## Pendente
-- Integração ponta a ponta com emulador (owner cria → convidado aceita → acesso às casas → revogar) — depende do coordenador; só foi validado com fakes (app) e testes do servidor.
+- ~~Integração ponta a ponta com emulador~~ FEITA sem UI: `integration_test/lists_and_invitations_test.dart` (passando) cobre createInvitation, lista do owner (Rules), revoke (idempotente), aceite por outro usuário (`INVITE_NOT_FOUND` após revogar ou por quem não é o criador), acesso só à casa concedida, aceite idempotente, convite usado não reaceita/revoga e `PLAN_LIMIT_MEMBERS` com família cheia. As telas seguem só com testes de widget.
 - Deep link `?code=` real (App Links) e domínio do link — fora do escopo.
 - Notificação ao owner quando o convite é aceito (FCM, Sprint 6) e job de marcação `expired`.

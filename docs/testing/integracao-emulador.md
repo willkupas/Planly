@@ -59,3 +59,11 @@ Principal), *beto* (membro sem casa); "Família Congelada" (`frozen`, Ana é mem
 - O AVD `planly_pixel` tem ~2,5 GB de RAM e fica lento/offline após várias execuções (sintomas: "Failed to start
   Dart Development Service", `VmServiceDisappearedException`, `device offline`, pendurar em "Installing"). Correção:
   `adb reboot` e repetir.
+
+## Outras baterias (mesmo script, mesmo seed; cada execução re-semeia)
+```powershell
+.\integration_test\run_emulator_tests.ps1 -Test integration_test/offline_two_clients_test.dart     # 4 testes
+.\integration_test\run_emulator_tests.ps1 -Test integration_test/lists_and_invitations_test.dart   # 2 testes
+```
+- `offline_two_clients_test.dart`: A online / B offline (dois `FirebaseApp`), LWW e escrita recusada em família congelada.
+- `lists_and_invitations_test.dart`: lista/itens/`count()`/activity e ciclo de convite (create/accept/revoke), sem UI.

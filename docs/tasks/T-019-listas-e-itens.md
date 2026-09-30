@@ -20,7 +20,8 @@ Listas compartilhadas (`data-model.md` §3.10, `flutter-app.md` telas 8–9).
 - [x] Contagem de pendentes na lista sem ler todos os itens (`count()` com limite)
 - [x] Modo leitura em família frozen; estados de tela; ARB
 - [x] Testes unit/widget (app)
-- [ ] Testes de Rules e de integração no emulador (não feitos: emulador em uso por outro agente)
+- [x] Integração no emulador (Rules reais) em `integration_test/lists_and_invitations_test.dart` (passando): criar lista/itens, completar por membro, `count()` agregado com `where` + `limit(200)` aceito pelas Rules (`pendingCount` = null sem acesso), stream de itens, activity no mesmo batch, soft delete, leitura negada a membro sem casa
+- [ ] Testes unitários das Rules (`@firebase/rules-unit-testing`) específicos de listas: não feitos
 
 ## Implementação (app)
 `lib/features/lists/{domain,data,application,presentation}`:
