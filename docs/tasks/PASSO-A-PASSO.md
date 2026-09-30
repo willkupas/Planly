@@ -16,7 +16,7 @@ Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fund
 | | Task | O que faz | Depende de |
 |---|---|---|---|
 | ✅ | T-006 Projeto Flutter | Projeto, tema, i18n, router, teste; APK abre no emulador | T-004 |
-| ⬜ 👤 | T-007 Firebase dev/staging/prod | Criar 3 projetos no console Firebase (região `southamerica-east1`), flavors Android, FlutterFire, SHA-1 do Google Sign-In, budget alerts | T-006 |
+| 🔄 👤 | T-007 Firebase dev/staging/prod | Projetos, flavors, apps Android, SHA-1 e init do Firebase: **feito e testado no dev**. **Falta você:** budget alerts e restringir as chaves de API (passos na task) | T-006 |
 | ⬜ | T-008 Emulator Suite | `firebase.json` com Auth/Firestore/Functions locais; app dev aponta para eles | T-007 |
 | ⬜ | T-009 CI GitHub Actions | `analyze` + `test` + build APK a cada PR | T-006 |
 | ⬜ | T-010 App Check, Crashlytics, Analytics | Observabilidade e proteção do backend | T-007 |
