@@ -12,7 +12,7 @@ parallel_ok: false
 Produzir `docs/specs/cloud-functions.md` com contratos (entrada, saída, erros, autorização, logs).
 
 ## Critérios de aceite
-- [ ] createFamily (1º login, Free + casa inicial), createHousehold, grantHouseholdAccess, inviteMember, acceptInvite, removeMember
+- [ ] bootstrapUser (1º login, Free + casa inicial), createHousehold, grantHouseholdAccess, inviteMember, acceptInvite, removeMember
 - [ ] Validação de limites via Entitlement (`maxMembers`, `maxHouseholds`); convites bloqueados no Free
 - [ ] Transferência de ownership (convite → aceite → validação de compra → troca)
 - [ ] Jobs agendados: expiração → frozen, exclusão após 90 dias, avisos, limpeza de convites expirados

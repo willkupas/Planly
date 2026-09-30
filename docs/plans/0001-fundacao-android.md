@@ -12,7 +12,7 @@
 | T-002 | Spec do modelo Firestore: Family (com `status` active/frozen), FamilyMember, Household, HouseholdAccess, Entitlement (`maxMembers`, `maxHouseholds`), tasks/lists/activity, índices, soft delete, schemaVersion → `docs/specs/data-model.md`. Fechar perguntas em aberto do CLAUDE.md | — |
 | T-003 | Spec de Security Rules (matriz por role; campos protegidos: role, ownerId, limites do plano) → `docs/specs/security-rules.md` | T-002 |
 | T-004 | Spec Flutter: telas, rotas GoRouter, providers, repositories, models → `docs/specs/flutter-app.md` | T-002 |
-| T-005 | Spec Cloud Functions MVP (createFamily no primeiro login, createHousehold, inviteMember, acceptInvite, removeMember) | T-002, T-003 |
+| T-005 | Spec Cloud Functions MVP (bootstrapUser no primeiro login, createHousehold, inviteMember, acceptInvite, removeMember) | T-002, T-003 |
 
 T-002 primeiro; T-003/T-004 em paralelo (2 subagentes); T-005 depois.
 

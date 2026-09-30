@@ -10,7 +10,7 @@ Fonte da verdade dos dados: `docs/specs/data-model.md`. Decisões: CLAUDE.md e A
 |---|---|---|---|
 | 1 | Splash | Inicializa Firebase/App Check, lê sessão. Sem UI de erro própria (vai p/ login ou bootstrap) | não |
 | 2 | Login | Botão "Entrar com Google" (único provedor no MVP) | sim |
-| 3 | Bootstrap (1º acesso) | Chama `createFamily` (Function). Resultado: Family Free + casa inicial. Estados: carregando / erro com "Tentar de novo" / sem internet com aviso claro | sim |
+| 3 | Bootstrap (1º acesso) | Chama `bootstrapUser` (Function). Resultado: Family Free + casa inicial. Estados: carregando / erro com "Tentar de novo" / sem internet com aviso claro | sim |
 | 4 | Dashboard (Início) | Casa ativa no topo (seletor), "Hoje", "Próximas", "Minhas tarefas" (toggle), resumo de listas, FAB `+`, indicador de sync | não |
 | 5 | Criar tarefa rápida | Bottom sheet: campo de texto → ✓ (`status=pending`, `schedule=null`, `assignedTo=currentUser`). Link "Mais opções" expande | não |
 | 6 | Mais opções (na mesma sheet) | Descrição, data/hora (`schedule`), responsável (membros com acesso à casa ou "Qualquer pessoa"), notificar (`notification.enabled/offsetMinutes`). Recorrência: escondida no MVP (Fase 2) | não |
@@ -149,9 +149,9 @@ lib/
 | Item | Definição |
 |---|---|
 | Domain | `Family` (id, name, ownerId, status, plan, memberCount, householdCount, frozenAt, deleteAfter, pendingTransfer), `FamilyMembership` (de `users/{uid}/memberships`: familyId, familyName, role, familyStatus, plan), `FamilyMember` (uid, role, status, displayName, photoUrl, joinedAt), `Entitlement` (plan, maxMembers, maxHouseholds?, features), `Invitation` (code, grants, status, expiresAt), `FamilyStatus`/`FamilyRole` enums |
-| Repository | `FamilyRepository`: `watchMemberships(uid)`, `watchFamily(id)`, `watchMembers(id)`, `watchEntitlement(id)`, `watchMyInvitations(uid)` (owner), `updateFamilyName` (client), **callables:** `createFamily()`, `createInvitation(familyId, grants)`, `revokeInvitation(code)`, `acceptInvitation(code)`, `removeMember(familyId, uid)`, `leaveFamily(familyId)`, `startOwnershipTransfer(familyId, toUid)`, `cancelOwnershipTransfer`, `acceptOwnershipTransfer`, `updateMemberAccess(familyId, uid, grants)`. Impl: `FirestoreFamilyRepository` + `FamilyFunctionsClient` |
+| Repository | `FamilyRepository`: `watchMemberships(uid)`, `watchFamily(id)`, `watchMembers(id)`, `watchEntitlement(id)`, `watchMyInvitations(uid)` (owner), `updateFamilyName` (client), **callables:** `bootstrapUser()`, `createInvitation(familyId, grants)`, `revokeInvitation(code)`, `acceptInvitation(code)`, `removeMember(familyId, uid)`, `leaveFamily(familyId)`, `startOwnershipTransfer(familyId, toUid)`, `cancelOwnershipTransfer`, `acceptOwnershipTransfer`, `updateMemberAccess(familyId, uid, grants)`. Impl: `FirestoreFamilyRepository` + `FamilyFunctionsClient` |
 | Providers | `membershipsProvider` (StreamProvider<List<FamilyMembership>>), `activeContextProvider` (NotifierProvider<ActiveContext{familyId, householdId}>, persiste em SharedPreferences, valida contra memberships), `activeFamilyProvider` (StreamProvider<Family>, observa `watchFamily(activeFamilyId)`), `activeEntitlementProvider`, `isOwnerProvider`, `familyMembersProvider(familyId)` (autoDispose, só Família>Membros), `familyWriteAccessProvider` (§2.3), `bootstrapStateProvider` |
-| Controllers | `BootstrapController` (AsyncNotifier: `createFamily` com retry/backoff manual), `InviteController`, `MemberActionsController`, `OwnershipTransferController` |
+| Controllers | `BootstrapController` (AsyncNotifier: `bootstrapUser` com retry/backoff manual), `InviteController`, `MemberActionsController`, `OwnershipTransferController` |
 
 ### 4.4 household
 | Item | Definição |
@@ -231,7 +231,7 @@ Os repositories expõem, junto do dado, `SyncMeta{hasPendingWrites, isFromCache}
 Observação: `hasPendingWrites` só é `false` depois que o servidor confirma; `waitForPendingWrites()` pode ser usado em testes de integração, não na UI.
 
 ### 5.3 Operações só-online
-`OnlineOnlyGuard`: antes de chamar callables (createFamily, createHousehold, convites, aceitar, remover, transferir, verifyPurchase, excluir conta), o controller checa `connectivityProvider`. Offline → não dispara; mostra diálogo/snackbar "Precisa de internet para isso" e mantém os botões **habilitados** com estado explicativo (melhor que desabilitar sem motivo). Se a conexão cair durante a chamada → `AppFailure.network` com retry. Callables não são enfileiradas automaticamente (sem fila própria — ADR 0002); usuário repete. Operações de conteúdo nunca usam essa guarda.
+`OnlineOnlyGuard`: antes de chamar callables (bootstrapUser, createHousehold, convites, aceitar, remover, transferir, verifyPurchase, excluir conta), o controller checa `connectivityProvider`. Offline → não dispara; mostra diálogo/snackbar "Precisa de internet para isso" e mantém os botões **habilitados** com estado explicativo (melhor que desabilitar sem motivo). Se a conexão cair durante a chamada → `AppFailure.network` com retry. Callables não são enfileiradas automaticamente (sem fila própria — ADR 0002); usuário repete. Operações de conteúdo nunca usam essa guarda.
 
 ## 6. i18n, tema e acessibilidade
 
@@ -273,7 +273,7 @@ AuthRepository
 ### 8.2 Fluxo de sessão
 1. Splash: aguarda primeiro evento de `authStateChanges`.
 2. `SignedOut` → `/login`. `SignedIn` → upsert perfil → lê `users/{uid}` e `memberships` (cache primeiro).
-3. Sem `freeFamilyId` e sem memberships → `/bootstrap` (`createFamily`, online). Sucesso → memberships emite → `activeContext` escolhe a Free e a casa inicial → `/home`.
+3. Sem `freeFamilyId` e sem memberships → `/bootstrap` (`bootstrapUser`, online). Sucesso → memberships emite → `activeContext` escolhe a Free e a casa inicial → `/home`.
 4. `activeContext` restaurado de SharedPreferences; se inválido (família removida/sem acesso) → fallback para primeira membership/casa acessível.
 5. Token FCM registrado; `reminderSync` inicia.
 
@@ -334,7 +334,7 @@ CI (CLAUDE.md): analyze → test → build → emulator tests; cobertura mínima
 ## 11. Pontos em aberto / ambiguidades
 
 1. **Roles: CLAUDE.md × data-model.** CLAUDE.md cita roles `owner/admin/member` na Family; data-model define família `owner|member` e casa `admin|member`. Este spec segue o data-model. CLAUDE.md deveria ser alinhado (não alterado aqui).
-2. **`createFamily` do convidado.** CLAUDE.md diz que a Family Free é criada automaticamente no primeiro acesso, inclusive de quem só quer ser convidado. Confirmar se convidados também recebem Free (gera família vazia que talvez nunca usem) ou se o bootstrap pode ser adiado quando o usuário já tiver membership via convite. Assumido aqui: sempre cria a Free no 1º acesso (idempotente via `freeFamilyId`), `/join` liberado antes do bootstrap.
+2. **`bootstrapUser` do convidado.** CLAUDE.md diz que a Family Free é criada automaticamente no primeiro acesso, inclusive de quem só quer ser convidado. Confirmar se convidados também recebem Free (gera família vazia que talvez nunca usem) ou se o bootstrap pode ser adiado quando o usuário já tiver membership via convite. Assumido aqui: sempre cria a Free no 1º acesso (idempotente via `freeFamilyId`), `/join` liberado antes do bootstrap.
 3. **Aceitar convite antes do bootstrap.** Se o usuário entra por link sem nenhuma família, o guard 4 permite `/join`; falta definir se o bootstrap da Free roda em paralelo ou depois.
 4. **Free e "Família" sem convite × dados compartilhados.** Free não convida, mas o tier Free tem `features.fullHistory=false`; não está definido o limite concreto do histórico Free (dias/quantidade). Definir para a tela Atividade.
 5. **Recorrência.** Entitlement tem `features.recurringTasks`, mas o MVP não implementa; a UI esconde o campo. Confirmar que não haverá teaser "Premium" no MVP.

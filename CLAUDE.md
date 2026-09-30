@@ -52,7 +52,7 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - **Activity** é escrita pelo cliente no mesmo batch da ação (offline ok, sem Blaze), append-only, Rules validam `actorId == auth.uid`.
 - **Operações só-online (Functions):** criar família/casa, convites, membros, transferência. Conteúdo (tasks/lists/items/activity) é client-direct e funciona offline.
 - **`invitations/{code}`** é a única coleção de topo legível pelo cliente (só pelo `createdBy`); aceitar é via Function callable.
-- **Proposta pendente:** ao expirar, se só existe o owner e ≤ 1 casa → downgrade automático para Free (não `frozen`). Confirmar com o usuário.
+- **Ao expirar:** se só existe o owner e ≤ 1 casa → downgrade automático para Free (não `frozen`). **Plano reduzido** com uso acima do novo limite → período de regularização (30 dias, modo restrito: só remover membros/casas) antes de `frozen`. Free: histórico de 7 dias. Timezone: tarefa guarda o fuso de criação; UI exibe no fuso do aparelho.
 - **Cancelamento/saída do owner (fluxo):**
   - Cancelar a renovação **não congela na hora**: a Family segue ativa até o fim do período pago (+ grace/account hold da Play). Avisos ao owner e aos membros antes de expirar (ex.: 7 dias).
   - Ao expirar sem transferência, a Family vira `frozen`: **todo o conteúdo fica somente leitura** (Rules bloqueiam writes por `status`). Após **90 dias** em `frozen` sem transferência, a Family é excluída (com avisos prévios).
@@ -62,6 +62,13 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - **Segurança:** Security Rules por membership/role, App Check ativo. Exemplo do brainstorm (`write: if isMember`) é só conceitual — rules reais devem ser granulares (criação/edição/exclusão/membros/plano/convites/atividade).
 - **Logs:** Functions registram function/userId/householdId/operation/result/error; nunca tokens, senhas ou dados sensíveis.
 - **Custo:** budget alert, listeners mínimos, queries com limite, paginação no histórico, debounce em edição de texto.
+
+## Ambiente local (Windows)
+
+- Flutter em `C:\dev\flutter`; Android SDK em `%LOCALAPPDATA%\Android\Sdk` (NDK 28.2 instalado à mão); emulador AVD `planly_pixel` (Android 16 com Google Play).
+- Firebase CLI via wrapper `C:\dev\tools\bin\firebase.cmd` (força Node 22 e o JDK do Android Studio; o Node padrão da máquina é o 26, não suportado pelo firebase-tools).
+- O `sdkmanager` novo não entende `;` nos nomes de pacote: usar `android sdk install "ndk/28.2.13676358"` (caminhos com `/`).
+- Rodar no emulador: `flutter run -d emulator-5554`. Build: `flutter build apk --debug`.
 
 ## Princípios de UX
 

@@ -105,7 +105,7 @@ Docs internos `_rateLimits/{uid}_{fn}` (`count`, `windowStart`), **negados a qua
 - **B. Nova Family paga:** `familyId` ausente → cria Family (`familyName`) + casa inicial, com o plano do produto.
 - **C. Retomar/assumir:** `familyId` de família `frozen` cujo owner é o uid (reassinar), **ou** com `pendingTransfer.toUid == uid` (conclui transferência §2.8).
 **Passos:** (1) valida o token na **Google Play Developer API** (`purchases.subscriptionsv2.get`) com service account; `obfuscatedExternalAccountId` deve == uid (definido pelo app na compra); (2) mapeia `productId → plan` (`family` / `family_plus`); (3) **acknowledge** a compra se pendente (Play cancela em 3 dias se não); (4) transação: escreve `billing/subscription` (`purchaseTokenHash`, nunca o token), `billing/entitlement`, `families.plan`, espelho em `memberships`; (5) um `purchaseToken` só pode estar ligado a uma família (índice por hash; reuso em outra família → `failed-precondition`).
-**Downgrade entre planos pagos:** troca de produto na Play gera novo token/estado; se os limites novos forem menores que o uso atual (ex.: 6 membros → plano de 4), a família entra em `frozen` até o owner ajustar (remover membros/casas em modo permitido) — **ponto em aberto de UX/produto**, ver §7.
+**Downgrade entre planos pagos:** troca de produto na Play gera novo token/estado; se os limites novos forem menores que o uso atual (ex.: 6 membros → plano de 4), a família define `regularizeBy = now + 30d` e entra em **modo restrito** (Rules/Functions bloqueiam criar o que excede; só remover membros/casas e ajustar acesso). Regularizado → limpa `regularizeBy`. O `lifecycleJob` (§4.1) congela quem passar do prazo.
 **Saída:** `{familyId, plan, status}`.
 
 ### 2.10 `deleteAccount`
@@ -127,7 +127,7 @@ Especificadas na Sprint 6. Já reservado: `onDocumentCreated` em `tasks/items` (
 ### 4.1 `lifecycleJob` (diário, 03:00 America/Sao_Paulo)
 Para cada família paga não `deleting`:
 1. **Expiração:** assinatura `expired` (passou grace/hold) sem outra válida →
-   - **Proposta (aguarda confirmação):** só owner como membro **e** `householdCount ≤ 1` → vira Free (`status active`, `plan free`, entitlement Free, remove `billing/subscription`);
+   - **Aprovado:** só owner como membro **e** `householdCount ≤ 1` → vira Free (`status active`, `plan free`, entitlement Free, remove `billing/subscription`);
    - caso contrário → `status: frozen`, `frozenAt = now`, `deleteAfter = now + 90d`.
 2. **Avisos** (FCM + flag para banner in-app): expiração em D-7 (owner e membros); congelada em D+0; exclusão em `deleteAfter` D-60, D-30, D-7, D-1. Marcar `notifiedAt[tipo]` para não repetir.
 3. **Exclusão:** `frozen` com `deleteAfter <= now` → `status: deleting` → dispara cascata (§4.2). Reassinatura/transferência antes disso desfaz.
@@ -155,8 +155,7 @@ Além das de tarefas/listas (Sprint 6): convite aceito (owner), transferência r
 - **Deploy:** `firebase deploy --only functions` por projeto; Blaze necessário a partir do primeiro deploy real (estratégia: emuladores até a Sprint 5).
 
 ## 7. Pontos em aberto
-1. **Downgrade entre planos pagos** com uso acima do novo limite: congelar é duro; alternativas (permitir ajuste em "modo de regularização": só remover membros/casas) — decidir antes da Sprint 8.
+1. **Regularização:** prazo de 30 dias é proposta; detalhar a UX do modo restrito na Sprint 8 e incluir `regularizeBy` nas Rules (T-012 não precisa dele).
 2. **Link de convite** exige domínio e Android App Links (`assetlinks.json`); no MVP só código + share sheet.
 3. **Apple/iOS:** `verifyPurchase` e RTDN são Play-only; App Store Server API entra com iOS.
 4. **Produtos da Play:** ids (`family_monthly`, `family_plus_monthly`…) e períodos anuais a definir na Sprint 8.
-5. **Downgrade solo → Free** continua pendente de confirmação (ADR 0005).

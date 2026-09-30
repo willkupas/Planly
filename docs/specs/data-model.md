@@ -133,7 +133,7 @@ Item (doc separado — nunca array): `name`, `completed`, `completedBy?`, `compl
 ## 4. Ciclo de vida da Family
 
 ```
-        createFamily (1º login)
+        bootstrapUser (1º login)
                ↓
    ┌────── active ◄──────────────────────────┐
    │   (Free, ou paga com assinatura vigente) │
@@ -179,7 +179,7 @@ Fecham as ambiguidades levantadas em `security-rules.md` §9 e `flutter-app.md` 
 
 | # | Tema | Resolução |
 |---|---|---|
-| 1 | Quem cria `users/{uid}` | A Function `createFamily` (bootstrap do 1º login) cria `users/{uid}` (`email`, `createdAt`, `schemaVersion`). Cliente só faz update dos campos permitidos. |
+| 1 | Quem cria `users/{uid}` | A Function `bootstrapUser` (bootstrap do 1º login) cria `users/{uid}` (`email`, `createdAt`, `schemaVersion`). Cliente só faz update dos campos permitidos. |
 | 2 | Owner em `access` | **Não** entra em `access/accessUids`; Rules usam `|| isFamilyOwner`. Transferência não reescreve N casas. Cliente owner lista casas por query de owner (role vem de `memberships`). |
 | 3 | Membro removido | `removeMember` é uma transação/batch única: `members.status=removed` + remove de `access`/`accessUids` em todas as casas + espelhos + contador. Sem janela de acesso residual. |
 | 4 | "Edita o próprio conteúdo" | Member: edita o que criou; **pode concluir/reabrir** tarefa se for o `assignedTo` ou se `assignedTo == null`; **itens de lista são colaborativos** (qualquer acesso cria/completa/edita/reordena). Soft delete: autor ou admin/owner. |
@@ -193,11 +193,12 @@ Fecham as ambiguidades levantadas em `security-rules.md` §9 e `flutter-app.md` 
 | 12 | Renomear em `frozen` | Não permitido (tudo somente leitura). |
 | 13 | Escrita offline rejeitada | Se chegar após `frozen`, o servidor rejeita; o app marca o item como "não sincronizado" e oferece descartar (UX em `flutter-app.md`). |
 | 14 | `fullHistory` / `recurringTasks` | Flags não impostos por Rules no MVP; recorrência travada em `null`; limite de histórico no Free aplicado por `limit` no cliente. |
-| 15 | Convidado e Family Free | **Todo usuário ganha sua Family Free no 1º login**, inclusive quem entra por convite (a Free é o espaço pessoal dele; Free não impede ser convidado em outras). `/join` pode ser aberto antes do bootstrap, mas o aceite roda após `createFamily`. |
+| 15 | Convidado e Family Free | **Todo usuário ganha sua Family Free no 1º login**, inclusive quem entra por convite (a Free é o espaço pessoal dele; Free não impede ser convidado em outras). `/join` pode ser aberto antes do bootstrap, mas o aceite roda após `bootstrapUser`. |
 | 16 | Logout com escritas pendentes | Avisar e oferecer "Sair mesmo assim" antes de limpar o cache do Firestore. |
-| ❓ | Downgrade automático solo → Free | Proposta do ADR 0005, aguardando confirmação. |
-| ❓ | Limite de histórico no Free | A definir (ex.: últimos 7 dias). |
-| ❓ | Timezone ao viajar | A definir (sugestão: tarefas guardam timezone de criação; UI mostra no fuso do aparelho). |
+| 17 | Downgrade solo → Free | **Aprovado.** Ao expirar, só owner e ≤ 1 casa → Free (`active`); senão `frozen`. |
+| 18 | Histórico no Free | **Aprovado:** últimos 7 dias. |
+| 19 | Timezone ao viajar | **Aprovado:** tarefa guarda o fuso de criação; UI exibe no fuso do aparelho. |
+| 20 | Plano pago reduzido (uso > novo limite) | **Período de regularização** antes de congelar: Family fica `active` com `regularizeBy = now + 30d` e modo restrito (só remover membros/casas e ajustar acessos; criação bloqueada no que excede). Excedeu o prazo sem regularizar → `frozen` (90 dias até exclusão). Prazo de 30 dias é proposta ajustável. Campo `regularizeBy` 🔒 na Family. |
 
 ## 9. Fora deste spec
 Regras de segurança → `security-rules.md` (T-003). Contratos das Functions → `cloud-functions.md` (T-005). Telas/providers → `flutter-app.md` (T-004).

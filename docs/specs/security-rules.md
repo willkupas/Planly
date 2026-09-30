@@ -315,7 +315,7 @@ Cada teste roda com `@firebase/rules-unit-testing` e um seed fixo: famílias `F1
 
 ## 9. Pontos de atenção / ambiguidades (no data-model.md ou derivadas)
 
-1. **Quem cria `users/{uid}`?** O data-model diz que o cliente escreve só `displayName/photoUrl/locale/timezone`, mas não define a criação do doc (nem `email`, `createdAt`, `schemaVersion`). Assumido aqui: Function (`createFamily`/trigger de Auth) cria; cliente só faz update.
+1. **Quem cria `users/{uid}`?** O data-model diz que o cliente escreve só `displayName/photoUrl/locale/timezone`, mas não define a criação do doc (nem `email`, `createdAt`, `schemaVersion`). Assumido aqui: Function (`bootstrapUser`/trigger de Auth) cria; cliente só faz update.
 2. **`admin` de família:** o CLAUDE.md cita roles `owner/admin/member`; o data-model define família = `owner|member` e `admin` só na casa. Consistente com o ADR 0003, mas o CLAUDE.md deveria ser alinhado.
 3. **Membro removido/saiu:** as Rules de conteúdo checam só `accessUids` (1 get), não `members/{uid}.status`. Se a Function falhar/atrasar a limpeza de `accessUids`, o ex-membro mantém acesso. Exigir atomicidade (transação/batch) em `removeMember`, ou aceitar o gap.
 4. **Owner e `access`:** o data-model diz "acesso `admin` implícito", mas não diz se o owner entra em `access/accessUids`. Aqui: **não entra**, e as Rules usam `|| isFamilyOwner`. Isso custa 2 gets para o owner ler conteúdo e exige que o cliente use query diferente para listar casas (owner vs. member). Alternativa (owner em `access`) obriga reescrever N casas na transferência (ilimitado em Família+). Confirmar.

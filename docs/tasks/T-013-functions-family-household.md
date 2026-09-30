@@ -9,7 +9,7 @@ parallel_ok: true
 ---
 
 ## Critérios de aceite
-- [ ] createFamily (Free + casa inicial), createHousehold, grantHouseholdAccess, removeMember
+- [ ] bootstrapUser (Free + casa inicial), createHousehold, grantHouseholdAccess, removeMember
 - [ ] Limites via Entitlement; erros tipados
 - [ ] Logs estruturados sem dados sensíveis
 - [ ] Testes com emulator

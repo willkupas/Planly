@@ -1,0 +1,8 @@
+{
+  "@@locale": "pt",
+  "appName": "Planly",
+  "@appName": { "description": "Nome do aplicativo" },
+  "homeTitle": "Início",
+  "homeGreeting": "Bom dia 👋",
+  "homePlaceholder": "Suas tarefas compartilhadas vão aparecer aqui."
+}
