@@ -5,6 +5,7 @@ import { REGION } from "./config";
 export { bootstrapUser } from "./callable/bootstrapUser";
 export { createHousehold, deleteHousehold, restoreHousehold, setHouseholdAccess } from "./callable/households";
 export { leaveFamily, removeMember } from "./callable/members";
+export { acceptInvitation, createInvitation, revokeInvitation } from "./callable/invitations";
 
 /**
  * Verificação de saúde usada para validar o ambiente (emulador e deploy).

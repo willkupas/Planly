@@ -15,5 +15,7 @@ export const paths = {
     db().doc(`families/${familyId}/households/${householdId}`),
   activity: (familyId: string, householdId: string) =>
     db().collection(`families/${familyId}/households/${householdId}/activity`),
+  invitations: () => db().collection("invitations"),
+  invitation: (code: string) => db().doc(`invitations/${code}`),
   rateLimit: (uid: string, fn: string) => db().doc(`_rateLimits/${uid}_${fn}`),
 };

@@ -22,3 +22,10 @@ export const ENFORCE_APP_CHECK =
 if (getApps().length === 0) {
   initializeApp();
 }
+
+/**
+ * Base do link de convite (`<base>/<code>`). PLACEHOLDER: o domínio real ainda não existe
+ * (deep links/Android App Links ficam para depois; no MVP o app usa o código + share sheet).
+ * Pode ser sobrescrito por variável de ambiente `INVITE_LINK_BASE` por ambiente (dev/staging/prod).
+ */
+export const INVITE_LINK_BASE = process.env.INVITE_LINK_BASE ?? "https://planly.app/join";
