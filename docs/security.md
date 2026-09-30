@@ -33,8 +33,8 @@ Configuração Firebase é regenerável: `flutterfire configure` / console. Segr
 ## 4. Requisitos recomendados
 | # | Recomendação | Quando |
 |---|---|---|
-| R1 | Proteção do branch `main` (PR obrigatório, CI verde) e secret scanning + push protection do GitHub ativos | T-016 / T-009 |
-| R2 | Dependabot (pub, npm, gradle, actions) e `flutter pub outdated`/`npm audit` no CI | T-009 |
+| R1 | Proteção do branch `main` (PR obrigatório, CI verde) e secret scanning + push protection do GitHub ativos | T-016 (scanning: feito) / T-017 (proteção do `main`, no fim do projeto) |
+| R2 | Dependabot (pub, npm, gradle, actions) e `flutter pub outdated`/`npm audit` no CI | T-017 (`npm audit` já roda no CI manual da T-009) |
 | R3 | Verificação em duas etapas nas contas Google, GitHub e Play Console; conta Firebase com papéis mínimos (IAM) | agora |
 | R4 | Budget alerts e alertas de anomalia de uso (abuso = custo) | T-007 |
 | R5 | Rate limit nas Functions sensíveis (convites, bootstrap) | T-005 |

@@ -23,7 +23,7 @@ T-002 primeiro; T-003/T-004 em paralelo (2 subagentes); T-005 depois.
 | T-006 | Criar projeto Flutter (Android), pastas feature-first, Material 3, i18n (ARB, pt-BR), Riverpod + GoRouter | T-004 |
 | T-007 | Projetos Firebase dev/staging/prod + FlutterFire + flavors Android | T-006 |
 | T-008 | Firebase Emulator Suite + `firebase.json` | T-007 |
-| T-009 | CI GitHub Actions: analyze + test + build apk | T-006 |
+| T-009 | CI GitHub Actions **manual** (parcial): scan de segredos, analyze, test, Functions, APK opcional. Automático em PR → T-017 (fim do projeto) | T-006 |
 | T-010 | App Check + Crashlytics + Analytics | T-007 |
 
 ## Fase C — Conta, Family e casa (Sprint 2)

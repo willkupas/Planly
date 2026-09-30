@@ -19,6 +19,5 @@ Cumprir os requisitos de `docs/security.md` que já dá para atender na fundaç�
 - [x] Regra "verificar antes de commitar" no CLAUDE.md
 - [x] Usuário: 2FA na conta Google (cobre Firebase e Play Console); secret scanning + push protection no GitHub
 - [ ] Usuário: 2FA na conta GitHub (confirmar)
-- [ ] Proteção do `main` no GitHub — adiado até existir CI (T-009)
-- [x] `AndroidManifest`: `allowBackup=false`, `usesCleartextTraffic=false` (R11). Nota: o debug com hot reload usa cleartext local; se o `flutter run` falhar, criar `src/debug/AndroidManifest.xml` liberando só o debug
-- [ ] CI com gitleaks e Dependabot (junto da T-009)
+- [x] `AndroidManifest`: `allowBackup=false`, `usesCleartextTraffic=false` no release (R11); o manifest de debug libera cleartext só para os emuladores (T-008)
+- [ ] Proteção do `main`, gitleaks e Dependabot — adiados para a T-017 (fim do projeto, por decisão do usuário)

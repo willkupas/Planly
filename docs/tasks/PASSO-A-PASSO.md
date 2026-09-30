@@ -1,6 +1,6 @@
 # Planly — Passo a passo das tasks (Plan 0001)
 
-Legenda: ✅ concluída · 🔄 em andamento · ⬜ a fazer · 👤 precisa de você
+Legenda: ✅ concluída · 🟡 parcial (resto adiado de propósito) · 🔄 em andamento · ⬜ a fazer · 👤 precisa de você
 Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fundacao-android.md).
 
 ## Fase A — Specs ✅
@@ -18,7 +18,7 @@ Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fund
 | ✅ | T-006 Projeto Flutter | Projeto, tema, i18n, router, teste; APK abre no emulador | T-004 |
 | 🔄 👤 | T-007 Firebase dev/staging/prod | Projetos, flavors, apps Android, SHA-1 e init do Firebase: **feito e testado no dev**. **Falta você:** budget alerts e restringir as chaves de API (passos na task) | T-006 |
 | ✅ | T-008 Emulator Suite | Auth/Firestore/Functions locais testados; rules provisórias (nega tudo); app dev preparado para usá-los | T-007 |
-| ⬜ | T-009 CI GitHub Actions | `analyze` + `test` + build APK a cada PR | T-006 |
+| 🟡 | T-009 CI GitHub Actions (parcial) | Workflow **manual** pronto: scan de segredos, analyze, test, Functions, APK opcional. Automático em PR fica na T-017. **Ainda não rodou no GitHub** | T-006 |
 | ⬜ | T-010 App Check, Crashlytics, Analytics | Observabilidade e proteção do backend | T-007 |
 
 | 🔄 👤 | T-016 Baseline de segurança | Scanner de segredos + hook (feito), `.gitignore` (feito). **Falta você:** 2FA, secret scanning e proteção do `main` no GitHub | T-006 |
@@ -35,6 +35,11 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 | ⬜ | T-015 Convites | Código de 10 caracteres, 24 h, bloqueado no Free (upsell) | T-013, T-014 |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
+
+## Etapas do fim do projeto (pré-release)
+| | Task | O que faz |
+|---|---|---|
+| ⬜ 👤 | T-017 CI automático + proteção do `main` | CI em PR/push, testes das Rules no CI, gitleaks, Dependabot, actions por SHA, proteção do `main`, secrets de CI. Fazer **depois** das etapas de teste do app |
 
 ## Depois do plan 0001 (próximos plans)
 Tarefas (Sprint 3) → Listas (4) → Offline (5) → Notificações (6) → Histórico (7) → Billing (8) → Qualidade (9) → Play Store (10).
