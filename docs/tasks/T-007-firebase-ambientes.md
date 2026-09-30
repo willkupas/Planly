@@ -16,3 +16,4 @@ Três projetos Firebase em `southamerica-east1` ligados ao app via flavors.
 - [ ] Flavors `app.with.planly.dev` / `.staging` / prod
 - [ ] FlutterFire configurado por flavor; SHA-1 registrados para Google Sign-In
 - [ ] Budget alerts configurados
+- [ ] Chaves de API restritas ao pacote + SHA-1 (M6); `google-services.json` e `firebase_options*.dart` ficam fora do git (gitignore) — rodar `scripts/check-secrets.sh` antes do commit

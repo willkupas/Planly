@@ -21,7 +21,7 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - **App:** Flutter + Dart, Material 3, arquitetura feature-oriented em camadas (presentation → application → domain → data), **Riverpod** (estado/DI), **GoRouter** (navegação).
 - **Backend:** Firebase — Auth, Firestore, Cloud Functions 2nd gen, FCM, App Check, Crashlytics, Analytics, Remote Config.
 - **Sem API própria no MVP.** Cloud Functions é a camada server-side (convites, recorrência, billing, notificações).
-- **Ambientes Firebase:** `dev`, `staging`, `prod` separados; nunca desenvolver em prod. Usar Firebase Emulator Suite (Auth, Firestore, Functions).
+- **Ambientes Firebase:** `dev`, `staging`, `prod` separados; nunca desenvolver em prod. Project IDs: dev `planly-dev-d8533`, staging `planly-staging`, prod `planly-prod-be861` (região Firestore `southamerica-east1`). Usar Firebase Emulator Suite (Auth, Firestore, Functions).
 - **CI/CD:** GitHub + GitHub Actions (analyze → test → build → emulator tests).
 
 ## Decisões de arquitetura (vitais)
@@ -62,6 +62,13 @@ App mobile de tarefas domésticas compartilhadas ("casa digital"): tarefas, list
 - **Segurança:** Security Rules por membership/role, App Check ativo. Exemplo do brainstorm (`write: if isMember`) é só conceitual — rules reais devem ser granulares (criação/edição/exclusão/membros/plano/convites/atividade).
 - **Logs:** Functions registram function/userId/householdId/operation/result/error; nunca tokens, senhas ou dados sensíveis.
 - **Custo:** budget alert, listeners mínimos, queries com limite, paginação no histórico, debounce em edição de texto.
+
+## Segurança (regra inviolável)
+
+- O repositório é tratado como **público**. Nunca versionar segredos, chaves, tokens, códigos OAuth, keystores, service accounts, `google-services.json`, `firebase_options*.dart`, `.env*` nem dados reais de usuários.
+- **Antes de todo commit:** o hook `.githooks/pre-commit` roda `scripts/check-secrets.sh` (após clonar: `git config core.hooksPath .githooks`). Além do hook, conferir `git status` e `git diff --cached`. Nunca usar `--no-verify` sem justificativa. Vazou algo → rotacionar a credencial primeiro.
+- Nunca colar credenciais/códigos em comandos, docs ou logs; segredos de Functions no Secret Manager, do CI nos GitHub Secrets.
+- Requisitos mínimos e recomendados: [docs/security.md](docs/security.md). Release só sai com todos os mínimos (M1–M13) atendidos.
 
 ## Ambiente local (Windows)
 

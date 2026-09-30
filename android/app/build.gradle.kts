@@ -29,6 +29,31 @@ android {
         versionName = flutter.versionName
     }
 
+    // Flavors = ambientes Firebase (dev/staging/prod). ApplicationId distinto permite
+    // instalar os três no mesmo aparelho. O Firebase de cada um vem do google-services.json
+    // em android/app/src/<flavor>/ (gerado pelo FlutterFire, T-007).
+    buildFeatures {
+        resValues = true // necessário para resValue("app_name") por flavor
+    }
+
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Planly (dev)")
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+            resValue("string", "app_name", "Planly (staging)")
+        }
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Planly")
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

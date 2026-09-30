@@ -46,3 +46,38 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# ===== Segurança: nunca versionar =====
+# Configuração Firebase por ambiente (regenerar com `flutterfire configure`)
+google-services.json
+GoogleService-Info.plist
+**/firebase_options*.dart
+.firebaserc.local
+# Credenciais, chaves e certificados
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+key.properties
+**/key.properties
+local.properties
+**/local.properties
+service-account*.json
+*-service-account*.json
+*firebase-adminsdk*.json
+# Variáveis de ambiente e segredos locais
+.env
+.env.*
+!.env.example
+*.secret
+secrets/
+# Firebase local
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+firestore-debug.log
+# Node / Cloud Functions
+node_modules/
+functions/lib/

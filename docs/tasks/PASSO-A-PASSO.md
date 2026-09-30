@@ -21,7 +21,9 @@ Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fund
 | ⬜ | T-009 CI GitHub Actions | `analyze` + `test` + build APK a cada PR | T-006 |
 | ⬜ | T-010 App Check, Crashlytics, Analytics | Observabilidade e proteção do backend | T-007 |
 
-Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo).
+| 🔄 👤 | T-016 Baseline de segurança | Scanner de segredos + hook (feito), `.gitignore` (feito). **Falta você:** 2FA, secret scanning e proteção do `main` no GitHub | T-006 |
+
+Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 corre em paralelo e é requisito de tudo (ver `docs/security.md`).
 
 ## Fase C — Conta, Family e casa
 | | Task | O que faz | Depende de |

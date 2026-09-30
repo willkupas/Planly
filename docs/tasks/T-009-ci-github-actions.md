@@ -12,3 +12,5 @@ parallel_ok: true
 - [ ] Workflow em PR: `flutter analyze`, `flutter test`, build APK debug
 - [ ] Job de testes com emulators (habilitar após T-008/T-012)
 - [ ] Cache de dependências
+- [ ] gitleaks (ou `scripts/check-secrets.sh --all`) bloqueando PR com segredo
+- [ ] Dependabot (pub, npm, gradle, actions) e auditoria de dependências

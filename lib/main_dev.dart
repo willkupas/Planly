@@ -1,5 +1,4 @@
 import 'package:planly/app/bootstrap.dart';
 import 'package:planly/app/flavor.dart';
 
-// Entry point padrão (dev). Para outros ambientes use lib/main_staging.dart e lib/main_prod.dart.
 Future<void> main() => bootstrap(Flavor.dev);
