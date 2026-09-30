@@ -15,7 +15,7 @@ reais. Fecha a T-014 ("integração com as Functions reais"). Só fala com `127.
 ## Passo a passo (Windows / PowerShell)
 ```powershell
 # 0) Functions compiladas (Node 22) e emuladores de pé
-$env:PATH="C:\dev\tools\bin;C:\Users\willk\.config\herd\bin\nvm\v22.23.3;$env:PATH"
+$env:PATH="C:\dev\tools\bin;<pasta-do-node-22>;$env:PATH"   # Node 22 e o wrapper do firebase
 npm --prefix functions run build
 C:\dev\tools\bin\firebase.cmd emulators:start --only auth,firestore,functions --project planly-dev-d8533
 #   aguarde "All emulators ready!" (o projeto DEVE ser planly-dev-d8533)
