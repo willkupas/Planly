@@ -31,7 +31,7 @@ Ordem sugerida: T-006 → T-007 → (T-008, T-009, T-010 em paralelo). T-016 cor
 | ✅ 👤 | T-011 Login com Google | Código, telas e 18 testes prontos. **Falta você:** testar o login real no emulador (conta Google no emulador) — passos na task | T-007 |
 | ✅ | T-012 Implementar Security Rules | Regras reais + 65 testes (50 negações + 15 positivos) passando no emulator; falta só plugar no CI (T-017) | T-003, T-008 |
 | ✅ | T-013 Functions de Family/casas/membros | 7 callables + 42 testes (8 unit + 34 integração) passando; App Check exigido na nuvem | T-005, T-008 |
-| 🟡 | T-014 Telas de dashboard, casas e membros | App pronto (109 testes com fakes); **falta integrar com as Functions reais no emulador** |
+| ✅ | T-014 Telas de dashboard, casas e membros | App + 7 testes de integração no emulador (Functions e Rules reais) passando. Só não provado: modo avião durante o bootstrap |
 | 🟡 | T-015 Convites | Servidor (57 testes) e telas (134 testes no app) prontos. **Falta provar de ponta a ponta no emulador** (agente de integração em andamento) | T-013, T-014 |
 
 Ordem sugerida: T-011 e T-012 e T-013 em paralelo → T-014 → T-015.
