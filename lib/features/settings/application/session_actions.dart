@@ -4,6 +4,7 @@ import 'package:planly/core/firebase/firebase_providers.dart';
 import 'package:planly/core/sync/write_failure_center.dart';
 import 'package:planly/features/auth/application/auth_providers.dart';
 import 'package:planly/features/family/application/active_context.dart';
+import 'package:planly/features/notifications/application/push_providers.dart';
 import 'package:planly/features/reminders/application/reminder_providers.dart';
 
 enum SignOutOutcome {
@@ -26,6 +27,8 @@ class SessionActions {
 
     // O contexto é por uid: limpar antes de a sessão acabar.
     await _ref.read(activeContextProvider.notifier).clear();
+    // Push (T-023): apaga o doc do aparelho (precisa da sessão ainda aberta) e invalida o token.
+    await unregisterDevice(_ref, uid: _ref.read(currentUidProvider));
     // Encerrar a sessão invalida os providers que dependem de `currentUidProvider`
     // (todos os listeners), e só então o cache é descartado.
     await _ref.read(authRepositoryProvider).signOut();
@@ -52,6 +55,8 @@ class SessionActions {
     final local = _ref.read(localDataServiceProvider);
     await step(() => _ref.read(reminderReconcilerProvider).cancelAll());
     await step(() => _ref.read(activeContextProvider.notifier).clear());
+    // O servidor já apagou `devices`; só invalida o token FCM local.
+    await step(() => unregisterDevice(_ref, uid: null, removeDoc: false));
     await step(() => _ref.read(authRepositoryProvider).signOut());
     await step(() => local.clearLocalData());
     _ref.read(writeFailureCenterProvider.notifier).dismissAll();

@@ -449,6 +449,31 @@ class AppLocalizationsPt extends AppLocalizations {
       'Avisos sobre sua conta, família e plano';
 
   @override
+  String get pushTaskCreatedTitle => 'Nova tarefa';
+
+  @override
+  String get pushTaskCreatedBody => 'Uma tarefa foi adicionada à sua casa.';
+
+  @override
+  String get pushTaskAssignedTitle => 'Tarefa para você';
+
+  @override
+  String get pushTaskAssignedBody => 'Uma tarefa foi atribuída a você.';
+
+  @override
+  String get pushTaskCompletedTitle => 'Tarefa concluída';
+
+  @override
+  String get pushTaskCompletedBody => 'Uma tarefa da casa foi concluída.';
+
+  @override
+  String get pushListItemAddedTitle => 'Lista atualizada';
+
+  @override
+  String get pushListItemAddedBody =>
+      'Um item foi adicionado a uma lista da casa.';
+
+  @override
   String reminderBodyToday(String time) {
     return 'Hoje às $time';
   }

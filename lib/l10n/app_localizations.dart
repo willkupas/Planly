@@ -790,6 +790,54 @@ abstract class AppLocalizations {
   /// **'Avisos sobre sua conta, família e plano'**
   String get channelAccountDescription;
 
+  /// No description provided for @pushTaskCreatedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nova tarefa'**
+  String get pushTaskCreatedTitle;
+
+  /// No description provided for @pushTaskCreatedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uma tarefa foi adicionada à sua casa.'**
+  String get pushTaskCreatedBody;
+
+  /// No description provided for @pushTaskAssignedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefa para você'**
+  String get pushTaskAssignedTitle;
+
+  /// No description provided for @pushTaskAssignedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uma tarefa foi atribuída a você.'**
+  String get pushTaskAssignedBody;
+
+  /// No description provided for @pushTaskCompletedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tarefa concluída'**
+  String get pushTaskCompletedTitle;
+
+  /// No description provided for @pushTaskCompletedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Uma tarefa da casa foi concluída.'**
+  String get pushTaskCompletedBody;
+
+  /// No description provided for @pushListItemAddedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lista atualizada'**
+  String get pushListItemAddedTitle;
+
+  /// No description provided for @pushListItemAddedBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Um item foi adicionado a uma lista da casa.'**
+  String get pushListItemAddedBody;
+
   /// No description provided for @reminderBodyToday.
   ///
   /// In pt, this message translates to:

@@ -120,6 +120,26 @@ class LocalNotificationGateway implements NotificationGateway {
   Future<void> cancel(int id) => _plugin.cancel(id: id);
 
   @override
+  Future<void> showActivity(ActivityNotification n) {
+    final texts = _texts;
+    return _plugin.show(
+      id: n.id,
+      title: n.title,
+      body: n.body,
+      payload: n.payload,
+      notificationDetails: NotificationDetails(
+        android: AndroidNotificationDetails(
+          NotificationChannels.householdActivity,
+          texts?.activityName ?? NotificationChannels.householdActivity,
+          channelDescription: texts?.activityDescription,
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
+        ),
+      ),
+    );
+  }
+
+  @override
   Future<String?> launchPayload() async {
     try {
       final details = await _plugin.getNotificationAppLaunchDetails();

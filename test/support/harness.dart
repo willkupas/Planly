@@ -21,6 +21,7 @@ import 'package:planly/features/invitation/application/invitation_providers.dart
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:planly/features/lists/application/list_providers.dart';
 import 'package:planly/features/lists/data/firestore_list_repository.dart';
+import 'package:planly/features/notifications/application/push_providers.dart';
 import 'package:planly/features/reminders/application/reminder_providers.dart';
 import 'package:planly/features/tasks/application/task_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,7 @@ import 'fake_auth_repository.dart';
 import 'fake_backend.dart';
 import 'fake_invitations.dart';
 import 'fake_notifications.dart';
+import 'fake_push.dart';
 import 'fake_tasks.dart';
 
 /// Tudo o que um teste de app precisa controlar.
@@ -57,6 +59,10 @@ class TestApp {
 
   /// Gateway de notificações locais (lembretes, T-022) em memória.
   final notifications = FakeNotificationGateway();
+
+  /// Firebase Messaging e registro de devices (T-023) em memória.
+  final push = FakePushGateway();
+  final devices = FakeDeviceRepository();
 
   /// Firestore em memória por trás do `FirestoreListRepository` REAL (listas/itens/activity).
   final listsDb = FakeFirebaseFirestore();
@@ -124,6 +130,8 @@ class TestApp {
           }),
           deviceTimezoneProvider.overrideWithValue(() async => 'America/Sao_Paulo'),
           notificationGatewayProvider.overrideWithValue(notifications),
+          pushGatewayProvider.overrideWithValue(push),
+          deviceRepositoryProvider.overrideWithValue(devices),
           bootstrapRetryDelaysProvider.overrideWithValue(const []),
           if (now != null) clockProvider.overrideWithValue(() => now),
         ],

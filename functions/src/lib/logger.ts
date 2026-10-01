@@ -13,6 +13,11 @@ export interface LogFields {
   result: "ok" | "error";
   errorReason?: string;
   durationMs: number;
+  /** Contadores opcionais (push, T-023): nunca ids de aparelho/token. */
+  recipients?: number;
+  sent?: number;
+  failed?: number;
+  removedTokens?: number;
 }
 
 export function logCall(f: LogFields): void {
@@ -25,6 +30,10 @@ export function logCall(f: LogFields): void {
     result: f.result,
     errorReason: f.errorReason,
     durationMs: f.durationMs,
+    recipients: f.recipients,
+    sent: f.sent,
+    failed: f.failed,
+    removedTokens: f.removedTokens,
   };
   if (f.result === "ok") logger.info("callable", entry);
   else logger.warn("callable", entry);

@@ -120,7 +120,7 @@ Recebe eventos da Play (renovada, cancelada, em grace, em hold, expirada, revoga
 Requer Blaze (Pub/Sub).
 
 ### 3.2 Notificações de eventos compartilhados
-Especificadas na Sprint 6. Já reservado: `onDocumentCreated` em `tasks/items` (e conclusão) → FCM para `accessUids ∪ owner` exceto o autor, lendo tokens em `users/{uid}/devices`, removendo tokens inválidos da resposta do FCM.
+**Implementado (T-023)** em `functions/src/triggers/`: `pushOnTaskCreated`, `pushOnTaskUpdated`, `pushOnListItemAdded` (v2, `southamerica-east1`) → `dispatchPush` (destinatários = `accessUids ∪ owner` menos o autor; tokens em `users/{uid}/devices.fcmToken`; mensagens só de dados `{type, familyId, householdId, targetId}`; tokens recusados pelo FCM têm o doc removido; gancho de preferências em `pushPreferences.ts`). No emulador, `PUSH_FAKE_IN_EMULATOR=true` troca o FCM por `_pushOutbox`. Escopo original: `onDocumentCreated` em `tasks/items` (e conclusão) → FCM para `accessUids ∪ owner` exceto o autor, lendo tokens em `users/{uid}/devices`, removendo tokens inválidos da resposta do FCM.
 
 ## 4. Jobs agendados (Cloud Scheduler → onSchedule, Blaze)
 

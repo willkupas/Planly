@@ -59,6 +59,11 @@ class FakeNotificationGateway implements NotificationGateway {
     scheduled.remove(id);
   }
 
+  final shownActivity = <ActivityNotification>[];
+
+  @override
+  Future<void> showActivity(ActivityNotification notification) async => shownActivity.add(notification);
+
   @override
   Stream<String> get taps => _taps.stream;
 

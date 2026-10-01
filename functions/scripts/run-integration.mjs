@@ -20,7 +20,8 @@ const r = spawnSync(
   {
     stdio: "inherit",
     shell: true,
-    env: { ...process.env, ENFORCE_APP_CHECK_IN_EMULATOR: "true" },
+    // PUSH_FAKE_IN_EMULATOR: o FCM não é emulado; os triggers de push gravam em _pushOutbox.
+    env: { ...process.env, ENFORCE_APP_CHECK_IN_EMULATOR: "true", PUSH_FAKE_IN_EMULATOR: "true" },
   },
 );
 

@@ -7,6 +7,7 @@ import 'package:planly/core/firebase/emulators.dart';
 import 'package:planly/core/firebase/firebase_providers.dart';
 import 'package:planly/core/firebase/firestore_local_data_service.dart';
 import 'package:planly/core/firebase/observability.dart';
+import 'package:planly/features/notifications/data/push_background_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Ponto único de inicialização, chamado pelos entry points de cada flavor.
@@ -20,6 +21,8 @@ Future<void> bootstrap(Flavor flavor) async {
   if (flavor.useEmulators) {
     await connectToFirebaseEmulators();
   }
+  // Push de eventos compartilhados em segundo plano/encerrado (T-023).
+  registerPushBackgroundHandler();
   final prefs = await SharedPreferences.getInstance();
   // Limpeza de cache agendada por um logout anterior que não conseguiu limpar (spec §8.3).
   // Precisa rodar antes de qualquer outro uso do Firestore (e depois de apontar o emulador).

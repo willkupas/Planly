@@ -37,6 +37,21 @@ class ScheduledReminder {
   final String payload;
 }
 
+/// Notificação imediata da atividade da casa (push de eventos compartilhados, T-023).
+class ActivityNotification {
+  const ActivityNotification({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
+  });
+
+  final int id;
+  final String title;
+  final String body;
+  final String payload;
+}
+
 /// Abstração sobre o plugin de notificações locais (testes usam um fake).
 abstract class NotificationGateway {
   /// Cria os canais e registra o callback de toque. Idempotente.
@@ -58,6 +73,9 @@ abstract class NotificationGateway {
   Future<void> schedule(ScheduledReminder reminder);
 
   Future<void> cancel(int id);
+
+  /// Mostra agora uma notificação no canal `household_activity` (mesmo id substitui).
+  Future<void> showActivity(ActivityNotification notification);
 
   /// Payloads de toques em notificações com o app em execução.
   Stream<String> get taps;
