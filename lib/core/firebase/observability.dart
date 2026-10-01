@@ -11,9 +11,15 @@ bool _collectTelemetry(Flavor flavor) => !kDebugMode && flavor != Flavor.dev;
 /// App Check: Play Integrity em release; provedor de debug em builds debug (o token de debug
 /// aparece no logcat e deve ser cadastrado no console Firebase antes de ativar o enforcement).
 /// Os emuladores ignoram App Check.
+///
+/// APK instalado na mão (fora da Play) não passa no Play Integrity. Para testar no próprio
+/// aparelho, builds de dev/staging aceitam `--dart-define=APP_CHECK_DEBUG=true` (cada aparelho
+/// gera seu token de debug, cadastrado no console). Nunca vale para o flavor prod.
 Future<void> initAppCheck(Flavor flavor) {
+  const forceDebug = bool.fromEnvironment('APP_CHECK_DEBUG');
+  final useDebug = kDebugMode || (forceDebug && flavor != Flavor.prod);
   return FirebaseAppCheck.instance.activate(
-    providerAndroid: kDebugMode
+    providerAndroid: useDebug
         ? const AndroidDebugProvider()
         : const AndroidPlayIntegrityProvider(),
   );

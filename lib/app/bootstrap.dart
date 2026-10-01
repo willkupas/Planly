@@ -18,7 +18,9 @@ Future<void> bootstrap(Flavor flavor) async {
   await initAppCheck(flavor);
   await initCrashReporting(flavor);
   await initAnalytics(flavor);
-  if (flavor.useEmulators) {
+  // `--dart-define=USE_CLOUD=true` faz o dev falar com o projeto Firebase real (login Google de verdade).
+  const useCloud = bool.fromEnvironment('USE_CLOUD');
+  if (flavor.useEmulators && !useCloud) {
     await connectToFirebaseEmulators();
   }
   // Push de eventos compartilhados em segundo plano/encerrado (T-023).

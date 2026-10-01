@@ -2,6 +2,7 @@
     <!-- Lembretes locais (T-022). POST_NOTIFICATIONS já vem do plugin; BOOT_COMPLETED permite
          reagendar após reinício. Alarme exato (SCHEDULE_EXACT_ALARM/USE_EXACT_ALARM) NÃO é
          usado de propósito: agendamento inexato com Doze liberado. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
