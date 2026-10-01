@@ -18,7 +18,7 @@ Detalhes de cada task: `T-NNN-*.md` nesta pasta. Plan: [0001](../plans/0001-fund
 | ✅ | T-006 Projeto Flutter | Projeto, tema, i18n, router, teste; APK abre no emulador | T-004 |
 | 🔄 👤 | T-007 Firebase dev/staging/prod | Projetos, flavors, apps Android, SHA-1 e init do Firebase: **feito e testado no dev**. **Falta você:** budget alerts e restringir as chaves de API (passos na task) | T-006 |
 | ✅ | T-008 Emulator Suite | Auth/Firestore/Functions locais testados; rules provisórias (nega tudo); app dev preparado para usá-los | T-007 |
-| 🟡 | T-009 CI GitHub Actions (parcial) | Workflow **manual** pronto: scan de segredos, analyze, test, Functions, APK opcional. Automático em PR fica na T-017. **Ainda não rodou no GitHub** | T-006 |
+| 🟡 | T-009 CI GitHub Actions (parcial) | Workflow **manual** pronto: scan de segredos, analyze, test, Functions, APK opcional. Automático em PR fica na T-017. **Rodou no GitHub com sucesso (2026-09-30)** | T-006 |
 | 🟡 👤 | T-010 App Check, Crashlytics, Analytics | Código pronto e testado no emulador. **Falta você**, só quando houver build de release: registrar Play Integrity e ligar o enforcement (passos na task) | T-007 |
 
 | 🔄 👤 | T-016 Baseline de segurança | Scanner de segredos + hook (feito), `.gitignore` (feito). 2FA Google e secret scanning: feitos. **Falta você:** confirmar 2FA no GitHub. Proteção do `main` → T-017 | T-006 |
@@ -50,8 +50,8 @@ Plan: [0002](../plans/0002-conteudo-tarefas-listas.md). Começa quando a T-014 e
 | ✅ | T-020 Atividade | Aba com histórico por dia, paginado, filtro por pessoa; Free = 7 dias. Testes de widget e repository |
 | ✅ | T-021 Offline e sincronização | Canal central de escritas rejeitadas + faixa global; **teste crítico A online / B offline passou 4/4 no emulador** (dois clientes). Roteiro manual com 2 aparelhos como complemento |
 | ✅ 👤 | T-022 Lembretes locais | Reconciliação por stream, alarme inexato (sem permissão de alarme exato), permissão pedida em Configurações. **Falta você:** roteiro manual de 8 passos num aparelho |
-| ⬜ 👤 | T-023 Push de eventos (FCM) | Triggers + FCM. **Exige ativar o Blaze no `dev`** | T-018, T-019 |
-| ⬜ 👤 | T-024 Jobs agendados | Congelar/excluir famílias, avisos, limpeza. **Exige Blaze** | T-013, T-015 |
+| 🟡 👤 | T-023 Push de eventos (FCM) | Triggers (tarefa criada/atribuída/concluída, item) + token + toque abre o destino; testes passando. **Falta você:** deploy das Functions no `dev` (Blaze já ativo), `google-services.json` e teste em dois aparelhos | T-018, T-019 |
+| 🟡 👤 | T-024 Jobs agendados | `lifecycleJob`, `purgeJob`, `cleanupJob` com relógio injetável; testes no emulador passando. **Falta:** deploy na nuvem (Scheduler) e ligar os avisos ao push | T-013, T-015 |
 
 Paralelizáveis: T-018 + T-019 · T-020 + T-021 · T-022 + T-023 + T-024.
 
