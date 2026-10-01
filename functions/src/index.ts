@@ -7,6 +7,14 @@ export { createHousehold, deleteHousehold, restoreHousehold, setHouseholdAccess 
 export { deleteAccount } from "./callable/account";
 export { leaveFamily, removeMember } from "./callable/members";
 export { acceptInvitation, createInvitation, revokeInvitation } from "./callable/invitations";
+export { cleanupJob, lifecycleJob, purgeJob } from "./jobs/scheduled";
+
+// Endpoint de teste dos jobs: só existe no emulador (nunca exportado na nuvem).
+if (process.env.FUNCTIONS_EMULATOR === "true") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  exports.runScheduledJob = require("./jobs/testEndpoints").runScheduledJob;
+}
+export { pushOnListItemAdded, pushOnTaskCreated, pushOnTaskUpdated } from "./triggers/sharedEvents";
 
 /**
  * Verificação de saúde usada para validar o ambiente (emulador e deploy).
