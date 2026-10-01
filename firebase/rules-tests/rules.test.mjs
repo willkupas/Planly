@@ -1003,3 +1003,10 @@ test('P15 owner atribui task a member presente em accessUids (e a si mesmo via o
     setDoc(D(db, `${H1}/activity/o1a`), activityDoc('U1', { type: 'task_assigned', targetId: 'o1' })),
   );
 });
+
+test('N-testers: ninguem (nem logado) le ou escreve _testers (plano de teste so pelo console/Admin)', async () => {
+  for (const db of [anon(), as('U1'), as('U9')]) {
+    await assertFails(getDoc(D(db, '_testers/u1@exemplo.test')));
+    await assertFails(setDoc(D(db, '_testers/u9@exemplo.test'), { plan: 'family_plus' }));
+  }
+});

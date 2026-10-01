@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { adminDb, assertFails, assertOk, call, createUser, getDoc } from "./helpers";
+import { adminDb, assertFails, assertOk, call, createUser, createVerifiedUser, getDoc } from "./helpers";
 
 describe("bootstrapUser", () => {
   it("sem auth -> UNAUTHENTICATED", async () => {
@@ -108,5 +108,59 @@ describe("bootstrapUser", () => {
     assertFails(await call("bootstrapUser", {}, u), "RESOURCE_EXHAUSTED", "RATE_LIMITED");
     const rl = await getDoc(`_rateLimits/${u.uid}_bootstrapUser`);
     assert.equal(rl?.count, 5);
+  });
+
+  describe("lista de testadores (_testers, só dev/emulador)", () => {
+    it("e-mail verificado na lista: a família já nasce com o plano", async () => {
+      const u = await createVerifiedUser();
+      await adminDb.doc(`_testers/${u.email}`).set({ plan: "family_plus" });
+      const d = assertOk(await call("bootstrapUser", {}, u));
+      const fam = await getDoc(`families/${d.familyId}`);
+      assert.equal(fam?.plan, "family_plus");
+      const ent = await getDoc(`families/${d.familyId}/billing/entitlement`);
+      assert.equal(ent?.plan, "family_plus");
+      assert.equal(ent?.maxMembers, 8);
+      assert.equal(ent?.source, "tester");
+      assert.equal(ent?.features.invites, true);
+      const ms = await getDoc(`users/${u.uid}/memberships/${d.familyId}`);
+      assert.equal(ms?.plan, "family_plus");
+    });
+
+    it("e-mail NÃO verificado na lista: continua Free", async () => {
+      const u = await createUser();
+      await adminDb.doc(`_testers/${u.email}`).set({ plan: "family_plus" });
+      const d = assertOk(await call("bootstrapUser", {}, u));
+      assert.equal((await getDoc(`families/${d.familyId}`))?.plan, "free");
+    });
+
+    it("fora da lista ou plano inválido: Free", async () => {
+      const a = await createVerifiedUser();
+      assert.equal((await getDoc(`families/${assertOk(await call("bootstrapUser", {}, a)).familyId}`))?.plan, "free");
+      const b = await createVerifiedUser();
+      await adminDb.doc(`_testers/${b.email}`).set({ plan: "ouro" });
+      assert.equal((await getDoc(`families/${assertOk(await call("bootstrapUser", {}, b)).familyId}`))?.plan, "free");
+    });
+
+    it("quem já tinha entrado como Free sobe de plano no próximo bootstrap", async () => {
+      const u = await createVerifiedUser();
+      const d = assertOk(await call("bootstrapUser", {}, u));
+      assert.equal((await getDoc(`families/${d.familyId}`))?.plan, "free");
+      await adminDb.doc(`_testers/${u.email}`).set({ plan: "family" });
+      assertOk(await call("bootstrapUser", {}, u));
+      assert.equal((await getDoc(`families/${d.familyId}`))?.plan, "family");
+      assert.equal((await getDoc(`families/${d.familyId}/billing/entitlement`))?.maxHouseholds, 3);
+      assert.equal((await getDoc(`users/${u.uid}/memberships/${d.familyId}`))?.plan, "family");
+    });
+
+    it("não sobrepõe assinatura real nem rebaixa", async () => {
+      const u = await createVerifiedUser();
+      const d = assertOk(await call("bootstrapUser", {}, u));
+      await adminDb.doc(`families/${d.familyId}`).update({ plan: "family_plus" });
+      await adminDb.doc(`families/${d.familyId}/billing/entitlement`).set({ plan: "family_plus", maxMembers: 8, maxHouseholds: null, features: { invites: true, recurringTasks: true, fullHistory: true }, source: "subscription" });
+      await adminDb.doc(`_testers/${u.email}`).set({ plan: "family" });
+      assertOk(await call("bootstrapUser", {}, u));
+      assert.equal((await getDoc(`families/${d.familyId}`))?.plan, "family_plus");
+      assert.equal((await getDoc(`families/${d.familyId}/billing/entitlement`))?.source, "subscription");
+    });
   });
 });

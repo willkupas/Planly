@@ -13,8 +13,6 @@ Decisões do dono do produto que mudam o caminho, e itens a fazer mais tarde. Ta
 - [ ] **Textos legais:** política de privacidade e termos — rascunhos em `docs/legal/*.rascunho.md`; revisão jurídica
       e preenchimento dos `[colchetes]` antes de publicar (T-030).
 - [ ] **Domínio** (política publicada em URL, deep links de convite, `INVITE_LINK_BASE`): decidir antes da publicação.
-- [ ] **Build de release para APK manual:** documentar keystore local, `flutter build apk --release --flavor prod`,
-      instalação via `adb install` e atualização (mesma assinatura). Cuidado: App Check em release exige Play Integrity,
-      que só funciona com app instalado pela Play — avaliar provider alternativo para sideload (T-010/T-029).
+- [x] Build de release para APK manual: feito, ver docs/testing/apk-manual.md (App Check desligado só no dev; testadores por `_testers`).
 - [ ] Outros idiomas/regiões (ARB já preparado).
 - [ ] iOS, web, widgets, gamificação (fase 3).

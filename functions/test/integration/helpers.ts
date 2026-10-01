@@ -36,6 +36,32 @@ export async function createUser(): Promise<TestUser> {
   return { uid: j.localId, token: j.idToken, email };
 }
 
+/** Como createUser, mas com e-mail verificado no token (como o login Google real). */
+export async function createVerifiedUser(): Promise<TestUser> {
+  const email = `v-${randomUUID()}@test.invalid`;
+  const res = await fetch(`${AUTH}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ email, password: randomUUID(), displayName: "Teste", returnSecureToken: true }),
+  });
+  assert.equal(res.status, 200);
+  const j = (await res.json()) as { localId: string; refreshToken: string };
+  const upd = await fetch(`${AUTH}/identitytoolkit.googleapis.com/v1/accounts:update`, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: "Bearer owner" },
+    body: JSON.stringify({ localId: j.localId, emailVerified: true }),
+  });
+  assert.equal(upd.status, 200);
+  const ref = await fetch(`${AUTH}/securetoken.googleapis.com/v1/token?key=fake-key`, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(j.refreshToken)}`,
+  });
+  assert.equal(ref.status, 200);
+  const r = (await ref.json()) as { id_token: string };
+  return { uid: j.localId, token: r.id_token, email };
+}
+
 export interface CallResult {
   status: number;
   ok: boolean;

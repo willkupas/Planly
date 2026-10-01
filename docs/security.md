@@ -20,7 +20,7 @@ Configuração Firebase é regenerável: `flutterfire configure` / console. Segr
 | M2 | Firestore Security Rules: negar por padrão, autorização por UID → membership → role; testadas no emulator | T-003, T-012 |
 | M3 | Cliente nunca escreve campos de plano/role/ownership/limites | Rules + Functions |
 | M4 | Operações sensíveis só em Cloud Functions, com validação de auth, papel e limites | T-005, T-013 |
-| M5 | App Check ativo (Play Integrity) em staging/prod; Functions com `enforceAppCheck` | T-010 |
+| M5 | App Check ativo (Play Integrity) em staging/prod; Functions com `enforceAppCheck`. **O projeto `dev` na nuvem não exige** (APK de teste fora da Play) e é o único que aceita a lista `_testers` | T-010 |
 | M6 | Chaves de API do Firebase/Google Cloud restritas (pacote `app.with.planly*` + SHA-1) | T-007 |
 | M7 | Ambientes isolados (dev/staging/prod); nunca testar em prod | T-007 |
 | M8 | Assinatura validada no backend (Play Developer API); `purchaseToken` só como hash | Sprint 8 |
