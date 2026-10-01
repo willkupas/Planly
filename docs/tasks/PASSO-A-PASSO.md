@@ -70,6 +70,11 @@ Plan: [0003](../plans/0003-conta-assinatura-publicacao.md). Começa quando o pla
 A T-017 (CI automático, proteção do `main`, Dependabot) fecha o projeto antes do lançamento.
 Functions na nuvem e jobs agendados exigem plano **Blaze**: até a T-023 usamos só emuladores.
 
+## Decisões recentes (2026-09-30)
+- **Sem publicação por enquanto:** app instalado via APK manual; Play/billing só depois (ver [backlog](../backlog.md)).
+- Índices do Firestore já publicados no `dev`. 2FA do GitHub e budget/chaves de API: feitos.
+- Rascunhos de política de privacidade e termos em `docs/legal/`.
+
 ## Onde você entra (resumo)
 - **Agora, se quiser:** testar o login real com Google no emulador (T-011), o roteiro de lembretes num aparelho (T-022) e confirmar o 2FA do GitHub (T-016).
 - **Blaze:** quando chegarmos à T-023 (push) e T-024 (jobs). Eu explico os passos e o custo antes.
